@@ -1,0 +1,22 @@
+.overview-card {position: relative; }
+.overview-card::before {position: absolute; margin-block-start: -10px; content: ""; width: 85%; background-color: rgba(255, 255, 255, 0.2); height: 90%; box-shadow: 0 0.15rem 0.1rem rgba(0, 0, 0, 0.04); border-radius: 0.4rem; margin-inline: auto; inset-inline: 0; }
+.overview-card-body {border-radius: 0.4rem; border: none; background-color: var(--white); box-shadow: 0 0.15rem 0.1rem rgba(0, 0, 0, 0.04); position: relative; margin-block-end: 1.5rem; width: 100%; padding: 1rem; }
+.overview-content {display: flex;align-items: center;min-height: 60px;}
+.overview-content-text h2 {font-size: 22px;font-weight: 600;margin: 0;padding: 0;color: var(--pink);}
+.overview-content-text p {font-size: 12px;margin: 0;color: var(--gray);line-height: 16px;font-weight: normal;}
+.overview-content-icon {width: 64px;height: 64px;text-align: center;border-radius: 5px;line-height: 64px;margin-left: auto;/* background: rgb(61 161 227 / 11%); */}
+
+
+
+.plas-card-chart{border-radius: 0.4rem; border: none; background-color: var(--white); box-shadow: 0 0.15rem 0.1rem rgba(0, 0, 0, 0.04); position: relative; margin-block-end: 1.5rem; width: 100%; padding: 1rem;}
+.plas-chart-card {border-radius: 0.4rem; border: none; background-color:rgb(255 255 255 / 10%); box-shadow: 0 0.15rem 0.1rem rgba(0, 0, 0, 0.04); position: relative; margin-block-end: 1.5rem; width: 100%; padding: 1rem; backdrop-filter: blur(54px); display: flex; align-items: center; gap: 10px; } 
+.plas-chart-card:before {content: ''; position: absolute; background: url(../images/line-bg.svg); left: 0; right: 0; top: 0; bottom: 0; background-size: cover; } 
+.Overview-price, .Overview-rating{font-size: 22px; font-weight: 600; margin: 0; padding: 0; color: var(--white); } 
+.plas-chart-card-text  h2{font-size: 12px; margin: 0; color: var(--white); line-height: 16px; font-weight: normal; padding: 0; } 
+.overview-date{font-size: 12px; margin: 0; color: var(--white); line-height: 16px; font-weight: normal; }
+
+
+.plas-chart-filter .form-group {margin-bottom: 1rem; }
+.plas-chart-filter .form-group label {color: #fff; font-size: 14px; font-weight: 600; }
+.plas-chart-filter input.form-control {background:var(--white);border-radius: 5px;font-size: 13px;border: 1px solid var(--gray);font-weight: 400;height: auto;padding:12px 15px;outline: 0;width: 100%;display: inline-block;color:var(--gray);box-shadow: 0px 8px 13px 0px rgba(0, 0, 0, 0.05);}
+.plas-chart-filter input.form-control:focus {border: 1px solid var(--green); }

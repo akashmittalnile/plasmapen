@@ -1,0 +1,37 @@
+.plas-filter-section {display: flex; justify-content: space-between; margin-bottom: 1rem; }
+.plas-filter-heading h2 {font-size:20px; font-weight: 600; margin: 0; padding: 0; color:var(--white); }
+.plas-search-filter input.form-control {background: transparent; border-radius: 5px; color-scheme: dark; font-size: 14px; border: 1px solid rgb(255 255 255 / 15%); font-weight: 400; height: auto; padding: 12px 15px; box-shadow: none; outline: 0; width: 100%; display: inline-block; color: var(--white); }
+.plas-search-filter select.form-control {background: transparent; border-radius: 5px; font-size: 14px;color-scheme: dark; border: 1px solid rgb(255 255 255 / 15%); font-weight: 400; height: auto; padding: 12px 15px; box-shadow: none; outline: 0; width: 100%; display: inline-block; color: var(--white); appearance: revert; }
+.plas-search-filter textarea.form-control {background: transparent; border-radius: 5px; font-size: 14px;color-scheme: dark; border: 1px solid rgb(255 255 255 / 15%); font-weight: 400; height: auto; padding: 12px 15px; box-shadow: none; outline: 0; width: 100%; display: inline-block; color: var(--white); }
+.plas-search-filter .form-control::-ms-input-placeholder {color: var(--white);}
+.plas-search-filter .form-control::placeholder {color: var(--white);}
+
+.plas-search-filter .form-control:focus {border: 1px solid var(--yellow); }
+.search-form-group {position: relative; } 
+.search-form-group input.form-control {padding-right: 2rem; } 
+.search-form-group span.search-icon {position: absolute; right: 10px; top: 7px; }
+a.Accountapproval-btn {border-radius: 5px; background: var(--brown, #261313); box-shadow: 0px 4px 12px 0px rgba(182, 0, 248, 0.06); padding: 15px 20px; color: var(--white, #FFF); text-align: center; font-size: 14px; font-style: normal; font-weight: 500; line-height: normal; text-transform: uppercase; width: 100%; display: inline-block; position: relative; outline: none; }
+
+.earnings-section {border: none; border-radius: 5px; background: var(--white); box-shadow: 0px 8px 13px rgb(0 0 0 / 5%); margin-bottom:1rem; }
+.earnings-heading {margin-bottom: 20px; }
+.earnings-heading h2{font-size:20px; font-weight: 600; margin: 0; padding: 0; color: var(--white);}
+
+.performance-card {background-color: rgb(255 255 255 / 12%); border-radius: 0.4rem; box-shadow: 0px 8px 13px 0px rgba(0, 0, 0, 0.05); margin-bottom: 1rem; }
+
+.plas-card-chart{border-radius: 0.4rem; border: none; background-color: var(--white); box-shadow: 0 0.15rem 0.1rem rgba(0, 0, 0, 0.04); position: relative; margin-block-end: 1.5rem; width: 100%; padding: 1rem;}
+.plas-chart-card {border-radius: 0.4rem; border: none; background-color:rgb(255 255 255 / 10%); box-shadow: 0 0.15rem 0.1rem rgba(0, 0, 0, 0.04); position: relative; margin-block-end:1rem; width: 100%; padding: 1rem; backdrop-filter: blur(54px); display: flex; align-items: center; gap: 10px; } 
+.plas-chart-card:before {content: ''; position: absolute; background: url(../images/line-bg.svg); left: 0; right: 0; top: 0; bottom: 0; background-size: cover; } 
+.Overview-price, .Overview-rating{font-size: 22px; font-weight: 600; margin: 0; padding: 0; color: var(--white); } 
+.plas-chart-card-text  h2{font-size: 12px; margin: 0; color: var(--white); line-height: 16px; font-weight: normal; padding: 0; } 
+.overview-date{font-size: 12px; margin: 0; color: var(--white); line-height: 16px; font-weight: normal; }
+
+.earnings-overview-card:before {content: ''; position: absolute; right: 0; width: 408px; height: 220px; background: url(../images/objects1.svg); mix-blend-mode: color-burn; background-size: cover; }
+.earnings-sidebar {padding: 1rem; height: 100%; border-radius: 5px 0 0 5px; }
+
+.earnings-overview-content, .earnings-overview-media {position: relative; z-index: 1; }
+.earnings-overview-content p {font-size: 16px; margin: 0; color: #fff; line-height: 24px; font-weight: 400; }
+.earnings-overview-content h2 {font-size: 26px; font-weight: 600; margin: 0; padding: 0; color: #fff; }
+.earnings-date{font-size: 14px; font-weight: 300; margin: 0; padding: 0; color: #fff; }
+ .earnings-overview-media img {height: 85px; }
+.earnings-chart-card {padding: 1rem; background:#66378c; }
+

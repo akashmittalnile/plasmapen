@@ -1,0 +1,75 @@
+
+
+/*----------------------------
+         Add CSS file
+----------------------------*/
+@import "../plugins/bootstrap/css/bootstrap.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+/*----------------------------
+   element      
+----------------------------*/
+:root {
+    --blue:#4556A6;
+    --pink:#B357C3;
+    --sky:#426FB5;
+    --green:#ACCE39;
+    --orange:#F19A3A;
+    --Lighter:#959FA6;
+    --gray:#4F5168;
+    --lightgray:#8F93A0;
+    --white:#ffffff;
+    --body:#fafafa;
+}
+
+* {-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+html { text-rendering: optimizeLegibility !important;-webkit-font-smoothing: antialiased !important;}
+*{margin:0; padding:0}
+a{ text-decoration:none;}
+a:hover{ text-decoration:none !important;}
+header, nav, section, article, aside, footer { display:block;}
+html {font-size: 100%;}
+body {font-size: 14px; background: linear-gradient(123deg, rgba(69,86,166,1) 0%, rgba(56,61,137,1) 16%, rgba(103,39,117,1) 39%, rgba(115,41,128,1) 72%, rgba(48,20,78,1) 88%, rgba(43,13,51,1) 100%);font-family: "Outfit", sans-serif;line-height: 26px;color:var(--gray, #4F5168);-webkit-font-smoothing: antialiased;font-weight: normal;}
+h1, h2, h3, h4, h5, h6 {padding: 5px 0 15px 0;font-weight: normal;-webkit-font-smoothing: antialiased;}
+:-ms-input-placeholder{color: var(--gray, #4F5168);}
+
+/*----------------------------
+   auth      
+----------------------------*/
+.auth-height{height: 100vh;}
+.rmt-1{margin-top: 1rem;}
+.rmt-2{margin-top: 2rem;}
+.rmt-3{margin-top: 3rem;}
+.rmt-4{margin-top: 4rem;}
+.rmt-5{margin-top: 5rem;}
+
+.auth-content-card{width: 100%}
+
+#background-objects {width: 100vw; height: 100vh; object-fit: cover; position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: -1; }
+.auth-section {display: flex; align-items: center; height: 100vh; } 
+.auth-section .container {max-width: 65%; }
+.auth-content {padding: 2rem 2rem; position: relative; text-align: center; border-radius: 15px 0 0 15px; } 
+.auth-content-info  h2 {font-size: 24px;font-weight: 600;color: var(--white);margin: 0;padding: 0;}
+.auth-content-info  p {font-size:14px;font-weight: 300;color: var(--white);margin: 0;padding: 0;}
+
+
+
+.auth-content-info {position: relative; z-index: 1; }
+.auth-card {position: relative;background: rgb(255 255 255 / 10%);box-shadow: 0px 4px 70px 10px rgba(0, 0, 0, 0.08);border-radius: 10px;backdrop-filter: blur(10px);}
+
+.brand-logo {text-align: center; display: flex; align-items: center; justify-content: center;  margin: 0 auto 3rem auto; }
+.brand-logo img {width:200px; }
+.auth-form-info{margin: 0px;    z-index: 1; padding: 0px; display: flex; align-items: center; flex-wrap: wrap; background:var(--white); border-radius:0 10px 10px 0; } 
+.auth-form {padding: 55px; width: 100%; min-height: 450px; max-width: 580px;    text-align: center;}
+.auth-form  h2 {font-size: 24px; font-weight: 600; color:var(--gray); margin: 0; padding: 0; }
+.auth-form  p {font-size:14px; font-weight: 300; color: var(--Lighter); margin: 0; padding: 0; }
+.auth-illustration {margin-top: 20px; } 
+a.auth-link{font-size: 0.875rem; margin: 0; color: #ffcc00; font-weight: normal; }
+
+.auth-form .form-group {margin-bottom: 1rem; }
+.auth-form .form-group label {color: #fff; font-size: 14px; font-weight: 600; }
+.auth-form input.form-control {background:var(--white);border-radius: 5px;font-size: 13px;border: 1px solid var(--Lighter);font-weight: 400;height: auto;padding: 0.94rem 0.94rem;outline: 0;width: 100%;display: inline-block;color:var(--gray);box-shadow: 0px 8px 13px 0px rgba(0, 0, 0, 0.05);}
+.auth-form input.form-control:focus {border: 1px solid var(--green); }
+ button.auth-form-btn {outline: none;    width: 100%; padding: 12px 40px; display: inline-block; color: #fff; font-size: 14px; font-weight: 600; border-radius: 5px; border: none; background: var(--pink); box-shadow: 0px 8px 13px 0px rgba(0, 0, 0, 0.05); }
+.note-msg-info {background: #fbfbfb; display: inline-block; font-size: 12px; border-radius: 10px; line-height: 20px; color: #455A64; position: relative; padding: 8px 8px 8px 45px; }
+.note-msg-info i {position: absolute; left: 8px; font-size: 30px; top: 14px; }
+.forgotpsw-text a {font-size: 14px; color: var(--pink); }
