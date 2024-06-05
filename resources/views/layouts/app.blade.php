@@ -23,7 +23,22 @@
 </head>
 
 <body class="main-site">
+
+    <!-- loader -->
+    <div class="loader" id="loader-4">
+        <div class="text">
+            Please Wait
+        </div>
+        <div>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <!-- end loader -->
+
     <div class="page-body-wrapper">
+
 
         <!-- sidebar -->
         @include('layouts.sidebar')
@@ -63,6 +78,9 @@
     <!-- script js -->
     <script src="{{ assets('assets/plugins/jquery-validation/jquery.validate.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
+        window.addEventListener('load', function() {
+            $("#loader-4").delay(500).fadeOut("slow");
+        });
         let baseUrl = "{{ url('/') }}";
     </script>
     @stack('js')
