@@ -9,13 +9,13 @@
     <div class="user-details-section">
         <div class="plas-filter-section">
             <div class="plas-filter-heading">
-                <h2>Student Details</h2>
+                <h2>{{ googleTranslate('Student Details') }}</h2>
             </div>
             <div class="plas-search-filter wd80">
                 <div class="row g-1">
                     <div class="col-md-4">
                         <div class="form-group search-form-group">
-                            <input type="text" class="form-control" placeholder="Search by products name, Tags Price">
+                            <input type="text" class="form-control" placeholder="{{ googleTranslate('Search by products name, Tags Price') }}">
                             <span class="search-icon"><img src="{{ assets('assets/images/search-icon.svg') }}"></span>
                         </div>
                     </div>
@@ -25,10 +25,10 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <a href="#" class="btn-pi">Mark as inactive</a>
+                        <a href="#" class="btn-pi">{{ googleTranslate('Mark as inactive') }}</a>
                     </div>
                     <div class="col-md-2">
-                        <a href="{{ route('admin.student.details.course', encrypt_decrypt('encrypt', $user->id)) }}" class="btn-pi">Course</a>
+                        <a href="{{ route('admin.student.details.course', encrypt_decrypt('encrypt', $user->id)) }}" class="btn-pi">{{ googleTranslate('Course') }}</a>
                     </div>
                 </div>
             </div>

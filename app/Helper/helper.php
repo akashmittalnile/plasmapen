@@ -5,8 +5,7 @@ use App\Mail\DefaultMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
-
-
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 // Dev name : Dishant Gupta
 // This function is used to encrypt decrypt data
@@ -96,6 +95,14 @@ if (!function_exists('fileRemove')) {
         if (File::exists($link)) {
             unlink($link);
         }
+    }
+}
+
+// Dev name : Dishant Gupta
+// This function is used to remove a file
+if (!function_exists('googleTranslate')) {
+    function googleTranslate($string){
+        return GoogleTranslate::trans($string, app()->getLocale());
     }
 }
 

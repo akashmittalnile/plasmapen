@@ -8,6 +8,13 @@
                     </a>
                 </li>
             </ul>
+            <div class="col-md-1" style="position: absolute; right: 8.5%">
+                <select class="form-control changeLang">
+                    <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>English</option>
+                    <option value="fr" {{ session()->get('locale') == 'fr' ? 'selected' : '' }}>France</option>
+                    <option value="es" {{ session()->get('locale') == 'es' ? 'selected' : '' }}>Spanish</option>
+                </select>
+            </div>
             <ul class="navbar-nav">
                 <li class="nav-item noti-dropdown dropdown">
                     <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-bs-toggle="dropdown" aria-expanded="false">
@@ -28,10 +35,10 @@
 
                     <div class="dropdown-menu">
                         <a href="javascript:void(0)" class="dropdown-item">
-                            <i class="las la-user"></i> Profile
+                            <i class="las la-user"></i> {{ googleTranslate('Profile') }}
                         </a>
                         <a href="{{ route('admin.logout') }}" class="dropdown-item">
-                            <i class="las la-sign-out-alt"></i> Logout
+                            <i class="las la-sign-out-alt"></i> {{ googleTranslate('Logout') }}
                         </a>
                     </div>
                 </li>
@@ -52,15 +59,15 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="jwj-modal-form text-center">
-                    <h2>Are You Sure?</h2>
-                    <p>You want to logout!</p>
+                    <h2>{{ googleTranslate('Are You Sure?') }}</h2>
+                    <p>{{ googleTranslate('You want to logout!') }}</p>
                     <form action="{{ route('admin.logout') }}" method="get">
                         @csrf
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <button class="cancel-btn" data-bs-dismiss="modal" aria-label="Close" type="button">Cancel</button>
-                                    <button type="submit" class="save-btn">Yes! Logout</button>
+                                    <button class="cancel-btn" data-bs-dismiss="modal" aria-label="Close" type="button">{{ googleTranslate('Cancel') }}</button>
+                                    <button type="submit" class="save-btn">{{ googleTranslate('Yes! Logout') }}</button>
                                 </div>
                             </div>
                         </div>

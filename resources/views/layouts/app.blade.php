@@ -27,7 +27,7 @@
     <!-- loader -->
     <div class="loader" id="loader-4">
         <div class="text">
-            Please Wait
+        {{ googleTranslate('Please Wait') }}
         </div>
         <div>
             <span></span>
@@ -60,7 +60,7 @@
 
     <!-- toast -->
     <div id="toast">
-        <div id="desc" class="toastdesc">A notification message..</div>
+        <div id="desc" class="toastdesc"></div>
     </div>
     @if(Session::has('success'))
     <script>
@@ -78,6 +78,10 @@
     <!-- script js -->
     <script src="{{ assets('assets/plugins/jquery-validation/jquery.validate.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
+        var langUrl = "{{ route('changeLang') }}";
+        $(".changeLang").change(function(){
+            window.location.href = langUrl + "?lang="+ $(this).val();
+        });
         window.addEventListener('load', function() {
             $("#loader-4").delay(500).fadeOut("slow");
         });
