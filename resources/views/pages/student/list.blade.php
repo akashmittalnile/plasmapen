@@ -8,13 +8,13 @@
 <div class="body-main-content">
     <div class="plas-filter-section">
         <div class="plas-filter-heading">
-            <h2>{{ googleTranslate('Students') }}</h2>
+            <h2>Students</h2>
         </div>
         <div class="plas-search-filter wd50">
             <div class="row">
                 <div class="col-md-8">
                     <div class="form-group search-form-group">
-                        <input type="text" id="searchInput" class="form-control" name="Start Date" placeholder="{{ googleTranslate('Search by student name, email & phone number') }}">
+                        <input type="text" id="searchInput" class="form-control" name="Start Date" placeholder="Search by student name, email & phone number">
                         <span class="search-icon"><img src="{{ assets('assets/images/search-icon.svg') }}"></span>
                     </div>
                 </div>
@@ -24,13 +24,13 @@
                             <li>
                                 <div class="statusradio">
                                     <input value="1" type="radio" checked name="antigentype" id="Active">
-                                    <label for="Active">{{ googleTranslate('Active') }}</label>
+                                    <label for="Active">Active</label>
                                 </div>
                             </li>
                             <li>
                                 <div class="statusradio">
                                     <input value="2" type="radio" name="antigentype" id="Inactive">
-                                    <label for="Inactive">{{ googleTranslate('Inactive') }}</label>
+                                    <label for="Inactive">Inactive</label>
                                 </div>
                             </li>
                         </ul>

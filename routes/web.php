@@ -4,7 +4,6 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\StudentController;
-use App\Http\Controllers\LangController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -30,8 +29,6 @@ Route::get('/clear-cache', function () {
 });
 
 Route::get('/', [AuthController::class, 'login'])->name('login');
-Route::get('lang/change', [LangController::class, 'change'])->name('changeLang');
-
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     // submit credentials for login

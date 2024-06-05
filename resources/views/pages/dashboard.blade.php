@@ -14,7 +14,7 @@
                     <div class="overview-card-body">
                         <div class="overview-content">
                             <div class="overview-content-text">
-                                <p>{{ googleTranslate('Total Active Course') }}</p>
+                                <p>Total Active Course</p>
                                 <h2>6,502</h2>
                             </div>
                             <div class="overview-content-icon">
@@ -30,7 +30,7 @@
                     <div class="overview-card-body">
                         <div class="overview-content">
                             <div class="overview-content-text">
-                                <p>{{ googleTranslate('Total Inactive Course') }}</p>
+                                <p>Total Inactive Course</p>
                                 <h2>6,502</h2>
                             </div>
                             <div class="overview-content-icon">
@@ -47,7 +47,7 @@
                     <div class="overview-card-body">
                         <div class="overview-content">
                             <div class="overview-content-text">
-                                <p>{{ googleTranslate('Total Active Students') }}</p>
+                                <p>Total Active Students</p>
                                 <h2>{{ $activeStu ? sprintf("%02d", $activeStu) : 0 }}</h2>
                             </div>
                             <div class="overview-content-icon">
@@ -63,7 +63,7 @@
                     <div class="overview-card-body">
                         <div class="overview-content">
                             <div class="overview-content-text">
-                                <p>{{ googleTranslate('Total Inactive Student') }}</p>
+                                <p>Total Inactive Student</p>
                                 <h2>{{ $inactiveStu ? sprintf("%02d", $inactiveStu) : 0 }}</h2>
                             </div>
                             <div class="overview-content-icon">
@@ -79,7 +79,7 @@
                     <div class="overview-card-body">
                         <div class="overview-content">
                             <div class="overview-content-text">
-                                <p>{{ googleTranslate('Total Listed Products') }}</p>
+                                <p>Total Listed Products</p>
                                 <h2>6,502</h2>
                             </div>
                             <div class="overview-content-icon">
@@ -100,7 +100,7 @@
                     <div class="plas-chart-card">
                         <div class="plas-chart-card-image"><img src="{{ assets('assets/images/dollar-circle.png') }}"></div>
                         <div class="plas-chart-card-text">
-                            <h2>{{ googleTranslate('Total Revenue') }}</h2>
+                            <h2>Total Revenue</h2>
                             <div class="Overview-price">$1799.00</div>
                             <div class="overview-date">May,2023</div>
                         </div>
@@ -110,7 +110,7 @@
                     <div class="plas-chart-card">
                         <div class="plas-chart-card-image"><img src="{{ assets('assets/images/book-square.svg') }}"></div>
                         <div class="plas-chart-card-text">
-                            <h2>{{ googleTranslate('Total Course Enrollments') }}</h2>
+                            <h2>Total Course Enrollments</h2>
                             <div class="Overview-price">12</div>
                             <div class="overview-date">May,2023</div>
                         </div>
@@ -120,7 +120,7 @@
                     <div class="plas-chart-card">
                         <div class="plas-chart-card-image"><img src="{{ assets('assets/images/star1.svg') }}"></div>
                         <div class="plas-chart-card-text">
-                            <h2>{{ googleTranslate('Total courses rating') }}</h2>
+                            <h2>Total courses rating</h2>
                             <div class="Overview-rating"> 4.7</div>
                             <div class="overview-date">May,2023</div>
                         </div>

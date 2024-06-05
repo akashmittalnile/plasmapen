@@ -35,10 +35,10 @@
 
                     <div class="dropdown-menu">
                         <a href="javascript:void(0)" class="dropdown-item">
-                            <i class="las la-user"></i> {{ googleTranslate('Profile') }}
+                            <i class="las la-user"></i> Profile
                         </a>
                         <a href="{{ route('admin.logout') }}" class="dropdown-item">
-                            <i class="las la-sign-out-alt"></i> {{ googleTranslate('Logout') }}
+                            <i class="las la-sign-out-alt"></i> Logout
                         </a>
                     </div>
                 </li>
@@ -59,15 +59,15 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="jwj-modal-form text-center">
-                    <h2>{{ googleTranslate('Are You Sure?') }}</h2>
-                    <p>{{ googleTranslate('You want to logout!') }}</p>
+                    <h2>Are You Sure?</h2>
+                    <p>You want to logout!</p>
                     <form action="{{ route('admin.logout') }}" method="get">
                         @csrf
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <button class="cancel-btn" data-bs-dismiss="modal" aria-label="Close" type="button">{{ googleTranslate('Cancel') }}</button>
-                                    <button type="submit" class="save-btn">{{ googleTranslate('Yes! Logout') }}</button>
+                                    <button class="cancel-btn" data-bs-dismiss="modal" aria-label="Close" type="button">Cancel</button>
+                                    <button type="submit" class="save-btn">Yes! Logout</button>
                                 </div>
                             </div>
                         </div>

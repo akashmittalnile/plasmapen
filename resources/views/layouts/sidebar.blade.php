@@ -11,67 +11,67 @@
                 <li class="nav-item {{ Route::is('admin.dashboard') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('admin.dashboard') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/dashboard.svg') }}"></span>
-                        <span class="menu-title">{{ googleTranslate('Dashboard') }}</span>
+                        <span class="menu-title">Dashboard</span>
                     </a>
 
                 </li>
                 <li class="nav-item {{ Route::is('admin.student.*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('admin.student.list') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/students.svg') }}"></span>
-                        <span class="menu-title">{{ googleTranslate('Students') }}</span>
+                        <span class="menu-title">Students</span>
                     </a>
                 </li>
 
                 <li class="nav-item {{ Route::is('admin.course.*') ? 'active' : '' }}"">
                     <a class="nav-link" href="{{ route('admin.course.list') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/book.svg') }}"></span>
-                        <span class="menu-title">{{ googleTranslate('Manage Course') }}</span>
+                        <span class="menu-title">Manage Course</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="products.html">
                         <span class="menu-icon"><img src="{{ assets('assets/images/products.svg') }}"></span>
-                        <span class="menu-title">{{ googleTranslate('Manage Products') }}</span>
+                        <span class="menu-title">Manage Products</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="community.html">
                         <span class="menu-icon"><img src="{{ assets('assets/images/community.svg') }}"></span>
-                        <span class="menu-title">{{ googleTranslate('Manage Community') }}</span>
+                        <span class="menu-title">Manage Community</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="blogs.html">
                         <span class="menu-icon"><img src="{{ assets('assets/images/blogs.svg') }}"></span>
-                        <span class="menu-title">{{ googleTranslate('Manage Blogs') }}</span>
+                        <span class="menu-title">Manage Blogs</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="notifications.html">
                         <span class="menu-icon"><img src="{{ assets('assets/images/notification1.svg') }}"></span>
-                        <span class="menu-title">{{ googleTranslate('Manage Notifications') }}</span>
+                        <span class="menu-title">Manage Notifications</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="earnings.html">
                         <span class="menu-icon"><img src="{{ assets('assets/images/earnings.svg') }}"></span>
-                        <span class="menu-title">{{ googleTranslate('Earnings') }}</span>
+                        <span class="menu-title">Earnings</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="performance.html">
                         <span class="menu-icon"><img src="{{ assets('assets/images/chart.svg') }}"></span>
-                        <span class="menu-title">{{ googleTranslate('Performance') }}</span>
+                        <span class="menu-title">Performance</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="help-support.html">
                         <span class="menu-icon"><img src="{{ assets('assets/images/Help.svg') }}"></span>
-                        <span class="menu-title">{{ googleTranslate('Help & Support') }}</span>
+                        <span class="menu-title">Help & Support</span>
                     </a>
                 </li>
 
@@ -79,7 +79,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.logout') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/logout.svg') }}"></span>
-                        <span class="menu-title">{{ googleTranslate('Logout') }}</span>
+                        <span class="menu-title">Logout</span>
                     </a>
                 </li>
             </ul>
