@@ -8,18 +8,18 @@
 <div class="body-main-content">
     <div class="plas-filter-section">
         <div class="plas-filter-heading">
-            <h2>Create Course</h2>
+            <h2>{{ translate('Create New Course') }}</h2>
         </div>
         <div class="plas-search-filter wd40">
             <div class="row g-1">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a href="{{ route('admin.course.list') }}" class="btn-pi">Back</a>
+                        <a href="{{ route('admin.course.list') }}" class="btn-pi">{{ translate('Back') }}</a>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a href="javascript:void(0)" id="create-course-submit" class="btn-bl">Save</a>
+                        <a href="javascript:void(0)" id="create-course-submit" class="btn-bl">{{ translate('Save') }}</a>
                     </div>
                 </div>
             </div>

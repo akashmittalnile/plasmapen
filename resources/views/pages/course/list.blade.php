@@ -8,13 +8,13 @@
 <div class="body-main-content">
     <div class="plas-filter-section">
         <div class="plas-filter-heading">
-            <h2>Manage Course</h2>
+            <h2>{{ translate('Manage Course') }}</h2>
         </div>
         <div class="plas-search-filter wd80">
             <div class="row g-1">
                 <div class="col-md-3">
                     <div class="form-group search-form-group">
-                        <input type="text" class="form-control" name="Start Date" placeholder="Search by course name">
+                        <input type="text" class="form-control" name="Start Date" placeholder="{{ translate('Search by course name, price') }}">
                         <span class="search-icon"><img src="{{ assets('assets/images/search-icon.svg') }}"></span>
                     </div>
                 </div>
@@ -39,14 +39,14 @@
 
                 <div class="col-md-3">
                     <div class="form-group">
-                        <a href="coupon.html" class="btn-pi">Manage Coupon</a>
+                        <a href="coupon.html" class="btn-pi">{{ translate('Manage Coupon') }}</a>
                     </div>
                 </div>
 
 
                 <div class="col-md-3">
                     <div class="form-group">
-                        <a href="{{ route('admin.course.create') }}" class="btn-bl">Create New Course</a>
+                        <a href="{{ route('admin.course.create') }}" class="btn-bl">{{ translate('Create New Course') }}</a>
                     </div>
                 </div>
             </div>

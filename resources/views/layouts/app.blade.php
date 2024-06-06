@@ -78,6 +78,11 @@
     <!-- script js -->
     <script src="{{ assets('assets/plugins/jquery-validation/jquery.validate.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
+        var url = "{{ route('changeLang') }}";
+        $(".changeLang").change(function(){
+            window.location.href = url + "?lang="+ $(this).val();
+        });
+        
         window.addEventListener('load', function() {
             $("#loader-4").delay(500).fadeOut("slow");
         });

@@ -99,4 +99,12 @@ if (!function_exists('fileRemove')) {
     }
 }
 
+// Dev name : Dishant Gupta
+// This function is used to remove a file
+if (!function_exists('translate')) {
+    function translate($string){
+        return __($string);
+    }
+}
+
 ?>
