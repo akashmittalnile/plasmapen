@@ -8,10 +8,16 @@ return [
 		'User' => 2,
 	),
     'userStatus' => array(
-		'0' => 'Pending',
-		'1' => 'Active',
-		'2' => 'Inactive',
-		'3' => 'Rejected',
+		0 => 'Pending',
+		1 => 'Active',
+		2 => 'Inactive',
+		3 => 'Rejected',
+	),
+    'courseStatus' => array(
+		0 => 'Pending',
+		1 => 'Published',
+		2 => 'Unpublished',
+		3 => 'Rejected',
 	),
 ];
 

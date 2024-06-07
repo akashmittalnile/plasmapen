@@ -20,6 +20,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <a href="javascript:void(0)" id="create-course-submit" class="btn-bl">{{ translate('Save') }}</a>
+                        <button class="btn-bl d-none" id="wait" type="button">Please Wait <img style="padding: 0px;" width="30" src="{{ assets('assets/images/spinner4.svg') }}" alt=""></button>
                     </div>
                 </div>
             </div>
@@ -31,7 +32,7 @@
             <div class="col-md-12">
                 <div class="courses-form-section">
                     <div class="courses-form">
-                        <form action="" id="course-create-form">
+                        <form action="{{ route('admin.course.create.store') }}" id="course-create-form">@csrf
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -64,8 +65,11 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <h4>Prerequisite</h4>
-                                        <select name="prerequisite" id="" class="form-control">
+                                        <select name="prerequisite" id="" class="form-control text-capitalize">
                                             <option value="">Select Course</option>
+                                            @foreach($course as $val)
+                                            <option value="{{ $val->id }}">{{ $val->title ?? 'NA' }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -110,8 +114,7 @@
     };
 
     const showData = (event, id) => {
-        alert(id);
-        $("#show-"+id).text($(this).val());
+        $("#show-"+id).text($("#"+id).val());
     };
 
     $.validator.addMethod('filesize', function (value, element, param) {
@@ -167,11 +170,13 @@
                 processData: false,
                 beforeSend: function() {
                     $("#wait").removeClass('d-none')
-                    $("#login").addClass('d-none')
+                    $("#create-course-submit").addClass('d-none')
                 },
                 success: function(response) {
                     if (response.status) {
-                        window.location = response.route;
+                        $(".toastdesc").text(response.message).addClass('text-success');
+                        launch_toast();
+                        setInterval(() => {window.location = response.route}, 2000);
                         return false;
                     } else {
                         $(".toastdesc").text(response.message).addClass('text-danger');
@@ -184,7 +189,7 @@
                     console.error(jsonValue.message);
                 },
                 complete: function() {
-                    $("#login").removeClass('d-none')
+                    $("#create-course-submit").removeClass('d-none')
                     $("#wait").addClass('d-none')
                 },
             })

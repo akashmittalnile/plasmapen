@@ -49,6 +49,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         // course
         Route::get('/courses', [CourseController::class, 'list'])->name('course.list');
         Route::get('/course/create', [CourseController::class, 'createCourse'])->name('course.create');
+        Route::post('/course/create', [CourseController::class, 'courseCreate'])->name('course.create.store');
 
         // logout
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
