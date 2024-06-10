@@ -77,7 +77,7 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.logout') }}">
+                    <a class="nav-link" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#openLogoutModal">
                         <span class="menu-icon"><img src="{{ assets('assets/images/logout.svg') }}"></span>
                         <span class="menu-title">{{ translate('Logout') }}</span>
                     </a>

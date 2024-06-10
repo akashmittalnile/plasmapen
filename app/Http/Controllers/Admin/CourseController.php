@@ -36,7 +36,7 @@ class CourseController extends Controller
                                     <div class='lesson-text'>0 Lessons</div>
                                 </div>
                                 <div class='course-card-action-text'>
-                                    <a class='deletebtn' href=''>Delete</a>
+                                    <a class='deletebtn' data-id='".encrypt_decrypt('encrypt', $val->id)."' href='javascript:void(0)'>Delete</a>
                                     <a class='Editbtn' href=''>Edit</a>
                                     <a class='Addbtn' href=''>Add Lessons</a>
                                 </div>
@@ -104,6 +104,28 @@ class CourseController extends Controller
                 $course->save();
 
                 return response()->json(['status' => true, 'message' => 'Course Created Successfully.', 'route' => route("admin.course.list")]);
+            }
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    public function courseDelete(Request $request){
+        try{
+            $validator = Validator::make($request->all(), [
+                'id' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()->first()], 400);
+            } else {
+                $id = encrypt_decrypt('decrypt', $request->id);
+                $course = Course::where('id', $id)->first();
+                if(isset($course->image)){fileRemove("/uploads/course/image/$course->image");}
+                if(isset($course->video)){fileRemove("/uploads/course/video/$course->video");}
+                Course::where('id', $id)->delete();
+
+                return redirect()->back()->with('success', 'Course deleted successfully');
             }
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());

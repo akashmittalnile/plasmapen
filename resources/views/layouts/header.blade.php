@@ -99,7 +99,7 @@
                         <a href="javascript:void(0)" class="dropdown-item">
                             <i class="las la-user"></i> {{ translate('Profile') }}
                         </a>
-                        <a href="{{ route('admin.logout') }}" class="dropdown-item">
+                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#openLogoutModal" class="dropdown-item">
                             <i class="las la-sign-out-alt"></i> {{ translate('Logout') }}
                         </a>
                     </div>
@@ -112,18 +112,18 @@
         </button>
     </nav>
 </div>
-<!-- LOGOUT COMMUNITY -->
+<!-- LOGOUT -->
 <div class="modal lm-modal fade" id="openLogoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                <div class="jwj-modal-form text-center">
+                <div class="Plasma-modal-form">
                     <h2>{{ translate('Are You Sure?') }}</h2>
                     <p>{{ translate('You want to logout!') }}</p>
-                    <form action="{{ route('admin.logout') }}" method="get">
+                    <form action="{{ route('admin.course.delete') }}" method="get">
                         @csrf
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12 d-flex justify-content-center">
                                 <div class="form-group">
                                     <button class="cancel-btn" data-bs-dismiss="modal" aria-label="Close" type="button">{{ translate('Cancel') }}</button>
                                     <button type="submit" class="save-btn">{{ translate('Yes! Logout') }}</button>

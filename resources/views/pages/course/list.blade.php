@@ -57,9 +57,41 @@
         </div>
     </div>
 </div>
+
+<!-- Delete -->
+<div class="modal lm-modal fade" id="openDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="Plasma-modal-form">
+                    <h2>{{ translate('Are You Sure?') }}</h2>
+                    <p>{{ translate('You want to delete this course!') }}</p>
+                    <form action="{{ route('admin.logout') }}" method="get">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-12 d-flex justify-content-center">
+                                <input type="hidden" name="id" id="courseId">
+                                <div class="form-group">
+                                    <button class="cancel-btn" data-bs-dismiss="modal" aria-label="Close" type="button">{{ translate('Cancel') }}</button>
+                                    <button type="submit" class="save-btn">{{ translate('Yes! Delete') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 @push('js')
 <script>
+    $(document).on("click", ".deletebtn", function(){
+        $("courseId").val($(this).data('id'));
+        $("#openDeleteModal").modal("show");
+    });
+
     $(document).ready(function() {
         const getList = (page, search = null, status = null) => {
             $.ajax({
