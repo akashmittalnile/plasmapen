@@ -63,6 +63,7 @@
                 },
                 dataType: 'json',
                 success: function(result) {
+                    console.log(result);
                     if (result.status) {
                         let html = ``;
                         $("#appendData").html(result.data.html);
@@ -83,9 +84,14 @@
                             $("#appendPagination").append(paginate);
                         }
                     } else {
-                        let html = `<tr class="text-center">
-                                        <td colspan="8"> No record found</td>
-                                    </tr>`;
+                        let html = `<div class="d-flex justify-content-center align-items-center flex-column" style="height: 60vh">
+                                    <div>
+                                        <img width="200" src="{{ assets('assets/images/no-data.svg') }}" alt="no-data">
+                                    </div>
+                                    <div class="mt-3" style="font-size: 1rem;">
+                                        No Data Found
+                                    </div>
+                                </div>`;
                         $("#appendData").html(html);
                         $("#appendPagination").html('');
                     }

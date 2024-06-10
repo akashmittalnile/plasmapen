@@ -8,13 +8,30 @@
                     </a>
                 </li>
             </ul>
-            <div class="col-md-1" style="position: absolute; right: 8.5%">
+            <!-- <div class="col-md-1" style="position: absolute; right: 8.5%">
                 <select class="form-control changeLang">
                     <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>English</option>
                     <option value="es" {{ session()->get('locale') == 'es' ? 'selected' : '' }}>Spanish</option>
                 </select>
-            </div>
+            </div> -->
             <ul class="navbar-nav">
+                <li class="nav-item lang-dropdown dropdown">
+                    <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="lang-icon">
+                            <img src="{{ assets('assets/images/en.png') }}" alt="user">
+                            EN
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="javascript:void(0)" class="dropdown-item">
+                            English (EN)
+                        </a>
+                        <a href="{{ route('admin.logout') }}" class="dropdown-item">
+                            Spanish (ES)
+                        </a>
+                    </div>
+                </li>
                 <li class="nav-item noti-dropdown dropdown">
                     <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="noti-icon">
@@ -22,16 +39,62 @@
                             <span class="noti-badge"></span>
                         </div>
                     </a>
-
                     <div class="dropdown-menu">
+                        <div class="dropdown-header">
+                            <span class="heading">Notifications</span>
+                            <span class="count ng-binding" id="dd-notifications-count">3</span>
+                        </div>
+                        <div class="dropdown-body">
+                            <div class="notification-dropdown-box">
+                                <div class="notification-dropdown-item">
+                                    <div class="notification-dropdown-icon">
+                                        <a href="#"><img src="{{ assets('assets/images/notification.svg') }}"></a>
+                                    </div>
+                                    <div class="notification-dropdown-content">
+                                        <div class="notification-dropdown-descr">
+                                            <p>Your order has been confirmed. Thank you for shopping with us!</p>
+                                        </div>
+                                        <div class="notification-dropdown-date">Pushed on:
+                                            05-30-2024 11:37AM
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <div class="notification-dropdown-item">
+                                    <div class="notification-dropdown-icon">
+                                        <a href="#"><img src="{{ assets('assets/images/notification.svg') }}"></a>
+                                    </div>
+                                    <div class="notification-dropdown-content">
+                                        <div class="notification-dropdown-descr">
+                                            <p>Your order has been confirmed. Thank you for shopping with us!</p>
+                                        </div>
+                                        <div class="notification-dropdown-date">Pushed on:
+                                            05-30-2024 11:37AM
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="notification-dropdown-item">
+                                    <div class="notification-dropdown-icon">
+                                        <a href="#"><img src="{{ assets('assets/images/notification.svg') }}"></a>
+                                    </div>
+                                    <div class="notification-dropdown-content">
+                                        <div class="notification-dropdown-descr">
+                                            <p>Your order has been confirmed. Thank you for shopping with us!</p>
+                                        </div>
+                                        <div class="notification-dropdown-date">Pushed on:
+                                            05-30-2024 11:37AM
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </li>
                 <li class="nav-item profile-dropdown dropdown">
                     <a class="nav-link dropdown-toggle" id="profile" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="profile-pic"><img src="{{ assets('assets/images/user.png') }}" alt="user"> </div>
                     </a>
-
                     <div class="dropdown-menu">
                         <a href="javascript:void(0)" class="dropdown-item">
                             <i class="las la-user"></i> {{ translate('Profile') }}
@@ -41,9 +104,7 @@
                         </a>
                     </div>
                 </li>
-
             </ul>
-
             </ul>
         </div>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
@@ -51,7 +112,6 @@
         </button>
     </nav>
 </div>
-
 <!-- LOGOUT COMMUNITY -->
 <div class="modal lm-modal fade" id="openLogoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">

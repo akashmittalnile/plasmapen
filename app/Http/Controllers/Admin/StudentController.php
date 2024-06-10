@@ -77,6 +77,7 @@ class StudentController extends Controller
                     </div>";
                 }
 
+                if($data->total() < 1) return errorMsg("No users found");
                 $response = array(
                     'currentPage' => $data->currentPage(),
                     'lastPage' => $data->lastPage(),

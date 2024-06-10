@@ -1,9 +1,7 @@
 @extends('layouts.app')
-
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ assets('assets/css/course.css') }}">
 @endpush
-
 @section('content')
 <div class="body-main-content">
     <div class="plas-filter-section">
@@ -36,14 +34,11 @@
                         </ul>
                     </div>
                 </div>
-
                 <div class="col-md-3">
                     <div class="form-group">
                         <a href="coupon.html" class="btn-pi">{{ translate('Manage Coupon') }}</a>
                     </div>
                 </div>
-
-
                 <div class="col-md-3">
                     <div class="form-group">
                         <a href="{{ route('admin.course.create') }}" class="btn-bl">{{ translate('Create New Course') }}</a>
@@ -52,23 +47,17 @@
             </div>
         </div>
     </div>
-
     <div class="course-section">
-
         <div class="row" id="appendData">
             
         </div>
-
         <div class="plas-table-pagination">
             <ul class="plas-pagination" id="appendPagination">
-
             </ul>
         </div>
-
     </div>
 </div>
 @endsection
-
 @push('js')
 <script>
     $(document).ready(function() {
@@ -101,9 +90,12 @@
                             $("#appendPagination").append(paginate);
                         }
                     } else {
-                        let html = `<div class="d-flex justify-content-center align-items-center flex-column">
+                        let html = `<div class="d-flex justify-content-center align-items-center flex-column" style="height: 60vh">
                                     <div>
-                                        <img width="350" src="{{ assets('assets/images/no-data.svg') }}" alt="no-data">
+                                        <img width="200" src="{{ assets('assets/images/no-data.svg') }}" alt="no-data">
+                                    </div>
+                                    <div class="mt-3" style="font-size: 1rem;">
+                                        No Data Found
                                     </div>
                                 </div>`;
                         $("#appendData").html(html);

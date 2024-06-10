@@ -35,6 +35,11 @@ class CourseController extends Controller
                                     <div class='coursefee-text'>$$val->course_fee</div>
                                     <div class='lesson-text'>0 Lessons</div>
                                 </div>
+                                <div class='course-card-action-text'>
+                                    <a class='deletebtn' href=''>Delete</a>
+                                    <a class='Editbtn' href=''>Edit</a>
+                                    <a class='Addbtn' href=''>Add Lessons</a>
+                                </div>
                             </div>
                         </div>
                     </div>";
