@@ -51,6 +51,7 @@
     "Cancel": "Cancelar",
     "You want to logout!": "¡Quieres cerrar sesión!",
     "You want to delete this course!": "¡Quieres eliminar este curso!",
+    "You want to delete this lesson!": "¡Quieres eliminar esta lección!",
     "Yes! Logout": "¡Sí! Cerrar sesión",
     "Yes! Delete": "¡Sí! Borrar",
     "Profile": "Perfil",
@@ -73,6 +74,10 @@
     "Mark as active": "Marcar como activo",
     "Courses": "Cursos",
     "Products": "Productos",
+    "Course Lessons": "Lecciones del curso",
+    "Add Lesson": "Agregar lección",
+    "Add": "Agregar",
+    "Manage Course Lessons": "Administrar lecciones del curso",
 
     "Manage Coupon": "Administrar cupón",
     "Save": "Ahorrar",

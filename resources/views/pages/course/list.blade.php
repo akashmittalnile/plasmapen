@@ -21,7 +21,7 @@
                         <ul class="statusradio-list">
                             <li>
                                 <div class="statusradio">
-                                    <input type="radio" name="status" value="1" id="Published">
+                                    <input type="radio" name="status" value="1" id="Published" checked>
                                     <label for="Published">Published</label>
                                 </div>
                             </li>
@@ -88,7 +88,7 @@
 @push('js')
 <script>
     $(document).on("click", ".deletebtn", function(){
-        $("courseId").val($(this).data('id'));
+        $("#courseId").val($(this).data('id'));
         $("#openDeleteModal").modal("show");
     });
 

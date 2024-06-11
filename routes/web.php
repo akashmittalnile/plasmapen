@@ -51,6 +51,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/course/create', [CourseController::class, 'createCourse'])->name('course.create');
         Route::post('/course/create', [CourseController::class, 'courseCreate'])->name('course.create.store');
         Route::post('/course/delete', [CourseController::class, 'courseDelete'])->name('course.delete');
+        Route::get('/course/lesson/{courseId}', [CourseController::class, 'courseLessonEmpty'])->name('course.lesson.empty');
+        Route::get('/course/lesson/{courseId}/{lessonId}', [CourseController::class, 'courseLessonAll'])->name('course.lesson.all');
+
+        Route::post('/courses/lesson/save', [CourseController::class, 'saveCourseLesson'])->name('course.lesson.save');
+        Route::post('/courses/lesson/delete', [CourseController::class, 'deleteLesson'])->name('course.lesson.delete');
+
+        Route::post('/courses/lesson/section/create', [CourseController::class, 'lessonSectionCreate'])->name('course.lesson.section.create');
 
         // logout
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

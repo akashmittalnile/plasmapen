@@ -107,4 +107,11 @@ if (!function_exists('translate')) {
     }
 }
 
+if (!function_exists('array_has_dupes')) {
+    function array_has_dupes($array)
+    {
+        return count($array) !== count(array_unique($array));
+    }
+}
+
 ?>

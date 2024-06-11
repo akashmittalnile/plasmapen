@@ -29,7 +29,7 @@ class AuthController extends Controller
                 'password' => 'required'
             ]);
             if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
+                return errorMsg($validator->errors()->first());
             } else {
                 $user = User::where("email", $request->email)->first();
                 if (isset($user->id)) {

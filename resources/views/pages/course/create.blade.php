@@ -188,12 +188,10 @@
                         return false;
                     }
                 },
-
                 error: function(data, textStatus, errorThrown) {
                     jsonValue = jQuery.parseJSON(data.responseText);
                     console.error(jsonValue.message);
                 },
-
                 complete: function() {
                     $("#create-course-submit").removeClass('d-none')
                     $("#wait").addClass('d-none')
