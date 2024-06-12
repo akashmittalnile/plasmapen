@@ -24,10 +24,10 @@
                         </div>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="javascript:void(0)" class="dropdown-item">
+                        <a href="{{ route('changeLang', ) }}?lang=en" class="dropdown-item">
                             English (EN)
                         </a>
-                        <a href="{{ route('admin.logout') }}" class="dropdown-item">
+                        <a href="{{ route('changeLang', ) }}?lang=es" class="dropdown-item">
                             Spanish (ES)
                         </a>
                     </div>

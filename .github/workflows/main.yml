@@ -1,0 +1,30 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Deploy Plasma Pen on Nile Tech Innovation 
+
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v2.3.2
+
+      - name: Install dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Optimize app
+        run: php artisan optimize:clear
+
+      - name: Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ftp.niletechinnovations.com
+          username: plasmapen@niletechinnovations.com
+          password: gRa+OVth_gm8
+          local-dir: "./"
+          server-dir: "/"
+          exclude: ".git*, .github*, node_modules*, vendor*"

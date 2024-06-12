@@ -35,10 +35,12 @@
                         <div class="chapter-list">
                             @forelse($lessons as $key => $item)
                             <div class="lesson-item">
-                                <div class="lesson-item-inner">
-                                    <div class="lesson-icon"><img src="{{ assets('assets/images/book-square1.svg') }}"></div>
-                                    <div class="lesson-text1">{{$item->lesson ?? 'NA'}}</div>
-                                </div>
+                                <a href="{{ route('admin.course.lesson.all', ['courseId' => encrypt_decrypt('encrypt', $courseId), 'lessonId' => encrypt_decrypt('encrypt', $item->id)]) }}">
+                                    <div class="lesson-item-inner">
+                                        <div class="lesson-icon"><img src="{{ assets('assets/images/book-square1.svg') }}"></div>
+                                        <div class="lesson-text1">{{$item->lesson ?? 'NA'}}</div>
+                                    </div>
+                                </a>
                                 <a href="javascript:void(0)" class="deleteLessonBtn" data-id="{{ encrypt_decrypt('encrypt', $item->id) }}"><img src="{{ assets('assets/images/close-circle.svg') }}"></a>
                             </div>
                             @empty
@@ -65,362 +67,151 @@
                     <div class="add-Course-form">
 
                         @forelse($datas as $key => $data)
-                            @if($data->type == 'video')
-                            <div class="add-course-form-item">
-                                <div class="add-course-heading">
-                                    <div class="plas-course-text">
-                                        <h3>Video</h3>
-                                    </div>
-                                    <div class="add-course-action">
-                                        <a href="javascript:void(0)" class="btndelete"> Delete Section</a>
-                                    </div>
+                        @if($data->type == 'video')
+                        <div class="add-course-form-item">
+                            <div class="add-course-heading">
+                                <div class="plas-course-text">
+                                    <h3>Video</h3>
                                 </div>
-                                <div class="add-course-content-section add-course-form">
-                                    <div class="row">
-                                        <div class="col-md-6">
+                                <div class="add-course-action">
+                                    <a href="javascript:void(0)" class="btndelete"> Delete Section</a>
+                                </div>
+                            </div>
+                            <div class="add-course-content-section add-course-form">
+                                <div class="row">
+                                    <div class="col-md-6">
 
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <h4>Video Title </h4>
+                                            <input type="text" class="form-control" name="video_title" value="{{ $data->title ?? 'NA' }}" id="">
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <h4>Video Title </h4>
-                                                <input type="text" class="form-control" name="video_title" value="{{ $data->title ?? 'NA' }}" id="">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <h4>Upload Video </h4>
-                                                <input type="file" data-count="{{$data->id}}" id="video-file-{{$data->id}}" onchange="previewVideo(event)" required accept="video/mp4" class="form-control" name="video_file">
-                                                <div class="Uploaded-group upload-file-item-{{$data->id}} @if(!isset($data->details)) d-none @endif">
-                                                    <h4>Uploaded Video</h4>
-                                                    <div class="upload-file-item0">
-                                                        <div class="upload-file-media">
-                                                            <video controls class="video-preview-{{$data->id}} @if(!isset($data->details)) d-none @endif">
-                                                                <source src="{{ assets('uploads/course/lesson/video/'.$data->details) }}" type="video/mp4">
-                                                                Your browser does not support the video tag.
-                                                            </video>
-                                                        </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <h4>Upload Video </h4>
+                                            <input type="file" data-count="{{$data->id}}" id="video-file-{{$data->id}}" onchange="previewVideo(event)" required accept="video/mp4" class="form-control" name="video_file">
+                                            <div class="Uploaded-group upload-file-item-{{$data->id}} @if(!isset($data->details)) d-none @endif">
+                                                <h4>Uploaded Video</h4>
+                                                <div class="upload-file-item0">
+                                                    <div class="upload-file-media">
+                                                        <video controls class="video-preview-{{$data->id}} @if(!isset($data->details)) d-none @endif">
+                                                            <source src="{{ assets('uploads/course/lesson/video/'.$data->details) }}" type="video/mp4">
+                                                            Your browser does not support the video tag.
+                                                        </video>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <h4>Video Decription</h4>
-                                                <textarea type="text" class="form-control" name="video_description" placeholder="Enter description">{{ $data->description ?? 'NA' }}</textarea>
-                                            </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <h4>Video Decription</h4>
+                                            <textarea type="text" class="form-control" name="video_description" placeholder="Enter description">{{ $data->description ?? 'NA' }}</textarea>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <button class="updatebtn">Update</button>
-                                            </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <button class="updatebtn">Update</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            @elseif($data->type == 'pdf')
-                            <div class="add-course-form-item">
-                                <div class="add-course-heading">
-                                    <div class="plas-course-text">
-                                        <h3>PDF</h3>
-                                    </div>
-                                    <div class="add-course-action">
-                                        <a href="javascript:void(0)" class="btndelete"> Delete Section</a>
-                                    </div>
+                        </div>
+                        @elseif($data->type == 'pdf')
+                        <div class="add-course-form-item">
+                            <div class="add-course-heading">
+                                <div class="plas-course-text">
+                                    <h3>PDF</h3>
                                 </div>
-                                <div class="add-course-content-section add-course-form">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <h4>PDF Title </h4>
-                                                <input type="text" class="form-control" name="pdf_title" value="{{ $data->title ?? 'NA' }}" id="PDFtitle">
-                                            </div>
+                                <div class="add-course-action">
+                                    <a href="javascript:void(0)" class="btndelete"> Delete Section</a>
+                                </div>
+                            </div>
+                            <div class="add-course-content-section add-course-form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <h4>PDF Title </h4>
+                                            <input type="text" class="form-control" name="pdf_title" value="{{ $data->title ?? 'NA' }}" id="PDFtitle">
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <h4>Upload PDF </h4>
-                                                <input type="file" data-count="{{$data->id}}" id="pdf-file-{{$data->id}}" onchange="previewPdf(event)" required class="form-control" name="pdf_file[{{$data->id}}]" accept="application/pdf">
-                                                <div class="Uploaded-group upload-pdf-item-{{$data->id}} @if(!isset($data->details)) d-none @endif">
-                                                    <h4>Uploaded PDF</h4>
-                                                    <div class="upload-file-item0">
-                                                        <div class="upload-file-media">
-                                                            <a id="view-pdf-{{$data->id}}" href="{{ assets('uploads/course/lesson/pdf/'.$data->details) }}" target="_black" class="@if(!isset($data->details)) d-none @endif pdf-preview-{{$data->id}}">
-                                                                <img src="{{ assets('assets/images/document-text.svg') }}"/>
-                                                            </a>
-                                                        </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <h4>Upload PDF </h4>
+                                            <input type="file" data-count="{{$data->id}}" id="pdf-file-{{$data->id}}" onchange="previewPdf(event)" required class="form-control" name="pdf_file[{{$data->id}}]" accept="application/pdf">
+                                            <div class="Uploaded-group upload-pdf-item-{{$data->id}} @if(!isset($data->details)) d-none @endif">
+                                                <h4>Uploaded PDF</h4>
+                                                <div class="upload-file-item0">
+                                                    <div class="upload-file-media">
+                                                        <a id="view-pdf-{{$data->id}}" href="{{ assets('uploads/course/lesson/pdf/'.$data->details) }}" target="_black" class="@if(!isset($data->details)) d-none @endif pdf-preview-{{$data->id}}">
+                                                            <img src="{{ assets('assets/images/document-text.svg') }}" />
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <h4>PDF Decription</h4>
-                                                <textarea type="text" class="form-control" name="pdf_description" placeholder="PDF Decription" data-gramm="false" wt-ignore-input="true">{{ $data->description ?? 'NA' }}</textarea>
-                                            </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <h4>PDF Decription</h4>
+                                            <textarea type="text" class="form-control" name="pdf_description" placeholder="PDF Decription" data-gramm="false" wt-ignore-input="true">{{ $data->description ?? 'NA' }}</textarea>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <button class="updatebtn">Update</button>
-                                            </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <button class="updatebtn">Update</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            @elseif($data->type == 'quiz')
-                            <div class="add-course-form-item">
-                                <div class="add-course-heading">
-                                    <div class="plas-course-text">
-                                        <h3>Quiz</h3>
-                                    </div>
-                                    <div class="add-course-action">
-                                        <a href="" class="btnAddQuestion"> Add Question</a>
-                                        <a href="" class="btndelete"> Delete Section</a>
+                        </div>
+                        @elseif($data->type == 'quiz')
+                        <div class="add-course-form-item">
+                            <div class="add-course-heading">
+                                <div class="plas-course-text">
+                                    <h3>Quiz</h3>
+                                </div>
+                                <div class="plas-questionnaire-ans mb-0" style="padding: 5px;">
+                                    <div class="plas-questionnaire-text">
+                                        <input type="number" class="form-control" placeholder="Enter passing percentage" name="question_marks" value="{{ $data->passing ?? 33 }}" required>
                                     </div>
                                 </div>
-
-                                <div class="add-course-content-section">
-                                    <div class="plas-edit-questionnaire-box">
-                                        <div class="plas-label">
-                                            <div class="plas-badge">Q</div>
-                                        </div>
-                                        <div class="plas-questionnaire-content">
-                                            <input type="text" class="form-control" placeholder="Enter Question Title" name="" value="I am clear and focused on my purpose and have a big goal that keeps me focused.">
-                                        </div>
-                                    </div>
-
-                                    <div class="lp-answer-option-list">
-
-                                        <div class="plas-answer-box">
-                                            <div class="plas-questionnaire-ans">
-                                                <div class="plas-ans-label">
-                                                    <div class="a-badge">A</div>
-                                                </div>
-                                                <div class="plas-questionnaire-text">
-                                                    <input type="text" class="form-control" placeholder="Type Here..." name="" value="02">
-                                                </div>
-                                                <div class="plas-answer-action-item">
-                                                    <div class="plas-btn-info">
-                                                        <button class="update-btn">Update</button>
-                                                        <button class="remove-btn">Remove</button>
-                                                    </div>
-                                                    <div class="plasradio1">
-                                                        <input type="radio" name="quiz1" id="quiz1">
-                                                        <label for="quiz1">&nbsp;</label>
-                                                    </div>
-                                                    <div class="plas-add-questionnaire-tooltip">
-                                                        <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
-                                                            <img src="images/info-icon.svg">
-                                                        </div>
-                                                        <script>
-                                                            $(function() {
-                                                                $('[data-bs-toggle="tooltip"]').tooltip();
-                                                            });
-                                                        </script>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="plas-answer-box">
-                                            <div class="plas-questionnaire-ans">
-                                                <div class="plas-ans-label">
-                                                    <div class="a-badge">B</div>
-                                                </div>
-                                                <div class="plas-questionnaire-text">
-                                                    <input type="text" class="form-control" placeholder="Type Here..." name="" value="02">
-                                                </div>
-                                                <div class="plas-answer-action-item">
-                                                    <div class="plas-btn-info">
-                                                        <button class="update-btn">Update</button>
-                                                        <button class="remove-btn">Remove</button>
-                                                    </div>
-                                                    <div class="plasradio1">
-                                                        <input type="radio" name="quiz1" id="quiz2">
-                                                        <label for="quiz2">&nbsp;</label>
-                                                    </div>
-                                                    <div class="plas-add-questionnaire-tooltip">
-                                                        <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
-                                                            <img src="images/info-icon.svg">
-                                                        </div>
-                                                        <script>
-                                                            $(function() {
-                                                                $('[data-bs-toggle="tooltip"]').tooltip();
-                                                            });
-                                                        </script>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="plas-answer-box">
-                                            <div class="plas-questionnaire-ans">
-                                                <div class="plas-ans-label">
-                                                    <div class="a-badge">C</div>
-                                                </div>
-                                                <div class="plas-questionnaire-text">
-                                                    <input type="text" class="form-control" placeholder="Type Here..." name="" value="02">
-                                                </div>
-                                                <div class="plas-answer-action-item">
-                                                    <div class="plas-btn-info">
-                                                        <button class="update-btn">Update</button>
-                                                        <button class="remove-btn">Remove</button>
-                                                    </div>
-                                                    <div class="plasradio1">
-                                                        <input type="radio" name="quiz1" id="quiz3">
-                                                        <label for="quiz3">&nbsp;</label>
-                                                    </div>
-                                                    <div class="plas-add-questionnaire-tooltip">
-                                                        <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
-                                                            <img src="images/info-icon.svg">
-                                                        </div>
-                                                        <script>
-                                                            $(function() {
-                                                                $('[data-bs-toggle="tooltip"]').tooltip();
-                                                            });
-                                                        </script>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="plas-answer-box">
-                                            <div class="plas-questionnaire-ans">
-                                                <div class="plas-ans-label">
-                                                    <div class="a-badge">D</div>
-                                                </div>
-                                                <div class="plas-questionnaire-text">
-                                                    <input type="text" class="form-control" placeholder="Type Here..." name="" value="02">
-                                                </div>
-                                                <div class="plas-answer-action-item">
-                                                    <div class="plas-btn-info">
-                                                        <button class="update-btn">Update</button>
-                                                        <button class="remove-btn">Remove</button>
-                                                    </div>
-                                                    <div class="plasradio1">
-                                                        <input type="radio" name="quiz1" id="quiz4">
-                                                        <label for="quiz4">&nbsp;</label>
-                                                    </div>
-                                                    <div class="plas-add-questionnaire-tooltip">
-                                                        <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
-                                                            <img src="images/info-icon.svg">
-                                                        </div>
-                                                        <script>
-                                                            $(function() {
-                                                                $('[data-bs-toggle="tooltip"]').tooltip();
-                                                            });
-                                                        </script>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="add-foot-course-action">
-                                            <a class="add-answer" href="">Add option</a>
-                                        </div>
-                                    </div>
+                                <div class="add-course-action">
+                                    <a href="" class="btnAddQuestion"> Add Question</a>
+                                    <a href="" class="btndelete"> Delete Section</a>
                                 </div>
                             </div>
-                            @elseif($data->type == 'assignment')
-                            <div class="add-course-form-item">
-                                <div class="add-course-heading">
-                                    <div class="plas-course-text">
-                                        <h3>Assignment</h3>
+
+                            <div class="add-course-content-section">
+                                @foreach ($data->quiz as $quiz)
+                                <div class="plas-edit-questionnaire-box">
+                                    <div class="plas-label">
+                                        <div class="plas-badge">Q</div>
                                     </div>
-                                    <div class="add-course-action">
-                                        <a href="" class="btndelete"> Delete Section</a>
-                                    </div>
-                                </div>
-
-                                <div class="add-course-content-section">
-                                    <div class="assignment-option-list">
-                                        <div class="assignment-box-form-group">
-                                            <div class="assignment-box-text">
-                                                <input type="text" class="form-control" placeholder="Paste Google Drive Link To Receive Assignment From Student " name="">
-                                                <span class="assignment-box-logo"><img src="images/drive.svg"></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="assignment-box-form-group">
-                                            <div class="assignment-box-text">
-                                                <input type="text" class="form-control" placeholder="Paste Dropbox Link To Receive Assignment From Student " name="">
-                                                <span class="assignment-box-logo"><img src="images/dropbox.svg"></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="assignment-box-form-group">
-                                            <div class="assignment-box-text">
-                                                <input type="text" class="form-control" placeholder="Paste OneDrive Link To Receive Assignment From Student " name="">
-                                                <span class="assignment-box-logo"><img src="images/onedrive.svg"></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="assignment-box-form-group">
-                                            <div class="assignment-box-text">
-                                                <input type="text" class="form-control" placeholder="Paste Drive Link To Receive Assignment From Student " name="">
-                                                <span class="assignment-box-logo"><img src="images/link-icon.svg"></span>
-                                            </div>
-                                        </div>
-
+                                    <div class="plas-questionnaire-content">
+                                        <input type="text" class="form-control" placeholder="Enter question" name="question" value="{{ $quiz->title ?? 'NA' }}">
                                     </div>
                                 </div>
-                            </div>
-                            @elseif($data->type == 'survey')
-                            <div class="add-course-form-item">
-                                <div class="add-course-heading">
-                                    <div class="plas-course-text">
-                                        <h3>Survey</h3>
-                                        <div class="heading-checkbox-list">
-                                            <ul>
-                                                <li>
-                                                    <div class="plascheckbox">
-                                                        <input type="checkbox" id="Optional" name="">
-                                                        <label for="Optional">
-                                                            Optional
-                                                        </label>
-                                                    </div>
-                                                </li>
 
-                                                <li>
-                                                    <div class="plascheckbox">
-                                                        <input type="checkbox" id="Mandatory" name="">
-                                                        <label for="Mandatory">
-                                                            Mandatory
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="add-course-action">
-                                        <a href="" class="btndelete"> Delete Section</a>
-                                    </div>
-                                </div>
-                                <div class="add-course-content-section">
-                                    <div class="plas-edit-questionnaire-box">
-                                        <div class="plas-label">
-                                            <div class="plas-badge">Q</div>
-                                        </div>
-                                        <div class="plas-questionnaire-content">
-                                            <input type="text" class="form-control" placeholder="Enter Question Title" name="" value="How long does a CoolJet Cold Plasma treatment typically last?">
-                                        </div>
-                                    </div>
-
-                                    <div class="plas-answer-option-list">
+                                <div class="lp-answer-option-list">
+                                    <?php $s_no = 'A'; ?>
+                                    @foreach ($quiz->quizOption as $option)
+                                    <div class="plas-answer-box">
                                         <div class="plas-questionnaire-ans">
                                             <div class="plas-ans-label">
-                                                <div class="a-badge">A</div>
+                                                <div class="a-badge">{{ $s_no }}</div>
                                             </div>
                                             <div class="plas-questionnaire-text">
-                                                <input type="text" class="form-control" placeholder="Type Here..." name="" value="5 minutes">
+                                                <input type="text" class="form-control" placeholder="Type Here..." name="" value="{{ $option->answer ?? 'NA' }}">
                                             </div>
                                             <div class="plas-answer-action-item">
                                                 <div class="plas-btn-info">
@@ -428,99 +219,12 @@
                                                     <button class="remove-btn">Remove</button>
                                                 </div>
                                                 <div class="plasradio1">
-                                                    <input type="radio" name="quiz1" id="quiz1">
+                                                    <input type="radio" @if($option->is_correct) checked @endif name="quiz1" id="quiz1">
                                                     <label for="quiz1">&nbsp;</label>
                                                 </div>
                                                 <div class="plas-add-questionnaire-tooltip">
                                                     <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
-                                                        <img src="images/info-icon.svg">
-                                                    </div>
-                                                    <script>
-                                                        $(function() {
-                                                            $('[data-bs-toggle="tooltip"]').tooltip();
-                                                        });
-                                                    </script>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="plas-questionnaire-ans">
-                                            <div class="plas-ans-label">
-                                                <div class="a-badge">B</div>
-                                            </div>
-                                            <div class="plas-questionnaire-text">
-                                                <input type="text" class="form-control" placeholder="Type Here..." name="" value="15 minutes">
-                                            </div>
-                                            <div class="plas-answer-action-item">
-                                                <div class="plas-btn-info">
-                                                    <button class="update-btn">Update</button>
-                                                    <button class="remove-btn">Remove</button>
-                                                </div>
-                                                <div class="plasradio1">
-                                                    <input type="radio" name="quiz1" id="quiz2">
-                                                    <label for="quiz2">&nbsp;</label>
-                                                </div>
-                                                <div class="plas-add-questionnaire-tooltip">
-                                                    <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
-                                                        <img src="images/info-icon.svg">
-                                                    </div>
-                                                    <script>
-                                                        $(function() {
-                                                            $('[data-bs-toggle="tooltip"]').tooltip();
-                                                        });
-                                                    </script>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="plas-questionnaire-ans">
-                                            <div class="plas-ans-label">
-                                                <div class="a-badge">C</div>
-                                            </div>
-                                            <div class="plas-questionnaire-text">
-                                                <input type="text" class="form-control" placeholder="Type Here..." name="" value="30 minutes">
-                                            </div>
-                                            <div class="plas-answer-action-item">
-                                                <div class="plas-btn-info">
-                                                    <button class="update-btn">Update</button>
-                                                    <button class="remove-btn">Remove</button>
-                                                </div>
-                                                <div class="plasradio1">
-                                                    <input type="radio" name="quiz1" id="quiz3">
-                                                    <label for="quiz3">&nbsp;</label>
-                                                </div>
-                                                <div class="plas-add-questionnaire-tooltip">
-                                                    <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
-                                                        <img src="images/info-icon.svg">
-                                                    </div>
-                                                    <script>
-                                                        $(function() {
-                                                            $('[data-bs-toggle="tooltip"]').tooltip();
-                                                        });
-                                                    </script>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="plas-questionnaire-ans">
-                                            <div class="plas-ans-label">
-                                                <div class="a-badge">D</div>
-                                            </div>
-                                            <div class="plas-questionnaire-text">
-                                                <input type="text" class="form-control" placeholder="Type Here..." name="" value="60 minutes">
-                                            </div>
-                                            <div class="plas-answer-action-item">
-                                                <div class="plas-btn-info">
-                                                    <button class="update-btn">Update</button>
-                                                    <button class="remove-btn">Remove</button>
-                                                </div>
-                                                <div class="plasradio1">
-                                                    <input type="radio" name="quiz1" id="quiz4">
-                                                    <label for="quiz4">&nbsp;</label>
-                                                </div>
-                                                <div class="plas-add-questionnaire-tooltip">
-                                                    <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
-                                                        <img src="images/info-icon.svg">
+                                                        <img src="{{ assets('assets/images/info-icon.svg') }}">
                                                     </div>
                                                     <script>
                                                         $(function() {
@@ -531,19 +235,230 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="add-foot-course-action">
-                                        <a class="add-answer" href="">Add more Question</a>
-                                    </div>
+                                    <?php $s_no++; ?>
+                                    @endforeach
+                                    
+                                    <a class="add-answer mt-3" href="">Add option</a>
+                                    
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @elseif($data->type == 'assignment')
+                        <div class="add-course-form-item">
+                            <div class="add-course-heading">
+                                <div class="plas-course-text">
+                                    <h3>Assignment</h3>
+                                </div>
+                                <div class="add-course-action">
+                                    <a href="" class="btndelete"> Delete Section</a>
                                 </div>
                             </div>
-                            @endif
+
+                            <div class="add-course-content-section">
+                                <div class="assignment-option-list">
+                                    <div class="assignment-box-form-group">
+                                        <div class="assignment-box-text">
+                                            <input type="text" class="form-control" placeholder="Paste Google Drive Link To Receive Assignment From Student " name="">
+                                            <span class="assignment-box-logo"><img src="images/drive.svg"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="assignment-box-form-group">
+                                        <div class="assignment-box-text">
+                                            <input type="text" class="form-control" placeholder="Paste Dropbox Link To Receive Assignment From Student " name="">
+                                            <span class="assignment-box-logo"><img src="images/dropbox.svg"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="assignment-box-form-group">
+                                        <div class="assignment-box-text">
+                                            <input type="text" class="form-control" placeholder="Paste OneDrive Link To Receive Assignment From Student " name="">
+                                            <span class="assignment-box-logo"><img src="images/onedrive.svg"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="assignment-box-form-group">
+                                        <div class="assignment-box-text">
+                                            <input type="text" class="form-control" placeholder="Paste Drive Link To Receive Assignment From Student " name="">
+                                            <span class="assignment-box-logo"><img src="images/link-icon.svg"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        @elseif($data->type == 'survey')
+                        <div class="add-course-form-item">
+                            <div class="add-course-heading">
+                                <div class="plas-course-text">
+                                    <h3>Survey</h3>
+                                    <div class="heading-checkbox-list">
+                                        <ul>
+                                            <li>
+                                                <div class="plascheckbox">
+                                                    <input type="checkbox" id="Optional" name="">
+                                                    <label for="Optional">
+                                                        Optional
+                                                    </label>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="plascheckbox">
+                                                    <input type="checkbox" id="Mandatory" name="">
+                                                    <label for="Mandatory">
+                                                        Mandatory
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="add-course-action">
+                                    <a href="" class="btndelete"> Delete Section</a>
+                                </div>
+                            </div>
+                            <div class="add-course-content-section">
+                                <div class="plas-edit-questionnaire-box">
+                                    <div class="plas-label">
+                                        <div class="plas-badge">Q</div>
+                                    </div>
+                                    <div class="plas-questionnaire-content">
+                                        <input type="text" class="form-control" placeholder="Enter Question Title" name="" value="How long does a CoolJet Cold Plasma treatment typically last?">
+                                    </div>
+                                </div>
+
+                                <div class="plas-answer-option-list">
+                                    <div class="plas-questionnaire-ans">
+                                        <div class="plas-ans-label">
+                                            <div class="a-badge">A</div>
+                                        </div>
+                                        <div class="plas-questionnaire-text">
+                                            <input type="text" class="form-control" placeholder="Type Here..." name="" value="5 minutes">
+                                        </div>
+                                        <div class="plas-answer-action-item">
+                                            <div class="plas-btn-info">
+                                                <button class="update-btn">Update</button>
+                                                <button class="remove-btn">Remove</button>
+                                            </div>
+                                            <div class="plasradio1">
+                                                <input type="radio" name="quiz1" id="quiz1">
+                                                <label for="quiz1">&nbsp;</label>
+                                            </div>
+                                            <div class="plas-add-questionnaire-tooltip">
+                                                <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
+                                                    <img src="images/info-icon.svg">
+                                                </div>
+                                                <script>
+                                                    $(function() {
+                                                        $('[data-bs-toggle="tooltip"]').tooltip();
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="plas-questionnaire-ans">
+                                        <div class="plas-ans-label">
+                                            <div class="a-badge">B</div>
+                                        </div>
+                                        <div class="plas-questionnaire-text">
+                                            <input type="text" class="form-control" placeholder="Type Here..." name="" value="15 minutes">
+                                        </div>
+                                        <div class="plas-answer-action-item">
+                                            <div class="plas-btn-info">
+                                                <button class="update-btn">Update</button>
+                                                <button class="remove-btn">Remove</button>
+                                            </div>
+                                            <div class="plasradio1">
+                                                <input type="radio" name="quiz1" id="quiz2">
+                                                <label for="quiz2">&nbsp;</label>
+                                            </div>
+                                            <div class="plas-add-questionnaire-tooltip">
+                                                <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
+                                                    <img src="images/info-icon.svg">
+                                                </div>
+                                                <script>
+                                                    $(function() {
+                                                        $('[data-bs-toggle="tooltip"]').tooltip();
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="plas-questionnaire-ans">
+                                        <div class="plas-ans-label">
+                                            <div class="a-badge">C</div>
+                                        </div>
+                                        <div class="plas-questionnaire-text">
+                                            <input type="text" class="form-control" placeholder="Type Here..." name="" value="30 minutes">
+                                        </div>
+                                        <div class="plas-answer-action-item">
+                                            <div class="plas-btn-info">
+                                                <button class="update-btn">Update</button>
+                                                <button class="remove-btn">Remove</button>
+                                            </div>
+                                            <div class="plasradio1">
+                                                <input type="radio" name="quiz1" id="quiz3">
+                                                <label for="quiz3">&nbsp;</label>
+                                            </div>
+                                            <div class="plas-add-questionnaire-tooltip">
+                                                <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
+                                                    <img src="images/info-icon.svg">
+                                                </div>
+                                                <script>
+                                                    $(function() {
+                                                        $('[data-bs-toggle="tooltip"]').tooltip();
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="plas-questionnaire-ans">
+                                        <div class="plas-ans-label">
+                                            <div class="a-badge">D</div>
+                                        </div>
+                                        <div class="plas-questionnaire-text">
+                                            <input type="text" class="form-control" placeholder="Type Here..." name="" value="60 minutes">
+                                        </div>
+                                        <div class="plas-answer-action-item">
+                                            <div class="plas-btn-info">
+                                                <button class="update-btn">Update</button>
+                                                <button class="remove-btn">Remove</button>
+                                            </div>
+                                            <div class="plasradio1">
+                                                <input type="radio" name="quiz1" id="quiz4">
+                                                <label for="quiz4">&nbsp;</label>
+                                            </div>
+                                            <div class="plas-add-questionnaire-tooltip">
+                                                <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
+                                                    <img src="images/info-icon.svg">
+                                                </div>
+                                                <script>
+                                                    $(function() {
+                                                        $('[data-bs-toggle="tooltip"]').tooltip();
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add-foot-course-action">
+                                    <a class="add-answer" href="">Add more Question</a>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                         @empty
                         @endforelse
 
                         @if(count($lessons)>0)
                         <form action="{{ route('admin.course.lesson.section.create') }}" method="POST" class="my-3" id="lesson-section-form"> @csrf
                             <div id="add-lesson-section">
-                                
+
                             </div>
                             <input type="hidden" name="courseId" value="{{ $courseId }}" />
                             <input type="hidden" name="lessonId" value="{{ $lessonId }}" />
