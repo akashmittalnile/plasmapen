@@ -275,31 +275,31 @@ class CourseController extends Controller
                                 $ChapterQuiz->description = null;
                                 $ChapterQuiz->details = null;
                                 $ChapterQuiz->prerequisite = $request->prerequisite[$keyAssignment] ?? 0;
-                                $ChapterQuiz->course_chapter_id = $request->chapter_id;
+                                $ChapterQuiz->course_lesson_id = $request->chapter_id;
                                 $ChapterQuiz->save();
                             }
                         }
                     } else if ($type[$key] == 'quiz') {
-                        if (count($request->questions) > 0) {
-                            foreach ($request->questions as $keyQ => $valueQ) {
-                                $Step = new CourseLessonStep;
-                                $Step->title = $request->quiz_description[$keyQ] ?? null;
-                                $Step->sort_order = $request->queue[$keyQ] ?? -1;
-                                $Step->type = 'quiz';
-                                $Step->description = null;
-                                $Step->passing = $request->quiz_passing_per_[$keyQ] ?? null;
-                                $Step->prerequisite = $request->prerequisite[$keyQ] ?? 0;
-                                $Step->course_chapter_id = $request->chapter_id;
-                                $Step->save();
+                        if (count($request->question) > 0) {
+                            foreach ($request->question as $keyQ => $valueQ) {
+                                $lessonQuiz = new CourseLessonStep;
+                                $lessonQuiz->title = $request->quiz_title[$keyQ] ?? null;
+                                $lessonQuiz->sort_order = $request->queue[$keyQ] ?? -1;
+                                $lessonQuiz->type = 'quiz';
+                                $lessonQuiz->description = $request->quiz_description[$keyQ] ?? null;
+                                $lessonQuiz->passing = $request->quiz_passing[$keyQ] ?? 33;
+                                $lessonQuiz->prerequisite = 0;
+                                $lessonQuiz->course_lesson_id = $request->lessonId;
+                                $lessonQuiz->save();
                                 foreach ($valueQ as $keyQVal => $valueQVal) {
-                                    $ChapterQuiz = new CourseLessonQuiz;
-                                    $ChapterQuiz->title = $valueQVal['text'];
-                                    $ChapterQuiz->type = 'quiz';
-                                    $ChapterQuiz->chapter_id = $request->chapter_id;
-                                    $ChapterQuiz->course_id = $request->courseID;
-                                    $ChapterQuiz->step_id = $Step['id '];
-                                    $ChapterQuiz->marks = $valueQVal['marks'] ?? 0;
-                                    $ChapterQuiz->save();
+                                    $question = new CourseLessonQuiz;
+                                    $question->title = $valueQVal['text'];
+                                    $question->type = 'quiz';
+                                    $question->lesson_id = $request->lessonId;
+                                    $question->course_id = $request->courseId;
+                                    $question->step_id = $lessonQuiz['id'];
+                                    $question->marks = $valueQVal['marks'] ?? 5;
+                                    $question->save();
                                     $quiz_id = CourseLessonQuiz::orderBy('id', 'DESC')->first();
                                     foreach ($valueQVal['options'] as $keyOp => $optionText) {
                                         $isCorrect = '0';
@@ -308,10 +308,8 @@ class CourseController extends Controller
                                         }
                                         $option = new CourseLessonQuizOption;
                                         $option->quiz_id = $quiz_id->id;
-                                        $option->answer_option_key = $optionText;
+                                        $option->answer = $optionText;
                                         $option->is_correct = $isCorrect;
-                                        $option->created_date = date('Y-m-d H:i:s');
-                                        $option->status = 1;
                                         $option->save();
                                     }
                                 }
@@ -326,7 +324,7 @@ class CourseController extends Controller
                                 $Step->type = 'survey';
                                 $Step->description = null;
                                 $Step->prerequisite = $request->prerequisite[$keyS] ?? 0;
-                                $Step->course_chapter_id = $request->chapter_id;
+                                $Step->course_lesson_id = $request->chapter_id;
                                 $Step->save();
                                 foreach ($valueQ as $keyQVal => $valueQVal) {
                                     $ChapterQuiz = new CourseLessonQuiz;

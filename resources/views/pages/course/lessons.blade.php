@@ -35,10 +35,12 @@
                         <div class="chapter-list">
                             @forelse($lessons as $key => $item)
                             <div class="lesson-item">
-                                <div class="lesson-item-inner">
-                                    <div class="lesson-icon"><img src="{{ assets('assets/images/book-square1.svg') }}"></div>
-                                    <div class="lesson-text1">{{$item->lesson ?? 'NA'}}</div>
-                                </div>
+                                <a href="{{ route('admin.course.lesson.all', ['courseId' => encrypt_decrypt('encrypt', $courseId), 'lessonId' => encrypt_decrypt('encrypt', $item->id)]) }}">
+                                    <div class="lesson-item-inner">
+                                        <div class="lesson-icon"><img src="{{ assets('assets/images/book-square1.svg') }}"></div>
+                                        <div class="lesson-text1">{{$item->lesson ?? 'NA'}}</div>
+                                    </div>
+                                </a>
                                 <a href="javascript:void(0)" class="deleteLessonBtn" data-id="{{ encrypt_decrypt('encrypt', $item->id) }}"><img src="{{ assets('assets/images/close-circle.svg') }}"></a>
                             </div>
                             @empty
@@ -190,7 +192,7 @@
                                             <div class="plas-badge">Q</div>
                                         </div>
                                         <div class="plas-questionnaire-content">
-                                            <input type="text" class="form-control" placeholder="Enter Question Title" name="" value="I am clear and focused on my purpose and have a big goal that keeps me focused.">
+                                            <input type="text" class="form-control" placeholder="Enter question" name="" value="">
                                         </div>
                                     </div>
 
