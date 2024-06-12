@@ -119,64 +119,73 @@ $(document).on("click", "#addLessonSection", function () {
                     <div class="plas-course-text">
                         <h3>Quiz</h3>
                     </div>
+                    <div class="plas-questionnaire-ans mb-0" style="padding: 5px;">
+                        <div class="plas-questionnaire-text">
+                            <input type="number" class="form-control" placeholder="Enter passing percentage" name="quiz_passing[${countForm}]" value="" required>
+                        </div>
+                    </div>
                     <div class="add-course-action">
-                        <a href="" class="btnAddQuestion"> Add Question</a>
-                        <a href="" class="btndelete"> Delete Section</a>
+                        <a href="javascript:void(0)" class="btnAddQuestion add-question-create" id="addQuestion-${countForm}"> Add Question</a>
+                        <a href="javascript:void(0)" class="btndelete dlt-div" data-type="quiz"> Delete Section</a>
                     </div>
                 </div>
 
                 <input type="hidden" name="type[${countForm}]" id="type${countForm}" value="quiz" />
                 <input type="hidden" name="queue[${countForm}]" id="type${countForm}" value="${countForm}" />
 
-                <div class="add-course-content-section">
-                    <div class="plas-edit-questionnaire-box">
-                        <div class="plas-label">
-                            <div class="plas-badge">Q</div>
-                        </div>
-                        <div class="plas-questionnaire-content">
-                            <input type="text" class="form-control" placeholder="Enter question" name="question[${countForm}][${questionCounter}][text]" id="question-${countForm}-${questionCounter}">
-                        </div>
-                    </div>
+                <div class="add-course-content-section questions-${countForm}">
 
-                    <div class="lp-answer-option-list">
-
-                        <div class="options">
-                            <div class="plas-answer-box">
-                                <input type="hidden" class="hidden${countForm}${questionCounter}" value="0">
-                                <div class="plas-questionnaire-ans">
-                                    <div class="plas-ans-label">
-                                        <div class="a-badge">A</div>
-                                    </div>
-                                    <div class="plas-questionnaire-text">
-                                        <input type="text" class="form-control" placeholder="Type Here..." name="question[${countForm}][${questionCounter}][options][]" value="">
-                                    </div>
-                                    <div class="plas-answer-action-item">
-                                        <div class="plas-btn-info">
-                                            <button class="remove-btn">Remove</button>
+                    <div class="question">
+                        <div class="plas-edit-questionnaire-box">
+                            <div class="plas-label">
+                                <div class="plas-badge">Q</div>
+                            </div>
+                            <div class="plas-questionnaire-content">
+                                <input type="text" class="form-control" placeholder="Enter question" name="question[${countForm}][${questionCounter}][text]" id="question-${countForm}-${questionCounter}" required>
+                            </div>
+                            <div class="plas-questionnaire-ans mb-0" style="padding: 5px; width: 15%;">
+                                <div class="plas-questionnaire-text">
+                                    <input type="number" class="form-control" placeholder="Enter marks" name="question[${countForm}][${questionCounter}][marks]" value="" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lp-answer-option-list">
+                            <div class="options">
+                                <div class="plas-answer-box">
+                                    <input type="hidden" class="hidden${countForm}${questionCounter}" value="0">
+                                    <div class="plas-questionnaire-ans">
+                                        <div class="plas-ans-label">
+                                            <div class="a-badge">A</div>
                                         </div>
-                                        <div class="plasradio1">
-                                            <input checked type="radio" class="" name="question[${countForm}][${questionCounter}][correct]" id="answer-option-${oplength}-${questionCounter}-${countForm}" value="${oplength}">
-                                            <label for="answer-option-${oplength}-${questionCounter}-${countForm}">&nbsp</label>
+                                        <div class="plas-questionnaire-text">
+                                            <input type="text" class="form-control" placeholder="Type Here..." name="question[${countForm}][${questionCounter}][options][]" value="" required>
                                         </div>
-                                        <div class="plas-add-questionnaire-tooltip">
-                                            <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
-                                                <img src="${baseUrl}/public/assets/images/info-icon.svg">
+                                        <div class="plas-answer-action-item">
+                                            <div class="plas-btn-info">
+                                                
                                             </div>
-                                            <script>
-                                                $(function() {
-                                                    $('[data-bs-toggle="tooltip"]').tooltip();
-                                                });
-                                            </script>
+                                            <div class="plasradio1">
+                                                <input checked type="radio" class="" name="question[${countForm}][${questionCounter}][correct]" id="answer-option-${oplength}-${questionCounter}-${countForm}" value="${oplength}" required>
+                                                <label for="answer-option-${oplength}-${questionCounter}-${countForm}">&nbsp</label>
+                                            </div>
+                                            <div class="plas-add-questionnaire-tooltip">
+                                                <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
+                                                    <img src="${baseUrl}/public/assets/images/info-icon.svg">
+                                                </div>
+                                                <script>
+                                                    $(function() {
+                                                        $('[data-bs-toggle="tooltip"]').tooltip();
+                                                    });
+                                                </script>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <a class="add-answer add-option mt-2" href="javascript:void(0)" id="addOption-${countForm}-${questionCounter}">Add Option</a>
                         </div>
-
-                        
-                        <a class="add-answer add-option mt-2" href="javascript:void(0)" id="addOption-${countForm}-${questionCounter}">Add option</a>
-                        
                     </div>
+
                 </div>
             </div>`;
         countForm += 1;
@@ -260,14 +269,14 @@ $(document).on('click', '.add-option', function () {
                         <div class="a-badge">A</div>
                     </div>
                     <div class="plas-questionnaire-text">
-                        <input type="text" class="form-control" placeholder="Type Here..." name="question[${id[1]}][${id[2] ?? questionCounter}][options][]" value="">
+                        <input type="text" class="form-control" placeholder="Type Here..." name="question[${id[1]}][${id[2] ?? questionCounter}][options][]" value="" required>
                     </div>
                     <div class="plas-answer-action-item">
                         <div class="plas-btn-info">
-                            <button class="remove-btn">Remove</button>
+                            <button class="remove-btn remove-option">Remove</button>
                         </div>
                         <div class="plasradio1">
-                            <input type="radio" class="" name="question[${id[1]}][${id[2] ?? questionCounter}][correct]"  id="answer-option-${oplength}-${id[2] ?? questionCounter}-${id[1]}" value="${oplength}">
+                            <input type="radio" class="" name="question[${id[1]}][${id[2] ?? questionCounter}][correct]"  id="answer-option-${oplength}-${id[2] ?? questionCounter}-${id[1]}" value="${oplength}" required>
                             <label for="answer-option-${oplength}-${id[2] ?? questionCounter}-${id[1]}">&nbsp</label>
                         </div>
                         <div class="plas-add-questionnaire-tooltip">
@@ -285,4 +294,70 @@ $(document).on('click', '.add-option', function () {
             </div>
         </div>`;
     $(this).siblings('.options').append(op_html);
+});
+
+$(document).on('click', '.remove-option', function () {
+    $(this).closest('.options').remove();
+});
+
+$(document).on('click', '.add-question-create', function () {
+    let id = ($(this).attr('id').split('-'))[1];
+    questionCounter++;
+    let oplength = $('.options .plas-answer-box .hidden'+id+questionCounter).length;
+    var html = `<div class="question">
+            <div class="plas-edit-questionnaire-box">
+                <div class="plas-label">
+                    <div class="plas-badge">Q</div>
+                </div>
+                <div class="plas-questionnaire-content">
+                    <input type="text" class="form-control" placeholder="Enter question" name="question[${id}][${questionCounter}][text]" id="question-${id}-${questionCounter}" required>
+                </div>
+                <div class="plas-questionnaire-ans mb-0" style="padding: 5px; width: 15%;">
+                    <div class="plas-questionnaire-text">
+                        <input type="number" class="form-control" placeholder="Enter marks" name="question[${id}][${questionCounter}][marks]" value="" required>
+                    </div>
+                </div>
+            </div>
+            <div class="lp-answer-option-list">
+                <div class="options">
+                    <div class="plas-answer-box">
+                        <input type="hidden" class="hidden${id}${questionCounter}" value="0">
+                        <div class="plas-questionnaire-ans">
+                            <div class="plas-ans-label">
+                                <div class="a-badge">A</div>
+                            </div>
+                            <div class="plas-questionnaire-text">
+                                <input type="text" class="form-control" placeholder="Type Here..." name="question[${id}][${questionCounter}][options][]" value="" required>
+                            </div>
+                            <div class="plas-answer-action-item">
+                                <div class="plas-btn-info">
+                                    
+                                </div>
+                                <div class="plasradio1">
+                                    <input checked type="radio" class="" name="question[${id}][${questionCounter}][correct]" id="answer-option-${oplength}-${questionCounter}-${id}" value="${oplength}" required>
+                                    <label for="answer-option-${oplength}-${questionCounter}-${id}">&nbsp</label>
+                                </div>
+                                <div class="plas-add-questionnaire-tooltip">
+                                    <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
+                                        <img src="${baseUrl}/public/assets/images/info-icon.svg">
+                                    </div>
+                                    <script>
+                                        $(function() {
+                                            $('[data-bs-toggle="tooltip"]').tooltip();
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="add-answer add-option mt-2" href="javascript:void(0)" id="addOption-${id}-${questionCounter}">Add Option</a>
+                <button class="remove-btn remove-question" style="font-weight: 600; font-size: 14px; text-transform: uppercase;">Remove Question</button>
+            </div>
+        </div>`;
+    $('.questions-'+id).append(html);
+});
+
+$(document).on('click', '.remove-question', function () {
+    $(this).closest('.question').remove();
 });

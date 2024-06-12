@@ -133,6 +133,16 @@ class CourseController extends Controller
                 if (isset($course->video)) {
                     fileRemove("/uploads/course/video/$course->video");
                 }
+                $lesson = CourseLesson::where('course_id', $id)->get();
+                foreach($lesson as $val){
+                    $quiz = CourseLessonQuiz::where('lesson_id', $val->id)->get();
+                    foreach($quiz as $val1){
+                        CourseLessonQuizOption::where('quiz_id', $val1->id)->delete();
+                    }
+                    CourseLessonQuiz::where('lesson_id', $val->id)->delete();
+                    CourseLessonStep::where('course_lesson_id', $val->id)->delete();
+                }
+                CourseLesson::where('course_id', $id)->delete();
                 Course::where('id', $id)->delete();
 
                 return redirect()->back()->with('success', 'Course deleted successfully');
@@ -210,9 +220,13 @@ class CourseController extends Controller
                 return errorMsg($validator->errors()->first());
             } else {
                 $id = encrypt_decrypt('decrypt', $request->id);
-                $course = CourseLesson::where('id', $id)->first();
+                $quiz = CourseLessonQuiz::where('lesson_id', $id)->get();
+                foreach($quiz as $val){
+                    CourseLessonQuizOption::where('quiz_id', $val->id)->delete();
+                }
+                CourseLessonQuiz::where('lesson_id', $id)->delete();
+                CourseLessonStep::where('course_lesson_id', $id)->delete();
                 CourseLesson::where('id', $id)->delete();
-
                 return redirect()->back()->with('success', 'Lesson deleted successfully');
             }
         } catch (\Exception $e) {
