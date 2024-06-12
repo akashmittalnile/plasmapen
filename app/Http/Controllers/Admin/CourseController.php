@@ -38,7 +38,7 @@ class CourseController extends Controller
                                 <h2>About : $val->title</h2>
                                 <div class='course-card-point-text'>
                                     <div class='coursefee-text'>$$val->course_fee</div>
-                                    <div class='lesson-text'>".$val->lessonCount()." Lessons</div>
+                                    <div class='lesson-text'>" . $val->lessonCount() . " Lessons</div>
                                 </div>
                                 <div class='course-card-action-text'>
                                     <a class='deletebtn' data-id='" . encrypt_decrypt('encrypt', $val->id) . "' href='javascript:void(0)'>Delete</a>

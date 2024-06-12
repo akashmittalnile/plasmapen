@@ -23,14 +23,14 @@
                 </li>
 
                 <li class="nav-item {{ Route::is('admin.course.*') ? 'active' : '' }}"">
-                    <a class="nav-link" href="{{ route('admin.course.list') }}">
-                        <span class="menu-icon"><img src="{{ assets('assets/images/book.svg') }}"></span>
-                        <span class="menu-title">{{ translate('Manage Course') }}</span>
+                    <a class=" nav-link" href="{{ route('admin.course.list') }}">
+                    <span class="menu-icon"><img src="{{ assets('assets/images/book.svg') }}"></span>
+                    <span class="menu-title">{{ translate('Manage Course') }}</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="products.html">
+                    <a class="nav-link" href="{{ route('admin.product.list') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/products.svg') }}"></span>
                         <span class="menu-title">{{ translate('Manage Products') }}</span>
                     </a>

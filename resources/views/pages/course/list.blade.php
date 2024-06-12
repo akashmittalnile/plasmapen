@@ -49,7 +49,7 @@
     </div>
     <div class="course-section">
         <div class="row" id="appendData">
-            
+
         </div>
         <div class="plas-table-pagination">
             <ul class="plas-pagination" id="appendPagination">
@@ -87,7 +87,7 @@
 @endsection
 @push('js')
 <script>
-    $(document).on("click", ".deletebtn", function(){
+    $(document).on("click", ".deletebtn", function() {
         $("#courseId").val($(this).data('id'));
         $("#openDeleteModal").modal("show");
     });
@@ -98,7 +98,9 @@
                 type: 'get',
                 url: "{{ route('admin.course.list') }}",
                 data: {
-                    page, search, status
+                    page,
+                    search,
+                    status
                 },
                 dataType: 'json',
                 success: function(result) {
