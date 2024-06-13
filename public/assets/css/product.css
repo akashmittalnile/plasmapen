@@ -89,7 +89,7 @@ a.Accountapproval-btn {
     background: var(--brown, #261313);
     box-shadow: 0px 4px 12px 0px rgba(182, 0, 248, 0.06);
     padding: 15px 20px;
-    color: var(--white, #FFF);
+    color: var(--white, #fff);
     text-align: center;
     font-size: 14px;
     font-style: normal;
@@ -126,7 +126,8 @@ a.Accountapproval-btn {
     font-weight: bold;
 }
 
-.statusradio label::before, .statusradio label::after {
+.statusradio label::before,
+.statusradio label::after {
     position: absolute;
     top: 10px;
     left: 0;
@@ -276,13 +277,15 @@ a.Accountapproval-btn {
 
 .overview-card::before {
     position: absolute;
-    margin-block-start: -10px; content: "";
+    margin-block-start: -10px;
+    content: "";
     width: 85%;
     background-color: rgba(255, 255, 255, 0.2);
     height: 90%;
     box-shadow: 0 0.15rem 0.1rem rgba(0, 0, 0, 0.04);
     border-radius: 0.4rem;
-    margin-inline: auto; inset-inline: 0;
+    margin-inline: auto;
+    inset-inline: 0;
 }
 
 .overview-card-body {
@@ -291,7 +294,8 @@ a.Accountapproval-btn {
     background-color: var(--white);
     box-shadow: 0 0.15rem 0.1rem rgba(0, 0, 0, 0.04);
     position: relative;
-    margin-block-end: 1.5rem; width: 100%;
+    margin-block-end: 1.5rem;
+    width: 100%;
     padding: 1rem;
 }
 
@@ -393,7 +397,7 @@ a.Accountapproval-btn {
     display: flex;
     position: relative;
     border: none;
-    gap: 10px
+    gap: 10px;
 }
 
 .product-details-tabs ul li {
@@ -410,7 +414,7 @@ a.Accountapproval-btn {
     width: 100%;
     border-bottom: none;
     border-radius: 50px;
-    background: #FFF;
+    background: #fff;
     box-shadow: 0px 8px 13px 0px rgba(35, 53, 111, 0.12);
 }
 
@@ -458,7 +462,7 @@ a.Accountapproval-btn {
     outline: 0;
     width: 100%;
     display: inline-block;
-    color: #455A64;
+    color: #455a64;
     appearance: revert;
 }
 
@@ -474,7 +478,7 @@ a.Accountapproval-btn {
     outline: 0;
     width: 100%;
     display: inline-block;
-    color: #455A64;
+    color: #455a64;
 }
 
 .Plasma-modal-form .form-group textarea.form-control {
@@ -489,7 +493,7 @@ a.Accountapproval-btn {
     outline: 0;
     width: 100%;
     display: inline-block;
-    color: #455A64;
+    color: #455a64;
 }
 
 .Plasma-modal-form .form-group .form-control:focus {
@@ -520,4 +524,40 @@ a.Accountapproval-btn {
     background: var(--pink);
     box-shadow: 0px 4px 18px rgb(74 149 207 / 11%);
     border-radius: 5px;
+}
+
+.product-card-content {
+    padding: 15px;
+}
+
+.product-card-action-text {
+    padding: 10px 15px;
+    display: flex;
+    gap: 5px;
+}
+
+.product-card-action-text a.deletebtn {
+    background: var(--red);
+    border: 1px solid var(--red);
+    padding: 5px 12px;
+    display: inline-block;
+    font-size: 13px;
+    color: var(--white);
+    border-radius: 5px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0px 8px 13px 0px rgba(0, 0, 0, 0.05);
+}
+
+.product-card-action-text a.Editbtn {
+    background: var(--blue);
+    border: 1px solid var(--blue);
+    padding: 5px 12px;
+    display: inline-block;
+    font-size: 13px;
+    color: var(--white);
+    border-radius: 5px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0px 8px 13px 0px rgba(0, 0, 0, 0.05);
 }
