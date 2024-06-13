@@ -218,12 +218,26 @@ a.deletebtn {
     box-shadow: 0px 8px 13px 0px rgba(0, 0, 0, 0.05);
 }
 
+a.editbtn {
+    background: var(--white);
+    border: 1px solid var(--white);
+    padding: 3px 20px;
+    display: inline-block;
+    font-size: 12px;
+    color: var(--red);
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0px 8px 13px 0px rgba(0, 0, 0, 0.05);
+}
+
 .blog-details-card {
     background: var(--darkpink);
     border-radius: 10px;
     position: relative;
     margin-bottom: 1rem;
-    padding: 1rem
+    padding: 1rem;
 }
 
 .blog-details-image img {
@@ -314,7 +328,7 @@ a.deletebtn {
     outline: 0;
     width: 100%;
     display: inline-block;
-    color: #455A64;
+    color: #455a64;
     appearance: revert;
 }
 
@@ -330,7 +344,7 @@ a.deletebtn {
     outline: 0;
     width: 100%;
     display: inline-block;
-    color: #455A64;
+    color: #455a64;
 }
 
 .Plasma-modal-form .form-group textarea.form-control {
@@ -345,7 +359,7 @@ a.deletebtn {
     outline: 0;
     width: 100%;
     display: inline-block;
-    color: #455A64;
+    color: #455a64;
 }
 
 .Plasma-modal-form .form-group .form-control:focus {
