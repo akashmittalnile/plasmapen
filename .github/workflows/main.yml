@@ -6,7 +6,7 @@ on:
 name: Deploy Plasma Pen on Nile Tech Innovation 
 
 jobs:
-  web-deploy:
+  web-deploy: 
     name: Deploy
     runs-on: ubuntu-latest
     steps:
