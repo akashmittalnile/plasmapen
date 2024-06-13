@@ -14,4 +14,8 @@ class Course extends Model
     public function lessonCount(){
         return $this->hasMany(CourseLesson::class, 'course_id', 'id')->count();
     }
+
+    public function lessons(){
+        return $this->hasMany(CourseLesson::class, 'course_id', 'id')->orderByDesc('id')->get();
+    }
 }

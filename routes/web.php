@@ -68,6 +68,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/product/detail/{id}', [ProductController::class, 'getProductDetail'])->name('product.detail');
         Route::post('/product/update', [ProductController::class, 'productUpdate'])->name('product.update');
 
+
+        //blog
+
         // logout
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     });
