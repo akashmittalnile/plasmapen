@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\LangController;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route; 
 
 /*
 |--------------------------------------------------------------------------

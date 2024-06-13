@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CourseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('profile', [AuthController::class, 'profile']);
     Route::post('update-profile', [AuthController::class, 'updateProfile']);
     Route::post('change-password', [AuthController::class, 'changePassword']);
+
+    Route::get('courses', [CourseController::class, 'courses']);
+    Route::get('course-details/{id}', [CourseController::class, 'courseDetails']);
 });
 
 Route::get('token-expire', [AuthController::class, 'tokenExpire'])->name('login');

@@ -22,9 +22,9 @@ jobs:
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-          server: ftp.niletechinnovations.com
-          username: plasmapen@niletechinnovations.com
-          password: gRa+OVth_gm8
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
           local-dir: "./"
           server-dir: "/"
           exclude: ".git*, .github*, node_modules*, vendor*"
