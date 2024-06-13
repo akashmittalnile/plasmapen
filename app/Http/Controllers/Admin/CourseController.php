@@ -220,6 +220,7 @@ class CourseController extends Controller
                 return errorMsg($validator->errors()->first());
             } else {
                 $id = encrypt_decrypt('decrypt', $request->id);
+                $lesson = CourseLesson::where('id', $id)->first();
                 $quiz = CourseLessonQuiz::where('lesson_id', $id)->get();
                 foreach($quiz as $val){
                     CourseLessonQuizOption::where('quiz_id', $val->id)->delete();
@@ -227,7 +228,12 @@ class CourseController extends Controller
                 CourseLessonQuiz::where('lesson_id', $id)->delete();
                 CourseLessonStep::where('course_lesson_id', $id)->delete();
                 CourseLesson::where('id', $id)->delete();
-                return redirect()->back()->with('success', 'Lesson deleted successfully');
+                $latestLesson = CourseLesson::where('course_id',$lesson->course_id)->orderByDesc('id')->first();
+                if (isset($latestLesson->id)) {
+                    return redirect()->route('admin.course.lesson.all', ['courseId' => encrypt_decrypt('encrypt', $lesson->course_id), 'lessonId' => encrypt_decrypt('encrypt', $latestLesson->id)])->with('success', 'Lesson deleted successfully');
+                } else {
+                    return redirect()->route('admin.course.lesson.empty', ['courseId' => encrypt_decrypt('encrypt', $lesson->course_id)])->with('success', 'Lesson deleted successfully');
+                }
             }
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
