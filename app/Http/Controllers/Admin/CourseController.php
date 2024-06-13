@@ -280,17 +280,26 @@ class CourseController extends Controller
                             }
                         }
                     } else if ($type[$key] == 'assignment') {
-                        if (count($request->assignment) > 0) {
-                            foreach ($request->assignment as $keyAssignment => $valueAssignment) {
-                                $ChapterQuiz = new CourseLessonStep;
-                                $ChapterQuiz->type = 'assignment';
-                                $ChapterQuiz->sort_order = $request->queue[$keyAssignment] ?? -1;
-                                $ChapterQuiz->title = $request->assignment_description[$keyAssignment] ?? null;
-                                $ChapterQuiz->description = null;
-                                $ChapterQuiz->details = null;
-                                $ChapterQuiz->prerequisite = $request->prerequisite[$keyAssignment] ?? 0;
-                                $ChapterQuiz->course_lesson_id = $request->chapter_id;
-                                $ChapterQuiz->save();
+                        if (count($request->assignment_title) > 0) {
+                            foreach ($request->assignment_title as $keyAssignment => $valueAssignment) {
+                                $lessonQuiz = new CourseLessonStep;
+                                $lessonQuiz->title = $request->quiz_title[$keyAssignment] ?? null;
+                                $lessonQuiz->sort_order = $request->queue[$keyAssignment] ?? -1;
+                                $lessonQuiz->type = 'assignment';
+                                $lessonQuiz->description = $request->quiz_description[$keyAssignment] ?? null;
+                                $lessonQuiz->prerequisite = 0;
+                                $lessonQuiz->course_lesson_id = $request->lessonId;
+                                $lessonQuiz->save();
+                                foreach ($valueAssignment as $keyQVal => $valueQVal) {
+                                    $question = new CourseLessonQuiz;
+                                    $question->title = $valueQVal['text'];
+                                    $question->description = $request->assignment_description[$keyAssignment][$keyQVal]['description'];
+                                    $question->type = 'assignment';
+                                    $question->lesson_id = $request->lessonId;
+                                    $question->course_id = $request->courseId;
+                                    $question->step_id = $lessonQuiz['id'];
+                                    $question->save();
+                                }
                             }
                         }
                     } else if ($type[$key] == 'quiz') {
@@ -332,31 +341,28 @@ class CourseController extends Controller
                     } else if ($type[$key] == 'survey') {
                         if (count($request->survey_question) > 0) {
                             foreach ($request->survey_question as $keyS => $valueQ) {
-                                $Step = new CourseLessonStep;
-                                $Step->title = $request->survey_description[$keyS] ?? null;
-                                $Step->sort_order = $request->queue[$keyS] ?? -1;
-                                $Step->type = 'survey';
-                                $Step->description = null;
-                                $Step->prerequisite = $request->prerequisite[$keyS] ?? 0;
-                                $Step->course_lesson_id = $request->chapter_id;
-                                $Step->save();
+                                $lessonQuiz = new CourseLessonStep;
+                                $lessonQuiz->title = $request->survey_title[$keyS] ?? null;
+                                $lessonQuiz->sort_order = $request->queue[$keyS] ?? -1;
+                                $lessonQuiz->type = 'survey';
+                                $lessonQuiz->description = $request->survey_description[$keyS] ?? null;
+                                $lessonQuiz->prerequisite = 0;
+                                $lessonQuiz->course_lesson_id = $request->lessonId;
+                                $lessonQuiz->save();
                                 foreach ($valueQ as $keyQVal => $valueQVal) {
-                                    $ChapterQuiz = new CourseLessonQuiz;
-                                    $ChapterQuiz->title = $valueQVal['text'];
-                                    $ChapterQuiz->type = 'survey';
-                                    $ChapterQuiz->chapter_id = $request->chapter_id;
-                                    $ChapterQuiz->course_id = $request->courseID;
-                                    $ChapterQuiz->step_id = $Step['id '];
-                                    $ChapterQuiz->save();
-                                    $quiz_id = CourseLessonQuiz::orderBy('id', 'DESC')->first();
+                                    $question = new CourseLessonQuiz;
+                                    $question->title = $valueQVal['text'];
+                                    $question->type = 'survey';
+                                    $question->lesson_id = $request->lessonId;
+                                    $question->course_id = $request->courseId;
+                                    $question->step_id = $lessonQuiz['id'];
+                                    $question->save();
+                                    $survey_id = CourseLessonQuiz::orderBy('id', 'DESC')->first();
                                     foreach ($valueQVal['options'] as $keyOp => $optionText) {
-                                        // dd($optionText);
                                         $option = new CourseLessonQuizOption;
-                                        $option->quiz_id = $quiz_id->id;
-                                        $option->answer_option_key = $optionText;
-                                        $option->is_correct = '0';
-                                        $option->created_date = date('Y-m-d H:i:s');
-                                        $option->status = 1;
+                                        $option->quiz_id = $survey_id->id;
+                                        $option->answer = $optionText;
+                                        $option->is_correct = 0;
                                         $option->save();
                                     }
                                 }
