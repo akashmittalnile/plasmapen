@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\LangController;
 use Illuminate\Support\Facades\Artisan;
@@ -59,8 +60,18 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
         Route::post('/courses/lesson/section/create', [CourseController::class, 'lessonSectionCreate'])->name('course.lesson.section.create');
 
+
+        // product
+        Route::get('/products', [ProductController::class, 'list'])->name('product.list');
+        Route::post('/product/store', [ProductController::class, 'productCreate'])->name('product.store');
+        Route::post('/product/delete', [ProductController::class, 'productDelete'])->name('product.delete');
+        Route::get('/product/detail/{id}', [ProductController::class, 'getProductDetail'])->name('product.detail');
+        Route::post('/product/update', [ProductController::class, 'productUpdate'])->name('product.update');
+
+
+        //blog
+
         // logout
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     });
-
-}); 
+});
