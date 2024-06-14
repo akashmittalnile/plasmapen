@@ -131,7 +131,7 @@
                 <div class="Plasma-modal-form">
                     <h2>Update Blog</h2>
                     <div class="row">
-                        <form action="{{ route('admin.blog.update') }}" method="post" enctype='multipart/form-data' id="add-blog-form">
+                        <form action="{{ route('admin.blog.update') }}" method="post" enctype='multipart/form-data'>
                             @csrf
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -141,7 +141,11 @@
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input type="file" name="image" id="update-image" class="form-control">
+                                    <!-- <input type="file" name="image" id="update-image" class="form-control"> -->
+                                    <div class="dropzone" id="myDropzoneUpdate"></div>
+                                    <input type="hidden" id="arrayOfImageUpdate" name="blog_images_update">
+                                    <input type="text" name="removed_files" id="removed_files"
+                                style="height:1px !important;opacity:0 !important;position: absolute;  z-index: -1;">
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -196,30 +200,90 @@
 @push('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
 <script>
-    // const myDropzone = new Dropzone("#image-dropzone", {
-    //     url: "{{ route('admin.image-upload') }}",
-    //     paramName: "image[]",
-    //     maxFiles: 1,
-    //     maxFilesize: 2, // MB
-    //     acceptedFiles: 'image/*',
-    //     headers: {
-    //         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-    //     },
-    //     dictDefaultMessage: "Drag and drop an image here or click to select one",
-    //     uploadMultiple: true,
-    //     parallelUploads: 10,
-    //     init: function() {
-    //         this.on("addedfile", function(file) {
-    //             console.log('File added:', file);
-    //         });
-    //         this.on("success", function(file, response) {
-    //             console.log('File uploaded successfully:', response);
-    //         });
-    //     }
-    // });
-    let arrOfImg = [];
-    Dropzone.options.myDropzone = {
-        dictDefaultMessage: 'Drag and drop an image here or click to select one',
+    // dropzone for adding image adds here....
+   
+    // $(document).ready(function() {
+        let arrOfImg = [];
+
+// Dropzone.options.myDropzone = {
+//     maxFilesize: 5,
+//     renameFile: function(file) {
+//         var dt = new Date();
+//         var time = dt.getTime();
+//     return time+file.name;
+//     },
+//     acceptedFiles: ".jpeg,.jpg,.png",
+//     timeout: 5000,
+//     addRemoveLinks: true,
+//     headers: {
+//         'X-CSRF-TOKEN': '{{ csrf_token() }}'
+//     },
+//     url: "{{ route('admin.image-upload') }}",
+//     removedfile: function(file) 
+//     {
+//         var name = file.upload.filename;
+//         $.ajax({
+//             headers: {
+//                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
+//             },
+//             type: 'POST',
+//             url: '{{ route("admin.image-delete") }}',
+//             data: {filename: name},
+//             success: function (data){
+//                 if(data.status){
+//                     console.log("File deleted successfully!!");
+//                     if(data.key == 2){
+//                         const inde = arrOfImg.indexOf(data.file_name);
+//                         if (inde > -1){
+//                             arrOfImg.splice(inde, 1);
+//                             $("#arrayOfImage").val(JSON.stringify(arrOfImg));
+//                         }
+//                     }
+//                     let oplength = arrOfImg.length;
+//                     if(oplength>0){
+//                     $('.dz-default.dz-message').hide(); 
+//                     } else $('.dz-default.dz-message').show();
+//                 }else{
+//                     console.log("File not deleted!!");
+//                 }
+//             },
+//             error: function(e) {
+//                 console.log(e);
+//             }
+//         });
+//         var fileRef;
+//         return (fileRef = file.previewElement) != null ? 
+//         fileRef.parentNode.removeChild(file.previewElement) : void 0;
+//     },
+//     success: function(file, response) 
+//     {
+//         if(response.key == 1){
+//             arrOfImg.push(response.file_name);
+//             $("#arrayOfImage").val(JSON.stringify(arrOfImg));
+//             file.upload.filename = response.file_name;
+//             let oplength = arrOfImg.length;
+//             if(oplength>0){
+//                 $('.dz-default.dz-message').hide(); 
+//             } else $('.dz-default.dz-message').show();
+//         }
+//     },
+//     error: function(file, response)
+//     {
+//         let oplength = arrOfImg.length;
+//         if(oplength>0){
+//            $('.dz-default.dz-message').hide(); 
+//         } else $('.dz-default.dz-message').show();
+//         console.log(file.previewElement);
+//         var fileRef;
+//         return (fileRef = file.previewElement) != null ? fileRef.parentNode.removeChild(file.previewElement) : null;
+//     }
+// };
+
+
+
+Dropzone.options.myDropzone = {
+        dictDefaultMessage: 'Drop files here to upload',
+
         maxFilesize: 1,
         renameFile: function(file) {
             var dt = new Date();
@@ -263,7 +327,6 @@
                 fileRef.parentNode.removeChild(file.previewElement) : void 0;
         },
         success: function(file, response) {
-            console.log(response);
             // if (response.key == 1) {
             arrOfImg.push(response);
             $("#arrayOfImage").val(JSON.stringify(arrOfImg));
@@ -273,6 +336,113 @@
             return false;
         }
     };
+console.log(arrOfImg);
+// dropzone for adding image ends here....
+    // });
+   
+
+    function removeImageExist(id) {
+            removeFiles.push(id);
+            $(`#removeImageExist${id}`).remove();
+            $("#removed_files").val(removeFiles.join(","));
+        }
+
+    // dropzone for update image starts here....
+
+    var existing_images_loaded = 0;
+    var arrOfImgUpdate = []
+    var removeFiles = [];    
+    function initializeDropzoneUpdate(BlogImages) {
+        // Check if the Dropzone instance exists and destroy it
+        if (Dropzone.instances.length > 0) {
+            Dropzone.instances.forEach(instance => {
+                if (instance.element.id === "myDropzoneUpdate") {
+                    instance.destroy();
+                }
+            });
+        }
+
+        // Initialize a new Dropzone instance
+        var myDropzoneUpdate = new Dropzone("#myDropzoneUpdate", {
+            dictDefaultMessage: 'Drag and drop an image here or click to select one',
+            maxFilesize: 1,
+            renameFile: function(file) {
+                var dt = new Date();
+                var time = dt.getTime();
+                return time + file.name;
+            },
+            maxFiles: 5,
+            acceptedFiles: ".jpeg,.jpg,.png,.mp3",
+            timeout: 5000,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            url: "{{ route('admin.image-upload') }}",
+            addRemoveLinks: true,
+            removedfile: function(file) {
+                if (existing_images_loaded != 0) {
+                    $(".dz-message").hide();
+                } else {
+                    $(".dz-message").show();
+                }
+                var name = file.upload ? file.upload.filename : file.name;
+                if (file.name) {
+                    removeImageExist(file.id);
+                }
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'POST',
+                    url: "{{ route('admin.image-delete') }}",
+                    data: { filename: name },
+                    success: function(data) {
+                        const inde = arrOfImgUpdate.indexOf(data);
+                        if (inde > -1) {
+                            arrOfImgUpdate.splice(inde, 1);
+                            $("#arrayOfImageUpdate").val(JSON.stringify(arrOfImgUpdate));
+                        }
+                        console.log(arrOfImgUpdate);
+                        existing_images_loaded -= 1;
+                        if (existing_images_loaded != 0) {
+                            $(".dz-message").hide();
+                        } else {
+                            $(".dz-message").show();
+                        }
+                    },
+                    error: function(e) {
+                        console.log(e);
+                    }
+                });
+                var fileRef;
+                return (fileRef = file.previewElement) != null ?
+                    fileRef.parentNode.removeChild(file.previewElement) : void 0;
+            },
+            success: function(file, response) {
+                arrOfImgUpdate.push(response);
+                $("#arrayOfImageUpdate").val(JSON.stringify(arrOfImgUpdate));
+            },
+            error: function(file, response) {
+                return false;
+            },
+            init: function() {
+                var existingImages = BlogImages;
+                existing_images_loaded = existingImages.length;
+                existingImages.forEach(function(image) {
+                    var mockFile = {
+                        name: image.name,
+                        id: image.id
+                    };
+                    this.displayExistingFile(mockFile, image.path);
+                    mockFile.serverId = image.id;
+                }, this); // Pass the context of Dropzone instance
+            }
+        });
+        console.log(arrOfImgUpdate);
+    }
+
+   
+    // dropzone for update image ends here....
 
     $(document).on("click", ".deletebtn", function() {
         $("#blogId").val($(this).data('id'));
@@ -281,8 +451,7 @@
 
     $(document).on("click", ".editbtn", function() {
         let id = $(this).data('id');
-        // console.log(id);
-        // $("#EditNewblog").modal("show");
+
         $.ajax({
             type: 'get',
             url: baseUrl +
@@ -295,7 +464,9 @@
                     $("#update-description").val(result.data.description);
                     $("#show-image-update").attr("src", result.data.image);
                     $("#blog-id-update").val(result.data.id);
+                    initializeDropzoneUpdate(result.data.images_arr)
                     $("#EditNewblog").modal("show");
+                    console.log(result.data.images_arr);
                 } else {
 
                 }

@@ -59,6 +59,7 @@ class BlogController extends Controller
             );
             return successMsg('blog list', $response);
         }
+        
         return view('pages.blog.list');
     }
 
@@ -131,8 +132,26 @@ class BlogController extends Controller
     {
         try {
             $id = encrypt_decrypt('decrypt', $id);
-            $blog = Blog::where('id', $id)->first();
+            $blog = Blog::with('images')->where('id', $id)->first();
             $blog->image = assets('uploads/blog/image/' . $blog->image);
+            $response = []; 
+            foreach($blog->images as $image)
+            {
+                $temp['id'] = $image->id;
+                $temp['name'] = $image->item_name;
+                $temp['path'] = assets('uploads/blog/' . $image->item_name);
+                $temp['size'] = 10;
+                $response[] = $temp;
+            }
+            $blog->images_arr = $response;
+
+            // $blog->images = $blog->images->map(function ($image) {
+            //     return [
+            //         'id' => $image->id,
+            //         'name' => $image->item_name,
+            //         'path'=>asset('uploads/blog/' . $image->item_name),
+            //     ];
+            // });
             return response()->json(['status' => true, 'message' => 'Blog detail.', 'data' => $blog]);
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());

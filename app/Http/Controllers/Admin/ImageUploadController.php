@@ -16,6 +16,7 @@ class ImageUploadController extends Controller
             // $file->move('uploads/products/', $image);
             fileUpload($request->file, "/uploads/blog");
             return $image;
+            // return response()->json(['status'=>true, 'file_name'=> $image, 'key'=> 1]);  
         }
     }
 
@@ -24,7 +25,9 @@ class ImageUploadController extends Controller
         $path = public_path('uploads/blog/' . $request->filename);
         if (File::exists($path)) {
             fileRemove("/uploads/blog/$request->filename");
-            return $request->filename;
+            // return $request->filename;
+            return response()->json(['status'=>true, 'file_name'=> $request->filename, 'key'=> 2]); 
         }
+        return response()->json(['status'=>false, 'file_name'=> $request->filename, 'key'=> 2]);   
     }
 }
