@@ -240,17 +240,61 @@ class CourseController extends Controller
         }
     }
 
+    public function lessonSectionDelete(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'lesson_id' => 'required',
+                'section_id' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return errorMsg($validator->errors()->first());
+            } else {
+                $quiz = CourseLessonQuiz::where('lesson_id', $request->lesson_id)->where('step_id', $request->section_id)->get();
+                foreach($quiz as $val){
+                    CourseLessonQuizOption::where('quiz_id', $val->id)->delete();
+                }
+                CourseLessonQuiz::where('lesson_id', $request->lesson_id)->where('step_id', $request->section_id)->delete();
+                CourseLessonStep::where('course_lesson_id', $request->lesson_id)->where('id', $request->section_id)->delete();
+                return redirect()->back()->with('success', 'Section deleted successfully');
+            }
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    public function lessonSectionUpdate(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return errorMsg($validator->errors()->first());
+            } else {
+                $step = CourseLessonStep::where('id', $request->id)->first();
+                if($request->hasFile('file')){
+                    $step->details = fileUpload($request->file, 'uploads/course/lesson/'.$step->type);
+                }
+                $step->title = $request->title ?? null;
+                $step->description = $request->description ?? null;
+                $step->save();
+                return redirect()->back()->with('success', 'Section updated successfully');
+            }
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
     public function lessonSectionCreate(Request $request)
     {
         try {
-            $type = array_unique($request->type);
+            // dd($request->all());
 
+            $type = array_unique($request->type);
             if (array_has_dupes($request->queue)) {
                 return errorMsg("Two sections cannot have the same serial order please check and change the serial order.");
             }
-
-            // dd($request->all());
-
             if (isset($type) && count($type) > 0) {
                 foreach ($type as $key => $value) {
                     if ($type[$key] == 'video') {

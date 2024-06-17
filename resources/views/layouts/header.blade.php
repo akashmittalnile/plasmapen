@@ -18,8 +18,8 @@
                 <li class="nav-item lang-dropdown dropdown">
                     <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="lang-icon">
-                            <img src="{{ assets('assets/images/en.png') }}" alt="user">
-                            EN
+                            <img src="{{ assets('assets/images/'.config('app.locale').'.png' ) }}" alt="{{config('app.locale')}}">
+                            {{ session()->get('locale') == 'en' ? 'EN' : 'ES' }}
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
                         </div>
                     </a>

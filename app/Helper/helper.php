@@ -114,4 +114,49 @@ if (!function_exists('array_has_dupes')) {
     }
 }
 
+// Dev name : Dishant Gupta
+// This function is used to push notification using firebase
+if (!function_exists('sendNotification')) {
+    function sendNotification($token, $data)
+    {
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $serverKey = env('FIREBASE_SERVER_KEY'); // ADD SERVER KEY HERE PROVIDED BY FCM
+        $msg = array(
+            'body'  => $data['msg'] ?? 'NA',
+            'title' => $data['title'] ?? "Journey with Journals",
+            'icon'  => "{{ assets('assets/images/logo2.svg') }}", //Default Icon
+            'sound' => 'default'
+        );
+        $arr = array(
+            'to' => $token,
+            'notification' => $msg,
+            'data' => $data,
+            "priority" => "high"
+        );
+        $encodedData = json_encode($arr);
+        $headers = [
+            'Authorization:key=' . $serverKey,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        // Disabling SSL Certificate support temporarly
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+        // Execute post
+        $result = curl_exec($ch);
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }
+        // Close connection
+        curl_close($ch);
+    }
+}
+
 ?>

@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ImageUploadController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\LangController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route; 
@@ -59,6 +62,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('/courses/lesson/delete', [CourseController::class, 'deleteLesson'])->name('course.lesson.delete');
 
         Route::post('/courses/lesson/section/create', [CourseController::class, 'lessonSectionCreate'])->name('course.lesson.section.create');
+        Route::post('/courses/lesson/section/delete', [CourseController::class, 'lessonSectionDelete'])->name('course.lesson.section.delete');
+        Route::post('/courses/lesson/section/update', [CourseController::class, 'lessonSectionUpdate'])->name('course.lesson.section.update');
 
 
         // product
@@ -70,6 +75,23 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 
         //blog
+        Route::get('/blogs', [BlogController::class, 'list'])->name('blog.list');
+        Route::post('/blog/store', [BlogController::class, 'blogCreate'])->name('blog.store');
+        Route::post('/blog/delete', [BlogController::class, 'blogDelete'])->name('blog.delete');
+        Route::get('/blog/detail/{id}', [BlogController::class, 'getBlogDetail'])->name('blog.detail');
+        Route::post('/blog/update', [BlogController::class, 'blogUpdate'])->name('blog.update');
+
+        Route::post('/image-upload', [ImageUploadController::class, 'uploadImage'])->name('image-upload');
+        Route::post('/image-delete', [ImageUploadController::class, 'deleteImage'])->name('image-delete');
+
+
+        // support & communication
+        Route::get('/help-support', [SupportController::class, 'supportCommunication'])->name('support.list');
+        Route::post('/send-reply', [SupportController::class, 'sendReply'])->name('support.send.reply');
+
+        // notification
+        Route::get('/notifications', [SupportController::class, 'notification'])->name('notification.list');
+        Route::post('/create-notifications', [SupportController::class, 'createNotification'])->name('notification.store');
 
         // logout
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

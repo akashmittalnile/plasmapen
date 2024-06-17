@@ -46,6 +46,12 @@
 
         </div>
     </div>
+
+    <div class="plas-table-pagination">
+        <ul class="plas-pagination" id="appendPagination">
+        </ul>
+    </div>
+    
 </div>
 @endsection
 
