@@ -74,53 +74,49 @@
                                     <h3>Video</h3>
                                 </div>
                                 <div class="add-course-action">
-                                    <a href="javascript:void(0)" class="btndelete"> Delete Section</a>
+                                    <a href="javascript:void(0)" class="btndelete delete-section" data-id="{{ $data->id }}"> Delete Section</a>
                                 </div>
                             </div>
                             <div class="add-course-content-section add-course-form">
-                                <div class="row">
-                                    <div class="col-md-6">
-
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <h4>Video Title </h4>
-                                            <input type="text" class="form-control" name="video_title" value="{{ $data->title ?? 'NA' }}" id="">
+                                <form action="{{ route('admin.course.lesson.section.update') }}" method="post" enctype="multipart/form-data"> @csrf
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <h4>Video Title </h4>
+                                                <input type="text" class="form-control" name="title" value="{{ $data->title ?? 'NA' }}" id="" required>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <h4>Upload Video </h4>
-                                            <input type="file" data-count="{{$data->id}}" id="video-file-{{$data->id}}" onchange="previewVideo(event)" required accept="video/mp4" class="form-control" name="video_file">
-                                            <div class="Uploaded-group upload-file-item-{{$data->id}} @if(!isset($data->details)) d-none @endif">
-                                                <h4>Uploaded Video</h4>
-                                                <div class="upload-file-item0">
-                                                    <div class="upload-file-media">
-                                                        <video controls class="video-preview-{{$data->id}} @if(!isset($data->details)) d-none @endif">
-                                                            <source src="{{ assets('uploads/course/lesson/video/'.$data->details) }}" type="video/mp4">
-                                                            Your browser does not support the video tag.
-                                                        </video>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <h4>Upload Video </h4>
+                                                <input type="file" data-count="{{$data->id}}" id="video-file-{{$data->id}}" onchange="previewVideo(event)"  accept="video/mp4" class="form-control" name="file">
+                                                <div class="Uploaded-group upload-file-item-{{$data->id}} @if(!isset($data->details)) d-none @endif">
+                                                    <h4>Uploaded Video</h4>
+                                                    <div class="upload-file-item0">
+                                                        <div class="upload-file-media">
+                                                            <video controls class="video-preview-{{$data->id}} @if(!isset($data->details)) d-none @endif">
+                                                                <source src="{{ assets('uploads/course/lesson/video/'.$data->details) }}" type="video/mp4">
+                                                                Your browser does not support the video tag.
+                                                            </video>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <h4>Video Decription</h4>
-                                            <textarea type="text" class="form-control" name="video_description" placeholder="Enter description">{{ $data->description ?? 'NA' }}</textarea>
+                                        <input type="hidden" name="id" value="{{$data->id}}">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <h4>Video Decription</h4>
+                                                <textarea type="text" class="form-control" name="description" required placeholder="Enter description">{{ $data->description ?? 'NA' }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <button class="updatebtn" type="submit">Update</button>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <button class="updatebtn">Update</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                         @elseif($data->type == 'pdf')
@@ -130,48 +126,48 @@
                                     <h3>PDF</h3>
                                 </div>
                                 <div class="add-course-action">
-                                    <a href="javascript:void(0)" class="btndelete"> Delete Section</a>
+                                    <a href="javascript:void(0)" class="btndelete delete-section" data-id="{{ $data->id }}"> Delete Section</a>
                                 </div>
                             </div>
                             <div class="add-course-content-section add-course-form">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <h4>PDF Title </h4>
-                                            <input type="text" class="form-control" name="pdf_title" value="{{ $data->title ?? 'NA' }}" id="PDFtitle">
+                                <form action="{{ route('admin.course.lesson.section.update') }}" method="post" enctype="multipart/form-data"> @csrf
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <h4>PDF Title </h4>
+                                                <input type="text" class="form-control" name="title" value="{{ $data->title ?? 'NA' }}" id="PDFtitle" required>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <h4>Upload PDF </h4>
-                                            <input type="file" data-count="{{$data->id}}" id="pdf-file-{{$data->id}}" onchange="previewPdf(event)" required class="form-control" name="pdf_file[{{$data->id}}]" accept="application/pdf">
-                                            <div class="Uploaded-group upload-pdf-item-{{$data->id}} @if(!isset($data->details)) d-none @endif">
-                                                <h4>Uploaded PDF</h4>
-                                                <div class="upload-file-item0">
-                                                    <div class="upload-file-media">
-                                                        <a id="view-pdf-{{$data->id}}" href="{{ assets('uploads/course/lesson/pdf/'.$data->details) }}" target="_black" class="@if(!isset($data->details)) d-none @endif pdf-preview-{{$data->id}}">
-                                                            <img src="{{ assets('assets/images/document-text.svg') }}" />
-                                                        </a>
+                                        <input type="hidden" name="id" value="{{$data->id}}">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <h4>Upload PDF </h4>
+                                                <input type="file" data-count="{{$data->id}}" id="pdf-file-{{$data->id}}" onchange="previewPdf(event)" class="form-control" name="file" accept="application/pdf">
+                                                <div class="Uploaded-group upload-pdf-item-{{$data->id}} @if(!isset($data->details)) d-none @endif">
+                                                    <h4>Uploaded PDF</h4>
+                                                    <div class="upload-file-item0">
+                                                        <div class="upload-file-media">
+                                                            <a id="view-pdf-{{$data->id}}" href="{{ assets('uploads/course/lesson/pdf/'.$data->details) }}" target="_black" class="@if(!isset($data->details)) d-none @endif pdf-preview-{{$data->id}}">
+                                                                <img src="{{ assets('assets/images/document-text.svg') }}" />
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <h4>PDF Decription</h4>
-                                            <textarea type="text" class="form-control" name="pdf_description" placeholder="PDF Decription" data-gramm="false" wt-ignore-input="true">{{ $data->description ?? 'NA' }}</textarea>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <h4>PDF Decription</h4>
+                                                <textarea type="text" class="form-control" required name="description" placeholder="PDF Decription" data-gramm="false" wt-ignore-input="true">{{ $data->description ?? 'NA' }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <button class="updatebtn" type="submit">Update</button>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <button class="updatebtn">Update</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                         @elseif($data->type == 'quiz')
@@ -187,7 +183,7 @@
                                 </div>
                                 <div class="add-course-action">
                                     <a href="javascript:void(0)" class="btnAddQuestion"> Add Question</a>
-                                    <a href="javascript:void(0)" class="btndelete"> Delete Section</a>
+                                    <a href="javascript:void(0)" class="btndelete delete-section" data-id="{{ $data->id }}"> Delete Section</a>
                                 </div>
                             </div>
 
@@ -202,7 +198,7 @@
                                     </div>
                                     <div class="plas-questionnaire-ans mb-0" style="padding: 5px; width: 15%;">
                                         <div class="plas-questionnaire-text">
-                                            <input type="number" class="form-control" placeholder="Enter marks" name="question_marks" value="" required style="padding: 6px;">
+                                            <input type="number" class="form-control" placeholder="Enter marks" name="question_marks" value="{{ $quiz->marks ?? 0 }}" required style="padding: 6px;">
                                         </div>
                                     </div>
                                 </div>
@@ -224,8 +220,8 @@
                                                     <button class="remove-btn">Remove</button>
                                                 </div>
                                                 <div class="plasradio1">
-                                                    <input type="radio" @if($option->is_correct) checked @endif name="quiz1" id="quiz1">
-                                                    <label for="quiz1">&nbsp;</label>
+                                                    <input type="radio" @if($option->is_correct) checked @endif name="radio{{$quiz->id}}" id="quiz{{$option->id}}">
+                                                    <label for="quiz{{$option->id}}">&nbsp;</label>
                                                 </div>
                                                 <div class="plas-add-questionnaire-tooltip">
                                                     <div class="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Correct Answer">
@@ -254,7 +250,7 @@
                                     <h3>Assignment</h3>
                                 </div>
                                 <div class="add-course-action">
-                                    <a href="javascript:void(0)" class="btndelete"> Delete Section</a>
+                                    <a href="javascript:void(0)" class="btndelete delete-section" data-id="{{ $data->id }}"> Delete Section</a>
                                 </div>
                             </div>
                             @foreach($data->quiz as $val)
@@ -311,7 +307,7 @@
                                 </div>
                                 <div class="add-course-action">
                                     <a href="javascript:void(0)" class="btnAddQuestion"> Add Question</a>
-                                    <a href="javascript:void(0)" class="btndelete"> Delete Section</a>
+                                    <a href="javascript:void(0)" class="btndelete delete-section" data-id="{{ $data->id }}"> Delete Section</a>
                                 </div>
                             </div>
                             <div class="add-course-content-section">
@@ -487,6 +483,33 @@
     </div>
 </div>
 
+<!-- Delete Lesson -->
+<div class="modal lm-modal fade" id="deleteSectionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="Plasma-modal-form">
+                    <h2>{{ translate('Are You Sure?') }}</h2>
+                    <p>{{ translate('You want to delete this section!') }}</p>
+                    <form action="{{ route('admin.course.lesson.section.delete') }}" method="post">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-12 d-flex justify-content-center">
+                                <input type="hidden" name="lesson_id" id="sectionLessonId" value="{{ $lessonId }}">
+                                <input type="hidden" name="section_id" id="sectionId" value="">
+                                <div class="form-group">
+                                    <button class="cancel-btn" data-bs-dismiss="modal" aria-label="Close" type="button">{{ translate('Cancel') }}</button>
+                                    <button type="submit" class="save-btn">{{ translate('Yes! Delete') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('js')
@@ -499,6 +522,11 @@
     $(document).on("click", ".deleteLessonBtn", function() {
         $("#deleteLessonId").val($(this).data('id'));
         $("#deleteLessonModal").modal("show");
+    });
+
+    $(document).on("click", ".delete-section", function() {
+        $("#sectionId").val($(this).data('id'));
+        $("#deleteSectionModal").modal("show");
     });
 
     $('#addLessonForm').validate({

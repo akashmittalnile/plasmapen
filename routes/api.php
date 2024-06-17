@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\SupportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('courses', [CourseController::class, 'courses']);
     Route::get('course-details/{id}', [CourseController::class, 'courseDetails']);
+
+    Route::post('create-query', [SupportController::class, 'createQuery']);
+    Route::get('query-list', [SupportController::class, 'queryList']);
 });
 
 Route::get('token-expire', [AuthController::class, 'tokenExpire'])->name('login');

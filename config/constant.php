@@ -3,6 +3,7 @@
 return [
     'siteTitle' => 'Plasma Pen | Plasma Fibroblast Devices and World Class training',
     'paginatePerPage' => 10,
+	'apiPaginatePerPage' => 10,
     'role' => array(
 		'Admin' => 1,
 		'User' => 2,

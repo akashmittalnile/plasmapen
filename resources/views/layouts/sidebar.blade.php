@@ -22,7 +22,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{ Route::is('admin.course.*') ? 'active' : '' }}"">
+                <li class="nav-item {{ Route::is('admin.course.*') ? 'active' : '' }}">
                     <a class=" nav-link" href="{{ route('admin.course.list') }}">
                     <span class="menu-icon"><img src="{{ assets('assets/images/book.svg') }}"></span>
                     <span class="menu-title">{{ translate('Manage Course') }}</span>
@@ -50,8 +50,8 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="notifications.html">
+                <li class="nav-item {{ Route::is('admin.notification.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.notification.list') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/notification1.svg') }}"></span>
                         <span class="menu-title">{{ translate('Manage Notifications') }}</span>
                     </a>
@@ -68,8 +68,8 @@
                         <span class="menu-title">{{ translate('Performance') }}</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="help-support.html">
+                <li class="nav-item {{ Route::is('admin.support.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.support.list') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/Help.svg') }}"></span>
                         <span class="menu-title">{{ translate('Help & Support') }}</span>
                     </a>
