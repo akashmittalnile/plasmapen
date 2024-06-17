@@ -1,14 +1,16 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ImageUploadController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\LangController;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route; 
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +75,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 
         //blog
+        Route::get('/blogs', [BlogController::class, 'list'])->name('blog.list');
+        Route::post('/blog/store', [BlogController::class, 'blogCreate'])->name('blog.store');
+        Route::post('/blog/delete', [BlogController::class, 'blogDelete'])->name('blog.delete');
+        Route::get('/blog/detail/{id}', [BlogController::class, 'getBlogDetail'])->name('blog.detail');
+        Route::post('/blog/update', [BlogController::class, 'blogUpdate'])->name('blog.update');
+
+        Route::post('/image-upload', [ImageUploadController::class, 'uploadImage'])->name('image-upload');
+        Route::post('/image-delete', [ImageUploadController::class, 'deleteImage'])->name('image-delete');
 
 
         // support & communication

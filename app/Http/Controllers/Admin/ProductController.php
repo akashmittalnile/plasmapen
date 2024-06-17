@@ -44,7 +44,7 @@ class ProductController extends Controller
                     </div>";
                 }
 
-                if ($data->total() < 1) return errorMsg("No courses found");
+                if ($data->total() < 1) return errorMsg("No product found");
                 $response = array(
                     'currentPage' => $data->currentPage(),
                     'lastPage' => $data->lastPage(),
@@ -133,7 +133,7 @@ class ProductController extends Controller
     }
 
 
-    //function used to update the new product
+    //function used to update the product
     public function productUpdate(Request $request)
     {
         try {

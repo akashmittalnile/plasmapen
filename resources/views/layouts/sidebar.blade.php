@@ -44,7 +44,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="blogs.html">
+                    <a class="nav-link" href="{{ route('admin.blog.list') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/blogs.svg') }}"></span>
                         <span class="menu-title">{{ translate('Manage Blogs') }}</span>
                     </a>
