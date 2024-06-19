@@ -29,7 +29,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item {{ Route::is('admin.product.*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('admin.product.list') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/products.svg') }}"></span>
                         <span class="menu-title">{{ translate('Manage Products') }}</span>

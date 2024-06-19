@@ -23,6 +23,7 @@
     <link rel="stylesheet" type="text/css" href="{{ assets('assets/plugins/apexcharts/apexcharts.css') }}">
 
     <link rel="stylesheet" type="text/css" href="{{ assets('assets/css/notify.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ assets('assets/plugins/OwlCarousel/assets/owl.carousel.min.css') }}">
 
     @stack('css')
 
@@ -43,9 +44,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
-
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropzone@5.9.2/dist/min/dropzone.min.css">
+    <script src="{{ assets('assets/plugins/OwlCarousel/owl.carousel.min.js') }}" type="text/javascript"></script>
     <!-- end script js -->
 
 </head>
@@ -161,7 +163,7 @@
     <!-- script js -->
 
     <script src="{{ assets('assets/plugins/jquery-validation/jquery.validate.min.js') }}" type="text/javascript"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.0/dropzone.js"></script>
     <script type="text/javascript">
 
         window.addEventListener('load', function() {

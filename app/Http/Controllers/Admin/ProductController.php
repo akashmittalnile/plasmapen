@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -22,23 +23,42 @@ class ProductController extends Controller
                 $data = $data->paginate(config('constant.paginatePerPage'));
                 $html = "";
                 foreach ($data as $val) {
-                    $image = (isset($val->image) && file_exists(public_path('uploads/course/image/' . $val->image))) ? assets('uploads/course/image/' . $val->image) : assets('assets/images/no-image.jpg');
+
+                    $image_html = "";
+                    foreach($val->images() as $name){
+                        $image_html .= "<div class='item'>
+                        <div class='community-media'>
+                                <a data-fancybox='' href='".assets("uploads/product/$name->item_name")."'>
+                                    <img src='".assets("uploads/product/$name->item_name")."'>
+                                </a>
+                            </div>
+                        </div>";
+                    }
+                    if($image_html == "") {
+                        $image_html = "<div class='item'>
+                        <div class='community-media'>
+                                <img src='".assets('assets/images/no-image.jpg')."'>
+                            </div>
+                        </div>";
+                    }
+
                     $html .= "<div class='col-md-3'>
                         <div class='product-card'>
                             <div class='product-card-image'>
-                                <img src='" . $image . "'>
+                                $image_html
                                 <div class='published-text'><img src='" . assets('assets/images/tick-circle.svg') . "'>" . config('constant.courseStatus')[$val->status] . "</div>
                             </div>
                             <div class='product-card-content'>
                                 <h2>$val->title</h2>
                                 <div class='product-card-point-text'>
                                     <div class='productfee-text'>$$val->price</div>
-                                    <div class='Purchases-text'>456 Purchases</div>
+                                    <div class='Purchases-text'>0 Purchases</div>
                                 </div>
                             </div>
                             <div class='product-card-action-text'>
-                                <a class='deletebtn' data-id='" . encrypt_decrypt('encrypt', $val->id) . "' href='javascript:void(0)'>Delete</a>
-                                <a class='Editbtn' data-id='" . encrypt_decrypt('encrypt', $val->id) . "' href='javascript:void(0)'>Edit</a>
+                                <!-- <a class='deletebtn' data-id='" . encrypt_decrypt('encrypt', $val->id) . "' href='javascript:void(0)'>Delete</a>
+                                <a class='Editbtn' data-id='" . encrypt_decrypt('encrypt', $val->id) . "' data-title='$val->title' data-description='$val->description' data-price='$val->price' href='javascript:void(0)'>Edit</a> -->
+                                <a class='Addbtn' style='padding: 5px 123px;' href='" . route('admin.product.info', encrypt_decrypt('encrypt', $val->id)) . "'>Info</a>
                             </div>
                         </div>
                     </div>";
@@ -67,27 +87,32 @@ class ProductController extends Controller
                 'title' => 'required|string',
                 'price' => 'required',
                 'description' => 'required|string',
-                'image' => 'required'
+                'array_of_image' => 'required'
             ]);
 
             if ($validator->fails()) {
                 return errorMsg($validator->errors()->first());
             } else {
                 $product = new Product;
-
-                if ($request->hasFile("image")) {
-                    $image = fileUpload($request->image, "/uploads/product");
-                    $product->image = $image;
-                }
-
-
+                
                 $product->title = $request->title ?? null;
                 $product->price = $request->price ?? null;
                 $product->description = $request->description ?? null;
                 $product->status = 1;
                 $product->save();
 
-                return redirect()->back()->with('success', 'Product created successfully');
+                $array_of_image = json_decode($request->array_of_image);
+                if(is_array($array_of_image) && count($array_of_image)>0){
+                    foreach($array_of_image as $val){
+                        $image = new Image;
+                        $image->item_name = $val;
+                        $image->item_id = $product->id;
+                        $image->item_type = 'product';
+                        $image->save();
+                    }
+                }
+
+                return successMsg('Product created successfully');
             }
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
@@ -106,13 +131,13 @@ class ProductController extends Controller
             } else {
                 $id = encrypt_decrypt('decrypt', $request->id);
                 $product = Product::where('id', $id)->first();
-                if (isset($product->image)) {
-                    fileRemove("/uploads/product/$product->image");
+                foreach($product->images() as $val){
+                    fileRemove("/uploads/product/$val->item_name");
                 }
-
+                Image::where('item_id', $id)->where('item_type', 'product')->delete();
                 Product::where('id', $id)->delete();
 
-                return redirect()->back()->with('success', 'Product deleted successfully');
+                return redirect()->route('admin.product.list')->with('success', 'Product deleted successfully');
             }
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
@@ -120,13 +145,13 @@ class ProductController extends Controller
     }
 
     //function used to get the product detail
-    public function getProductDetail($id)
+    public function getProductInfo($id)
     {
         try {
             $id = encrypt_decrypt('decrypt', $id);
             $product = Product::where('id', $id)->first();
-            $product->image = assets('uploads/course/image/' . $product->image);
-            return response()->json(['status' => true, 'message' => 'Product detail.', 'data' => $product]);
+            $imgs = $product->images();
+            return view('pages.product.details')->with(compact('product', 'imgs'));
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
