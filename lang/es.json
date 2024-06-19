@@ -81,6 +81,14 @@
 
     "Manage Coupon": "Administrar cupón",
     "Save": "Ahorrar",
+    "Update": "Actualizar",
     "Back": "Atrás",
-    "Create New Course": "Crear nuevo curso"
+    "Create New Course": "Crear nuevo curso",
+    "Edit Course": "Editar curso",
+    "Description": "Descripción",
+    "Course Fees": "Precio del curso",
+    "Upload Course Image": "Cargar imagen del curso",
+    "Prerequisite": "Requisito previo",
+    "Disclaimers & Introduction": "Descargos de responsabilidad e introducción",
+    "Course Title": "Título del curso"
 }

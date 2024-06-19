@@ -42,7 +42,7 @@ class CourseController extends Controller
                                 </div>
                                 <div class='course-card-action-text'>
                                     <a class='deletebtn' data-id='" . encrypt_decrypt('encrypt', $val->id) . "' href='javascript:void(0)'>Delete</a>
-                                    <a class='Editbtn' href='javascript:void(0)'>Edit</a>
+                                    <a class='Editbtn' href='" . route('admin.course.edit', encrypt_decrypt('encrypt', $val->id)) . "'>Edit</a>
                                     <a class='Addbtn' href='" . route('admin.course.lesson.empty', encrypt_decrypt('encrypt', $val->id)) . "'>Add Lessons</a>
                                 </div>
                             </div>
@@ -116,6 +116,58 @@ class CourseController extends Controller
         }
     }
 
+    // Dev Name :- Dishant Gupta
+    public function createEdit($id)
+    {
+        try {
+            $id = encrypt_decrypt('decrypt', $id);
+            $data = Course::where('id', $id)->first();
+            $course = Course::where('status', 1)->where('id', '!=', $id)->orderByDesc('id')->get();
+            return view('pages.course.edit')->with(compact('course', 'data'));
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    // Dev Name :- Dishant Gupta
+    public function courseUpdate(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+                'title' => 'required|string',
+                'description' => 'required|string',
+                'fees' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return errorMsg($validator->errors()->first());
+            } else {
+                $id = encrypt_decrypt('decrypt', $request->id);
+                $course = Course::where('id', $id)->first();
+
+                if ($request->hasFile("image")) {
+                    $image = fileUpload($request->image, "/uploads/course/image");
+                    $course->image = $image;
+                }
+                if ($request->hasFile("video")) {
+                    $video = fileUpload($request->video, "/uploads/course/video");
+                    $course->video = $video;
+                }
+
+                $course->title = $request->title ?? null;
+                $course->description = $request->description ?? null;
+                $course->course_fee = $request->fees ?? null;
+                $course->prerequisite = $request->prerequisite ?? null;
+                $course->save();
+
+                return response()->json(['status' => true, 'message' => 'Course updated successfully.', 'route' => route("admin.course.list")]);
+            }
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    // Dev Name :- Dishant Gupta
     public function courseDelete(Request $request)
     {
         try {
@@ -134,9 +186,9 @@ class CourseController extends Controller
                     fileRemove("/uploads/course/video/$course->video");
                 }
                 $lesson = CourseLesson::where('course_id', $id)->get();
-                foreach($lesson as $val){
+                foreach ($lesson as $val) {
                     $quiz = CourseLessonQuiz::where('lesson_id', $val->id)->get();
-                    foreach($quiz as $val1){
+                    foreach ($quiz as $val1) {
                         CourseLessonQuizOption::where('quiz_id', $val1->id)->delete();
                     }
                     CourseLessonQuiz::where('lesson_id', $val->id)->delete();
@@ -152,6 +204,7 @@ class CourseController extends Controller
         }
     }
 
+    // Dev Name :- Dishant Gupta
     public function courseLessonEmpty($courseId)
     {
         try {
@@ -170,6 +223,7 @@ class CourseController extends Controller
         }
     }
 
+    // Dev Name :- Dishant Gupta
     public function courseLessonAll($courseId, $lessonId)
     {
         try {
@@ -186,6 +240,7 @@ class CourseController extends Controller
         }
     }
 
+    // Dev Name :- Dishant Gupta
     public function saveCourseLesson(Request $request)
     {
         try {
@@ -210,6 +265,7 @@ class CourseController extends Controller
         }
     }
 
+    // Dev Name :- Dishant Gupta
     public function deleteLesson(Request $request)
     {
         try {
@@ -222,13 +278,13 @@ class CourseController extends Controller
                 $id = encrypt_decrypt('decrypt', $request->id);
                 $lesson = CourseLesson::where('id', $id)->first();
                 $quiz = CourseLessonQuiz::where('lesson_id', $id)->get();
-                foreach($quiz as $val){
+                foreach ($quiz as $val) {
                     CourseLessonQuizOption::where('quiz_id', $val->id)->delete();
                 }
                 CourseLessonQuiz::where('lesson_id', $id)->delete();
                 CourseLessonStep::where('course_lesson_id', $id)->delete();
                 CourseLesson::where('id', $id)->delete();
-                $latestLesson = CourseLesson::where('course_id',$lesson->course_id)->orderByDesc('id')->first();
+                $latestLesson = CourseLesson::where('course_id', $lesson->course_id)->orderByDesc('id')->first();
                 if (isset($latestLesson->id)) {
                     return redirect()->route('admin.course.lesson.all', ['courseId' => encrypt_decrypt('encrypt', $lesson->course_id), 'lessonId' => encrypt_decrypt('encrypt', $latestLesson->id)])->with('success', 'Lesson deleted successfully');
                 } else {
@@ -240,6 +296,7 @@ class CourseController extends Controller
         }
     }
 
+    // Dev Name :- Dishant Gupta
     public function lessonSectionDelete(Request $request)
     {
         try {
@@ -251,7 +308,7 @@ class CourseController extends Controller
                 return errorMsg($validator->errors()->first());
             } else {
                 $quiz = CourseLessonQuiz::where('lesson_id', $request->lesson_id)->where('step_id', $request->section_id)->get();
-                foreach($quiz as $val){
+                foreach ($quiz as $val) {
                     CourseLessonQuizOption::where('quiz_id', $val->id)->delete();
                 }
                 CourseLessonQuiz::where('lesson_id', $request->lesson_id)->where('step_id', $request->section_id)->delete();
@@ -263,6 +320,7 @@ class CourseController extends Controller
         }
     }
 
+    // Dev Name :- Dishant Gupta
     public function lessonSectionUpdate(Request $request)
     {
         try {
@@ -273,8 +331,8 @@ class CourseController extends Controller
                 return errorMsg($validator->errors()->first());
             } else {
                 $step = CourseLessonStep::where('id', $request->id)->first();
-                if($request->hasFile('file')){
-                    $step->details = fileUpload($request->file, 'uploads/course/lesson/'.$step->type);
+                if ($request->hasFile('file')) {
+                    $step->details = fileUpload($request->file, 'uploads/course/lesson/' . $step->type);
                 }
                 $step->title = $request->title ?? null;
                 $step->description = $request->description ?? null;
@@ -286,6 +344,7 @@ class CourseController extends Controller
         }
     }
 
+    // Dev Name :- Dishant Gupta
     public function lessonSectionCreate(Request $request)
     {
         try {

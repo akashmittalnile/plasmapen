@@ -247,7 +247,7 @@
             let type = $("#selectType").val();
             getList($(this).data('page'), search, date, type);
         });
-        $(document).on('change', "#searchType", function() {
+        $(document).on('change', "#selectType", function() {
             let type = $(this).val();
             let search = $("#searchInput").val();
             let date = $("#selectDate").val();
@@ -264,7 +264,8 @@
                 if ($(window.event.srcElement).hasClass('ui-datepicker-close')) {
                     document.getElementById(this.id).value = '';
                     let search = $("#searchInput").val();
-                    getList($(this).data('page'), search, '');
+                    let type = $("#selectType").val();
+                    getList($(this).data('page'), search, '', type);
                 }
             }
         });

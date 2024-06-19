@@ -26,8 +26,8 @@ class CourseController extends Controller
                     $temp['description'] = $item->description;
                     $temp['course_fee'] = $item->course_fee;
                     $temp['currency'] = $item->currency;
-                    $temp['video'] = isset($item->video) ? assets('uploads/course/lesson/video/'.$item->video) : null;
-                    $temp['image'] = isset($item->image) ? assets('uploads/course/lesson/image/'.$item->image) : null;
+                    $temp['video'] = isset($item->video) ? assets('uploads/course/video/'.$item->video) : null;
+                    $temp['image'] = isset($item->image) ? assets('uploads/course/image/'.$item->image) : null;
                     $temp['lesson_count'] = $item->lessonCount();
                     $temp['status'] = $item->status;
                     $temp['created_date'] = date('m-d-Y h:iA', strtotime($item->created_at));

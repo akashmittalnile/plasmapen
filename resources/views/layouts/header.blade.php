@@ -120,7 +120,7 @@
                 <div class="Plasma-modal-form">
                     <h2>{{ translate('Are You Sure?') }}</h2>
                     <p>{{ translate('You want to logout!') }}</p>
-                    <form action="{{ route('admin.course.delete') }}" method="get">
+                    <form action="{{ route('admin.logout') }}" method="get">
                         @csrf
                         <div class="row">
                             <div class="col-md-12 d-flex justify-content-center">

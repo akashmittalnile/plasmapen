@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+
+    public function images(){
+        return $this->hasMany(Image::class, 'item_id', 'id')->where('item_type', 'product')->orderByDesc('id')->get();
+    }
 }

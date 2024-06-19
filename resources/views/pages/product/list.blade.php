@@ -36,14 +36,11 @@
                         </ul>
                     </div>
                 </div>
-
                 <div class="col-md-3">
                     <div class="form-group">
                         <a href="javascript:void(0)" class="btn-pi">Manage Coupon</a>
                     </div>
                 </div>
-
-
                 <div class="col-md-3">
                     <div class="form-group">
                         <a data-bs-toggle="modal" data-bs-target="#Createproduct" class="btn-bl">Create New product</a>
@@ -52,8 +49,6 @@
             </div>
         </div>
     </div>
-
-
 
     <div class="course-section">
         <div class="row" id="appendData">
@@ -82,7 +77,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <input type="number" min="0" step="any" class="form-control" placeholder="Product Price" name="price">
                                 </div>
@@ -93,24 +88,26 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12">
-
-                                <div class="form-group">
-                                    <div class="added-course-card">
-                                        <div class="added-course-card-image">
-                                            <img id="show-image" src="" height="80">
-                                            <br><br>
+                            <div class="product-item-card">
+                                <div class="card-header form-group" style="border-bottom: none;">
+                                    <div class="d-flex flex-column justify-content-between">
+                                        <div class="dropzone" id="multipleImage">
+                                            <div class="dz-default dz-message">
+                                                <span>Click once inside the box to upload an image
+                                                    <br>
+                                                    <small class="text-danger">Make sure the image size is less than 5 MB</small>
+                                                </span>
+                                            </div>
                                         </div>
+                                        <input type="hidden" id="arrayOfImage" name="array_of_image" value="">
                                     </div>
-                                    <input type="file" name="image" class="form-control" accept="image/png, image/jpg, image/jpeg">
                                 </div>
-
                             </div>
 
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <button class="cancel-btn" data-bs-dismiss="modal" aria-label="Close">Discard</button>
+                                    <button class="cancel-btn" data-bs-dismiss="modal" aria-label="Close" type="button">{{ translate('Cancel') }}</button>
                                     <button type="submit" class="save-btn">Save & Published Product</button>
                                 </div>
                             </div>
@@ -121,63 +118,6 @@
         </div>
     </div>
 </div>
-
-
-<!-- Update  product -->
-<div class="modal lm-modal fade" id="Updateproduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="Plasma-modal-form">
-                    <h2>Update Product</h2>
-                    <div class="row">
-                        <form action="{{ route('admin.product.update') }}" id="add-product-form" method="post" enctype='multipart/form-data'>
-                            @csrf
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Product Title" id="update-title" name="title" required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <input type="number" min="0" step="any" class="form-control" id="update-price" placeholder="Product Price" name="price">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <textarea type="text" name="description" class="form-control" id="update-description" placeholder="Product Description"></textarea>
-                                    <input type="hidden" id="product-id-update" name="id">
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="added-course-card">
-                                        <div class="added-course-card-image">
-                                            <img id="show-image-update" src="" height="80">
-                                            <br><br>
-                                        </div>
-                                    </div>
-                                    <input type="file" onchange="loadImageFileUpdate(event)" name="image" class="form-control" id="update-image" accept="image/png, image/jpg, image/jpeg">
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <button class="cancel-btn" data-bs-dismiss="modal" aria-label="Close">Discard</button>
-                                    <button type="submit" class="save-btn">Update Product</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <!-- Delete -->
 <div class="modal lm-modal fade" id="openDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -207,51 +147,85 @@
 @endsection
 
 @push('js')
-<script>
+<script type="text/javascript">
+    let arrOfImg = [];
+    Dropzone.options.multipleImage = {
+        maxFilesize: 5,
+        renameFile: function(file) {
+            return file.name;
+        },
+        acceptedFiles: ".jpeg,.jpg,.png",
+        timeout: 5000,
+        addRemoveLinks: true,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        url: "{{ route('admin.image-upload', ['type' => 'product']) }}",
+        removedfile: function(file) {
+            var name = file.upload.filename;
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                },
+                type: 'POST',
+                url: '{{ route("admin.image-delete") }}',
+                data: {
+                    filename: name,
+                    type: 'product'
+                },
+                success: function(data) {
+                    if (data.status) {
+                        console.log("File deleted successfully!!");
+                        if (data.key == 2) {
+                            const inde = arrOfImg.indexOf(data.file_name);
+                            if (inde > -1) {
+                                arrOfImg.splice(inde, 1);
+                                $("#arrayOfImage").val(JSON.stringify(arrOfImg));
+                            }
+                        }
+                        let oplength = arrOfImg.length;
+                        if (oplength > 0) {
+                            $('.dz-default.dz-message').hide();
+                        } else $('.dz-default.dz-message').show();
+                    } else {
+                        console.log("File not deleted!!");
+                    }
+                },
+                error: function(e) {
+                    console.log(e);
+                }
+            });
+            var fileRef;
+            return (fileRef = file.previewElement) != null ?
+                fileRef.parentNode.removeChild(file.previewElement) : void 0;
+        },
+        success: function(file, response) {
+            if (response.key == 1) {
+                arrOfImg.push(response.file_name);
+                $("#arrayOfImage").val(JSON.stringify(arrOfImg));
+                console.log(arrOfImg);
+                file.upload.filename = response.file_name;
+                let oplength = arrOfImg.length;
+                if (oplength > 0) {
+                    $('.dz-default.dz-message').hide();
+                } else $('.dz-default.dz-message').show();
+            }
+        },
+        error: function(file, response) {
+            let oplength = arrOfImg.length;
+            if (oplength > 0) {
+                $('.dz-default.dz-message').hide();
+            } else $('.dz-default.dz-message').show();
+            console.log(file.previewElement);
+            var fileRef;
+            return (fileRef = file.previewElement) != null ? fileRef.parentNode.removeChild(file.previewElement) : null;
+        }
+    };
+    console.log(arrOfImg);
+
     $(document).on("click", ".deletebtn", function() {
         $("#productId").val($(this).data('id'));
         $("#openDeleteModal").modal("show");
-    });
-
-    const loadImageFile = (event) => {
-        $("#show-image").attr({
-            src: URL.createObjectURL(event.target.files[0])
-        });
-    };
-
-    const loadImageFileUpdate = (event) => {
-        $("#show-image-update").attr({
-            src: URL.createObjectURL(event.target.files[0])
-        });
-    };
-
-    $(document).on("click", ".Editbtn", function() {
-        let id = $(this).data('id');
-        // console.log(id);
-        $.ajax({
-            type: 'get',
-            url: baseUrl +
-                "/admin/product/detail/" +
-                id,
-            dataType: 'json',
-            success: function(result) {
-                if (result.status) {
-                    $("#update-title").val(result.data.title);
-                    $("#update-price").val(result.data.price);
-                    $("#update-description").val(result.data.description);
-                    $("#show-image-update").attr("src", result.data.image);
-                    $("#product-id-update").val(result.data.id);
-                    $("#Updateproduct").modal("show");
-                } else {
-
-                }
-            },
-            error: function(data, textStatus, errorThrown) {
-                jsonValue = jQuery.parseJSON(data.responseText);
-                console.error(jsonValue.message);
-            },
-        });
-
     });
 
     $(document).ready(function() {

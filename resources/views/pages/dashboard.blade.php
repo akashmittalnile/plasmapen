@@ -15,7 +15,7 @@
                         <div class="overview-content">
                             <div class="overview-content-text">
                                 <p>{{ translate('Total Active Course') }}</p>
-                                <h2>6,502</h2>
+                                <h2>{{ $activeCou ? sprintf("%02d", $activeCou) : 0 }}</h2>
                             </div>
                             <div class="overview-content-icon">
                                 <img src="{{ assets('assets/images/activebook.svg') }}">
@@ -31,7 +31,7 @@
                         <div class="overview-content">
                             <div class="overview-content-text">
                                 <p>{{ translate('Total Inactive Course') }}</p>
-                                <h2>6,502</h2>
+                                <h2>{{ $inactiveCou ? sprintf("%02d", $inactiveCou) : 0 }}</h2>
                             </div>
                             <div class="overview-content-icon">
                                 <img src="{{ assets('assets/images/inactivebook.svg') }}">

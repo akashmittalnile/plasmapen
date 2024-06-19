@@ -54,6 +54,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/courses', [CourseController::class, 'list'])->name('course.list');
         Route::get('/course/create', [CourseController::class, 'createCourse'])->name('course.create');
         Route::post('/course/create', [CourseController::class, 'courseCreate'])->name('course.create.store');
+        Route::get('/course/edit/{id}', [CourseController::class, 'createEdit'])->name('course.edit');
+        Route::post('/course/update', [CourseController::class, 'courseUpdate'])->name('course.update.store');
         Route::post('/course/delete', [CourseController::class, 'courseDelete'])->name('course.delete');
         Route::get('/course/lesson/{courseId}', [CourseController::class, 'courseLessonEmpty'])->name('course.lesson.empty');
         Route::get('/course/lesson/{courseId}/{lessonId}', [CourseController::class, 'courseLessonAll'])->name('course.lesson.all');
@@ -70,7 +72,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/products', [ProductController::class, 'list'])->name('product.list');
         Route::post('/product/store', [ProductController::class, 'productCreate'])->name('product.store');
         Route::post('/product/delete', [ProductController::class, 'productDelete'])->name('product.delete');
-        Route::get('/product/detail/{id}', [ProductController::class, 'getProductDetail'])->name('product.detail');
+        Route::get('/product/info/{id}', [ProductController::class, 'getProductInfo'])->name('product.info');
         Route::post('/product/update', [ProductController::class, 'productUpdate'])->name('product.update');
 
 

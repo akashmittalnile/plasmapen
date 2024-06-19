@@ -11,21 +11,16 @@ class ImageUploadController extends Controller
     public function uploadImage(Request $request)
     {
         if ($request->has('file')) {
-            $file = $request->file('file');
-            $image = $file->getClientOriginalName();
-            // $file->move('uploads/products/', $image);
-            fileUpload($request->file, "/uploads/blog");
-            return $image;
-            // return response()->json(['status'=>true, 'file_name'=> $image, 'key'=> 1]);  
+            $name = fileUpload($request->file, "/uploads/$request->type");
+            return response()->json(['status'=> true, 'file_name'=> $name, 'key'=> 1]);  
         }
     }
 
     public function deleteImage(Request $request)
     {
-        $path = public_path('uploads/blog/' . $request->filename);
+        $path = public_path("uploads/$request->type/$request->filename");
         if (File::exists($path)) {
-            fileRemove("/uploads/blog/$request->filename");
-            // return $request->filename;
+            fileRemove("/uploads/$request->type/$request->filename");
             return response()->json(['status'=>true, 'file_name'=> $request->filename, 'key'=> 2]); 
         }
         return response()->json(['status'=>false, 'file_name'=> $request->filename, 'key'=> 2]);   

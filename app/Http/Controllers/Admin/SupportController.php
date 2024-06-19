@@ -160,7 +160,7 @@ class SupportController extends Controller
                     $html .= "<div class='col-md-12'>
                         <div class='manage-notification-item'>
                             <div class='manage-notification-icon'>
-                                <img src='". assets('assets/images/notification.svg') ."'>
+                                <img src='". assets('assets/images/notification1.svg') ."'>
                             </div>
                             <div class='manage-notification-content'>
                                 <div class='notification-tags'>".ucwords($val->type)."</div>

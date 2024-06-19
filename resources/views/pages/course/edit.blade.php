@@ -7,7 +7,7 @@
 <div class="body-main-content">
     <div class="plas-filter-section">
         <div class="plas-filter-heading">
-            <h2>{{ translate('Create New Course') }}</h2>
+            <h2>{{ translate('Edit Course') }}</h2>
         </div>
         <div class="plas-search-filter wd40">
             <div class="row g-1">
@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a href="javascript:void(0)" id="create-course-submit" class="btn-bl">{{ translate('Save') }}</a>
+                        <a href="javascript:void(0)" id="create-course-submit" class="btn-bl">{{ translate('Update') }}</a>
                         <button class="btn-bl d-none" id="wait" type="button">Please Wait <img style="padding: 0px;" width="30" src="{{ assets('assets/images/spinner4.svg') }}" alt=""></button>
                     </div>
                 </div>
@@ -31,26 +31,27 @@
             <div class="col-md-12">
                 <div class="courses-form-section">
                     <div class="courses-form">
-                        <form action="{{ route('admin.course.create.store') }}" id="course-create-form">@csrf
+                        <form action="{{ route('admin.course.update.store') }}" id="course-create-form">@csrf
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <h4>{{ translate('Course Title') }}</h4>
-                                        <input type="text" class="form-control" onchange="showData(event, 'title')" name="title" id="title" placeholder="Course title" value="">
+                                        <input type="text" class="form-control" onchange="showData(event, 'title')" name="title" id="title" placeholder="Course title" value="{{ $data->title ?? '' }}">
                                     </div>
                                 </div>
 
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <h4>{{ translate('Description') }}</h4>
-                                        <textarea type="text" class="form-control" onchange="showData(event, 'description')" id="description" name="description" placeholder="Course description"></textarea>
+                                        <textarea type="text" class="form-control" onchange="showData(event, 'description')" id="description" name="description" placeholder="Course description">{{ $data->description ?? '' }}</textarea>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <h4>{{ translate('Course Fees') }}</h4>
-                                        <input type="text" class="form-control" onchange="showData(event, 'fees')" id="fees" name="fees" placeholder="Course fees">
+                                        <input type="text" class="form-control" onchange="showData(event, 'fees')" id="fees" name="fees" placeholder="Course fees" value="{{ $data->course_fee ?? '' }}">
+                                        <input type="hidden" name="id" value="{{ encrypt_decrypt('encrypt', $data->id) }}">
                                     </div>
                                 </div>
 
@@ -67,28 +68,38 @@
                                         <select name="prerequisite" id="" class="form-control text-capitalize">
                                             <option value="">Select Course</option>
                                             @foreach($course as $val)
-                                            <option value="{{ $val->id }}">{{ $val->title ?? 'NA' }}</option>
+                                            <option @if(isset($data->prerequisite) && ($data->prerequisite == $val->id)) selected @endif value="{{ $val->id }}">{{ $val->title ?? 'NA' }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
+                                <div class="@if(isset($data->video)) col-md-11 @else col-md-12 @endif">
                                     <div class="form-group">
                                         <h4>{{ translate('Disclaimers & Introduction') }}</h4>
                                         <input type="file" class="form-control" name="video" accept="video/mp4">
                                     </div>
                                 </div>
 
+                                @if(isset($data->video))
+                                <div class="col-md-1">
+                                    <div class="form-group">
+                                        <a href="{{ assets('uploads/course/video/'.$data->video) }}" id="uploaded-video" data-fancybox="">
+                                            <img width="80" src="{{ assets('assets/images/image-icon.png') }}" alt="{{$data->video}}">
+                                        </a>
+                                    </div>
+                                </div>
+                                @endif
+
                                 <div class="col-md-12">
                                     <div class="added-course-card">
                                         <div class="added-course-card-image">
-                                            <img id="show-image" src="{{ assets('assets/images/no-image.jpg') }}">
+                                            <img id="show-image" src="{{ isset($data->image) ? assets('uploads/course/image/'.$data->image) : assets('assets/images/no-image.jpg') }}">
                                         </div>
                                         <div class="added-course-card-content">
-                                            <h2>Title : <span id="show-title">Course Title</span></h2>
-                                            <div class="coursefee-text">$<span id="show-fees">0</span></div>
-                                            <p id="show-description">Course Description</p>
+                                            <h2>Title : <span id="show-title">{{ $data->title ?? '' }}</span></h2>
+                                            <div class="coursefee-text">$<span id="show-fees">{{ $data->course_fee ?? '' }}</span></div>
+                                            <p id="show-description">{{ $data->description ?? '' }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -134,11 +145,9 @@
                 required: true,
             },
             image: {
-                required: true,
                 filesize: 4
             },
             video: {
-                required: true,
                 filesize: 10
             },
         },
@@ -152,12 +161,6 @@
             },
             fees: {
                 required: 'Please enter course fees',
-            },
-            image: {
-                required: 'Please upload course image',
-            },
-            video: {
-                required: 'Please upload disclaimers & introduction',
             },
         },
         submitHandler: function(form, e) {
