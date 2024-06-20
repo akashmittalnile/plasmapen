@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\CourseCategory;
 use App\Models\CourseLesson;
 use App\Models\CourseLessonQuiz;
 use App\Models\CourseLessonQuizOption;
@@ -70,7 +71,8 @@ class CourseController extends Controller
     {
         try {
             $course = Course::where('status', 1)->orderByDesc('id')->get();
-            return view('pages.course.create')->with(compact('course'));
+            $category = CourseCategory::where('status', 1)->orderByDesc('id')->get();
+            return view('pages.course.create')->with(compact('course', 'category'));
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
@@ -83,6 +85,7 @@ class CourseController extends Controller
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string',
                 'description' => 'required|string',
+                'category_id' => 'required',
                 'fees' => 'required',
                 'video' => 'required',
                 'image' => 'required',
@@ -104,6 +107,7 @@ class CourseController extends Controller
                 $course->title = $request->title ?? null;
                 $course->description = $request->description ?? null;
                 $course->course_fee = $request->fees ?? null;
+                $course->category_id = $request->category_id ?? null;
                 $course->currency = 'usd';
                 $course->prerequisite = $request->prerequisite ?? null;
                 $course->status = 1;
@@ -123,7 +127,8 @@ class CourseController extends Controller
             $id = encrypt_decrypt('decrypt', $id);
             $data = Course::where('id', $id)->first();
             $course = Course::where('status', 1)->where('id', '!=', $id)->orderByDesc('id')->get();
-            return view('pages.course.edit')->with(compact('course', 'data'));
+            $category = CourseCategory::where('status', 1)->orderByDesc('id')->get();
+            return view('pages.course.edit')->with(compact('course', 'data', 'category'));
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
@@ -138,6 +143,7 @@ class CourseController extends Controller
                 'title' => 'required|string',
                 'description' => 'required|string',
                 'fees' => 'required',
+                'category_id' => 'required',
             ]);
             if ($validator->fails()) {
                 return errorMsg($validator->errors()->first());
@@ -156,6 +162,7 @@ class CourseController extends Controller
 
                 $course->title = $request->title ?? null;
                 $course->description = $request->description ?? null;
+                $course->category_id = $request->category_id ?? null;
                 $course->course_fee = $request->fees ?? null;
                 $course->prerequisite = $request->prerequisite ?? null;
                 $course->save();

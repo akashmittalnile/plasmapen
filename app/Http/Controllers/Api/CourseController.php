@@ -25,6 +25,8 @@ class CourseController extends Controller
                     $temp['title'] = $item->title;
                     $temp['description'] = $item->description;
                     $temp['course_fee'] = $item->course_fee;
+                    $temp['category_id'] = $item->category_id;
+                    $temp['category_name'] = $item->category->title;
                     $temp['currency'] = $item->currency;
                     $temp['video'] = isset($item->video) ? assets('uploads/course/video/'.$item->video) : null;
                     $temp['image'] = isset($item->image) ? assets('uploads/course/image/'.$item->image) : null;
@@ -53,6 +55,8 @@ class CourseController extends Controller
                 $temp['description'] = $data->description;
                 $temp['course_fee'] = $data->course_fee;
                 $temp['currency'] = $data->currency;
+                $temp['category_id'] = $data->category_id;
+                $temp['category_name'] = $data->category->title;
                 $temp['video'] = isset($data->video) ? assets('uploads/course/video/'.$data->video) : null;
                 $temp['image'] = isset($data->image) ? assets('uploads/course/image/'.$data->image) : null;
                 $temp['lesson_count'] = $data->lessonCount();

@@ -18,4 +18,8 @@ class Course extends Model
     public function lessons(){
         return $this->hasMany(CourseLesson::class, 'course_id', 'id')->orderByDesc('id')->get();
     }
+
+    public function category(){
+        return $this->belongsTo(CourseCategory::class, 'category_id', 'id');
+    }
 }
