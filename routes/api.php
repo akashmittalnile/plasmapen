@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SupportController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,8 +32,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('update-profile', [AuthController::class, 'updateProfile']);
     Route::post('change-password', [AuthController::class, 'changePassword']);
 
+    Route::get('home', [UserController::class, 'home']);
+
     Route::get('courses', [CourseController::class, 'courses']);
+    Route::get('course-category', [CourseController::class, 'courseCategory']);
     Route::get('course-details/{id}', [CourseController::class, 'courseDetails']);
+
+    Route::get('products', [ProductController::class, 'products']);
+    Route::get('product-details/{id}', [ProductController::class, 'productDetails']);
 
     Route::post('create-query', [SupportController::class, 'createQuery']);
     Route::get('query-list', [SupportController::class, 'queryList']);

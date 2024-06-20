@@ -98,7 +98,7 @@ class AuthController extends Controller
                                 'role' => $user->role,
                                 'status' => $user->status,
                                 'fcm_token' => $user->fcm_token,
-                                'created_at' => date('d M, Y h:i A', strtotime($user->created_at)),
+                                'created_at' => date('m-d-Y h:iA', strtotime($user->created_at)),
                             ], 'access_token' => $token);
                             return successMsg('Logged In Successfully.', $response);
                         } else  return errorMsg('Invalid Email or Password!');
@@ -209,7 +209,7 @@ class AuthController extends Controller
                 'status' => $user->status,
                 'fcm_token' => $user->fcm_token,
                 'profile_image' => isset($user->profile) ? assets('uploads/profile/' . $user->profile) : null,
-                'created_at' => date('d M, Y h:i A', strtotime($user->created_at))
+                'created_at' => date('m-d-Y h:iA', strtotime($user->created_at))
             ];
             return successMsg('Profile data', $response);
         } catch (\Exception $e) {

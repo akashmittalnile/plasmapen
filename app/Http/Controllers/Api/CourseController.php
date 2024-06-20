@@ -4,39 +4,40 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\CourseCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CourseController extends Controller
 {
+    public $category;
+    public $course;
+    public function __construct(CourseCategory $category, Course $course){
+        $this->category = $category;
+        $this->course = $course;
+    }
+
     // Dev name : Dishant Gupta
     // This function is used to getting the list of all courses
     public function courses(Request $request)
     {
         try {
-            $data = Course::where('status', 1);
-            if($request->filled('search')) 
-                $data->whereRaw("(`title` LIKE '%" . $request->search . "%')");
-            $data = $data->orderByDesc('id')->get();
+            $data = $this->course->allCourses($request);
             $response = array();
             if (isset($data)) {
-                foreach ($data as $key => $item) {
-                    $temp['id'] = $item->id;
-                    $temp['title'] = $item->title;
-                    $temp['description'] = $item->description;
-                    $temp['course_fee'] = $item->course_fee;
-                    $temp['category_id'] = $item->category_id;
-                    $temp['category_name'] = $item->category->title;
-                    $temp['currency'] = $item->currency;
-                    $temp['video'] = isset($item->video) ? assets('uploads/course/video/'.$item->video) : null;
-                    $temp['image'] = isset($item->image) ? assets('uploads/course/image/'.$item->image) : null;
-                    $temp['lesson_count'] = $item->lessonCount();
-                    $temp['status'] = $item->status;
-                    $temp['created_date'] = date('m-d-Y h:iA', strtotime($item->created_at));
-                    $response[] = $temp;
-                }
-                return successMsg('Course list', $response);
-            } else errorMsg('Course not found');
+                return successMsg('Course list', $data);
+            } else errorMsg('No courses found');
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    public function courseCategory(Request $request){
+        try{
+            $data = $this->category->allCategory($request);
+            if (isset($data)) {
+                return successMsg('Course category list', $data);
+            } else errorMsg('No category found');
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
@@ -47,8 +48,7 @@ class CourseController extends Controller
     public function courseDetails($id)
     {
         try {
-            $data = Course::where('id', $id)->first();
-            $response = array();
+            $data = $this->course->details($id);
             if (isset($data->id)) {
                 $temp['id'] = $data->id;
                 $temp['title'] = $data->title;
@@ -61,13 +61,14 @@ class CourseController extends Controller
                 $temp['image'] = isset($data->image) ? assets('uploads/course/image/'.$data->image) : null;
                 $temp['lesson_count'] = $data->lessonCount();
                 $temp['status'] = $data->status;
-                $temp['created_date'] = date('m-d-Y h:iA', strtotime($data->created_at));
+                $temp['created_at'] = date('m-d-Y h:iA', strtotime($data->created_at));
+                $temp['updated_at'] = date('m-d-Y h:iA', strtotime($data->updated_at));
                 $lessons = array();
-                foreach($data->lessons() as $lesson){
+                foreach($data->lessons as $lesson){
                     $les['lesson_id'] = $lesson->id;
                     $les['lesson_name'] = $lesson->lesson;
                     $lessonStep = array();
-                    foreach($lesson->steps() as $steps){
+                    foreach($lesson->steps as $steps){
                         $step['step_id'] = $steps->id;
                         $step['title'] = $steps->title;
                         $step['description'] = $steps->description;
@@ -97,7 +98,7 @@ class CourseController extends Controller
                     $lessons[] = $les;
                 }
                 $temp['lessons'][] = $lessons;
-                return successMsg('Course list', $temp);
+                return successMsg('Course details', $temp);
             } else errorMsg('Course not found');
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());

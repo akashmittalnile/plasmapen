@@ -12,6 +12,6 @@ class CourseLesson extends Model
     protected $key = 'id';
 
     public function steps(){
-        return $this->hasMany(CourseLessonStep::class, 'course_lesson_id', 'id')->get();
+        return $this->hasMany(CourseLessonStep::class, 'course_lesson_id', 'id');
     }
 }
