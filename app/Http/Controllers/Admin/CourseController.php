@@ -24,7 +24,7 @@ class CourseController extends Controller
                     $data->whereRaw("(`title` LIKE '%" . $request->search . "%' or `course_fee` LIKE '%" . $request->search . "%')");
                 if ($request->filled('status'))
                     $data->where('status', $request->status);
-                $data = $data->paginate(config('constant.paginatePerPage'));
+                $data = $data->with('lessonCount')->paginate(config('constant.paginatePerPage'));
 
                 $html = "";
                 foreach ($data as $val) {
@@ -39,7 +39,7 @@ class CourseController extends Controller
                                 <h2>About : $val->title</h2>
                                 <div class='course-card-point-text'>
                                     <div class='coursefee-text'>$$val->course_fee</div>
-                                    <div class='lesson-text'>" . $val->lessonCount() . " Lessons</div>
+                                    <div class='lesson-text'>" . count($val->lessonCount) . " Lessons</div>
                                 </div>
                                 <div class='course-card-action-text'>
                                     <a class='deletebtn' data-id='" . encrypt_decrypt('encrypt', $val->id) . "' href='javascript:void(0)'>Delete</a>

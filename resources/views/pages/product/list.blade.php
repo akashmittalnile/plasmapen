@@ -5,6 +5,7 @@
 @endpush
 
 @section('content')
+<meta name="_token" content="{{csrf_token()}}" />
 <div class="body-main-content">
     <div class="plas-filter-section">
         <div class="plas-filter-heading">
@@ -63,7 +64,7 @@
 
 <!-- Create  product -->
 <div class="modal lm-modal fade" id="Createproduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="Plasma-modal-form">
@@ -310,10 +311,6 @@
                     required: true,
                     minlength: 10
                 },
-                image: {
-                    required: true,
-                    extension: "jpg|jpeg|png|gif"
-                }
             },
             messages: {
                 title: {
@@ -328,10 +325,6 @@
                     required: "Please enter a product description",
                     minlength: "Product description must be at least 10 characters long"
                 },
-                image: {
-                    required: "Please upload a product image",
-                    extension: "Only image files (jpg, jpeg, png, gif) are allowed"
-                }
             },
             submitHandler: function(form, e) {
                 e.preventDefault();

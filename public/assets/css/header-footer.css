@@ -432,8 +432,17 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .error.invalid-feedback{color: #d66a74; font-size: 11px; margin-top: 0;}
+
 .dropzone{border: 1px solid #e7e9eb !important;}
 .dropzone .dz-default.dz-message span{color: #000;}
+.dz-image-preview .dz-image img{
+  object-fit: cover;
+  object-position: center;
+  width: 120px;
+  height: 120px;
+}
+.dropzone .dz-preview .dz-remove{color: var(--red);}
+
 .cancel-btn {
   text-align: center;
   border: none;

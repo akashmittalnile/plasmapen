@@ -43,7 +43,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item {{ Route::is('admin.blog.*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('admin.blog.list') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/blogs.svg') }}"></span>
                         <span class="menu-title">{{ translate('Manage Blogs') }}</span>

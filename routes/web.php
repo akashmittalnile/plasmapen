@@ -80,11 +80,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/blogs', [BlogController::class, 'list'])->name('blog.list');
         Route::post('/blog/store', [BlogController::class, 'blogCreate'])->name('blog.store');
         Route::post('/blog/delete', [BlogController::class, 'blogDelete'])->name('blog.delete');
-        Route::get('/blog/detail/{id}', [BlogController::class, 'getBlogDetail'])->name('blog.detail');
+        Route::get('/blog/info/{id}', [BlogController::class, 'getBlogInfo'])->name('blog.info');
         Route::post('/blog/update', [BlogController::class, 'blogUpdate'])->name('blog.update');
 
         Route::post('/image-upload', [ImageUploadController::class, 'uploadImage'])->name('image-upload');
         Route::post('/image-delete', [ImageUploadController::class, 'deleteImage'])->name('image-delete');
+        Route::get('/uploaded-image-delete/{id}/{type}', [ImageUploadController::class, 'uploadDeleteImage'])->name('uploaded-image-delete');
 
 
         // support & communication

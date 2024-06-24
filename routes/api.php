@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SupportController;
@@ -40,6 +41,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('products', [ProductController::class, 'products']);
     Route::get('product-details/{id}', [ProductController::class, 'productDetails']);
+
+    Route::get('blogs', [BlogController::class, 'blogs']);
+    Route::get('blog-details/{id}', [BlogController::class, 'blogDetails']);
 
     Route::post('create-query', [SupportController::class, 'createQuery']);
     Route::get('query-list', [SupportController::class, 'queryList']);

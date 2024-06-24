@@ -25,7 +25,7 @@ class ProductController extends Controller
                 foreach ($data as $val) {
 
                     $image_html = "";
-                    foreach($val->images() as $name){
+                    foreach($val->images as $name){
                         $image_html .= "<div class='item'>
                         <div class='community-media'>
                                 <a data-fancybox='' href='".assets("uploads/product/$name->item_name")."'>
@@ -94,7 +94,6 @@ class ProductController extends Controller
                 return errorMsg($validator->errors()->first());
             } else {
                 $product = new Product;
-                
                 $product->title = $request->title ?? null;
                 $product->price = $request->price ?? null;
                 $product->description = $request->description ?? null;
@@ -131,7 +130,7 @@ class ProductController extends Controller
             } else {
                 $id = encrypt_decrypt('decrypt', $request->id);
                 $product = Product::where('id', $id)->first();
-                foreach($product->images() as $val){
+                foreach($product->images as $val){
                     fileRemove("/uploads/product/$val->item_name");
                 }
                 Image::where('item_id', $id)->where('item_type', 'product')->delete();
@@ -150,7 +149,7 @@ class ProductController extends Controller
         try {
             $id = encrypt_decrypt('decrypt', $id);
             $product = Product::where('id', $id)->first();
-            $imgs = $product->images();
+            $imgs = $product->images;
             return view('pages.product.details')->with(compact('product', 'imgs'));
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
@@ -171,20 +170,14 @@ class ProductController extends Controller
             if ($validator->fails()) {
                 return errorMsg($validator->errors()->first());
             } else {
-                $product = Product::find($request->id);
-
-                if ($request->hasFile("image")) {
-                    fileRemove("uploads/product/" . $product->image);
-                    $image = fileUpload($request->image, "/uploads/product");
-                    $product->image = $image;
-                }
-
+                $id = encrypt_decrypt('decrypt', $request->id);
+                $product = Product::where('id', $id)->first();
                 $product->title = $request->title ?? null;
                 $product->price = $request->price ?? null;
                 $product->description = $request->description ?? null;
                 $product->save();
 
-                return redirect()->back()->with('success', 'Product updated successfully');
+                return response()->json(['status' => true, 'message' => 'Product updated successfully', 'route' => route('admin.product.list')]);
             }
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
