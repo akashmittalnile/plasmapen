@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\CommunityController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ImageUploadController;
@@ -75,6 +76,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/product/info/{id}', [ProductController::class, 'getProductInfo'])->name('product.info');
         Route::post('/product/update', [ProductController::class, 'productUpdate'])->name('product.update');
 
+        // communities
+        Route::get('/communities', [CommunityController::class, 'list'])->name('community.list');
+        Route::post('/community/store', [CommunityController::class, 'communityCreate'])->name('community.store');
+        Route::post('/community/delete', [CommunityController::class, 'communityDelete'])->name('community.delete');
+        Route::get('/community/info/{id}', [CommunityController::class, 'getProductInfo'])->name('community.info');
+        Route::post('/community/update', [CommunityController::class, 'communityUpdate'])->name('community.update');
 
         //blog
         Route::get('/blogs', [BlogController::class, 'list'])->name('blog.list');
@@ -86,7 +93,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('/image-upload', [ImageUploadController::class, 'uploadImage'])->name('image-upload');
         Route::post('/image-delete', [ImageUploadController::class, 'deleteImage'])->name('image-delete');
         Route::get('/uploaded-image-delete/{id}/{type}', [ImageUploadController::class, 'uploadDeleteImage'])->name('uploaded-image-delete');
-
 
         // support & communication
         Route::get('/help-support', [SupportController::class, 'supportCommunication'])->name('support.list');

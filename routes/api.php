@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BlogController;
+use App\Http\Controllers\Api\CommunityController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SupportController;
@@ -41,6 +42,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('products', [ProductController::class, 'products']);
     Route::get('product-details/{id}', [ProductController::class, 'productDetails']);
+
+    Route::get('communities', [CommunityController::class, 'communities']);
+    Route::get('community-details/{id}', [CommunityController::class, 'communityDetails']);
 
     Route::get('blogs', [BlogController::class, 'blogs']);
     Route::get('blog-details/{id}', [BlogController::class, 'blogDetails']);

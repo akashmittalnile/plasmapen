@@ -36,8 +36,8 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="community.html">
+                <li class="nav-item {{ Route::is('admin.community.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.community.list') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/community.svg') }}"></span>
                         <span class="menu-title">{{ translate('Manage Community') }}</span>
                     </a>
