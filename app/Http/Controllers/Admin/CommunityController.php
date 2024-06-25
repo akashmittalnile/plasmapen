@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Community;
+use App\Models\FollowCommunity;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +14,7 @@ class CommunityController extends Controller
     public function list(Request $request){
         try{
             if ($request->ajax()) {
-                $data = Community::with('images')->orderByDesc('id');
+                $data = Community::with('images', 'communityFollower')->orderByDesc('id');
                 if ($request->filled('search'))
                     $data->whereRaw("(`name` LIKE '%" . $request->search . "%')");
                 $data = $data->paginate(config('constant.paginatePerPage'));
@@ -37,7 +38,23 @@ class CommunityController extends Controller
                         </div>";
                     }
 
-                    $mem_html = "";
+                    $postcount = count($val->communityPost);
+                    $followcount = count($val->communityFollower);
+                    $follow = FollowCommunity::where('community_id', $val->id)->orderByDesc('id')->limit(3)->get();
+                    if(count($follow) > 0){
+                        $mem_html = "";
+                        $count = 1;
+                        foreach($follow as $items){
+                            $followedUser = $items->user;
+                            $asset = (isset($followedUser->profile) && File::exists(public_path("uploads/profile/$followedUser->profile"))) ? assets("uploads/profile/$followedUser->profile") : assets('assets/images/no-image.jpg');
+                            $mem_html .= "<span class='community-detail-member-image image$count'>
+                                <img src='".$asset."'>
+                            </span>";
+                            $count++;
+                        }
+                    } else {
+                        $mem_html = "";
+                    }
 
                     $html .= "<div class='col-md-4'>
                         <div class='community-card'>
@@ -49,14 +66,14 @@ class CommunityController extends Controller
                                 <p>$val->description</p>
 
                                 <div class='community-card-point-text'>
-                                    <div class='blogby-text'>Total Posts <span>0</span></div>
+                                    <div class='blogby-text'>Total Posts <span>$postcount</span></div>
                                     <div class='date-text'>Created on <span>".date('m-d-Y h:iA', strtotime($val->created_at))."</span></div>
                                 </div>
                                 <div class='community-member-item'>
                                     <div class='community-member-info'>
                                         $mem_html
                                     </div>
-                                    <p>0 Member Follows</p>
+                                    <p>$followcount Member Follows</p>
                                 </div>
                                 <a class='managebtn' href='".route('admin.community.info', encrypt_decrypt('encrypt', $val->id))."'> Manage Community</a>
                             </div>
@@ -109,6 +126,19 @@ class CommunityController extends Controller
     
                 return successMsg('Community created successfully');
             }
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    public function getCommunityInfo($id)
+    {
+        try {
+            $id = encrypt_decrypt('decrypt', $id);
+            $community = Community::where('id', $id)->first();
+            $imgs = $community->images;
+            $follow = FollowCommunity::where('community_id', $id)->orderByDesc('id')->limit(3)->get();
+            return view('pages.community.details')->with(compact('community', 'imgs', 'follow'));
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }

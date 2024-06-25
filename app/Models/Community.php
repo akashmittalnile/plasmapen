@@ -15,6 +15,14 @@ class Community extends Model
         return $this->hasMany(Image::class, 'item_id', 'id')->where('item_type', 'community')->orderByDesc('id');
     }
 
+    public function communityFollower(){
+        return $this->hasMany(FollowCommunity::class, 'community_id', 'id')->orderByDesc('id');
+    }
+
+    public function communityPost(){
+        return $this->hasMany(Post::class, 'community_id', 'id')->orderByDesc('id');
+    }
+
     public function allCommunities($request, $limit = null){
         $data = $this->newQuery();
         if ($request->filled('search'))

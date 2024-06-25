@@ -484,6 +484,7 @@
 </div>
 
 <!-- Delete Lesson -->
+@if(isset($lessonId))
 <div class="modal lm-modal fade" id="deleteSectionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -509,6 +510,7 @@
         </div>
     </div>
 </div>
+@endif
 
 @endsection
 

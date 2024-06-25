@@ -80,7 +80,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/communities', [CommunityController::class, 'list'])->name('community.list');
         Route::post('/community/store', [CommunityController::class, 'communityCreate'])->name('community.store');
         Route::post('/community/delete', [CommunityController::class, 'communityDelete'])->name('community.delete');
-        Route::get('/community/info/{id}', [CommunityController::class, 'getProductInfo'])->name('community.info');
+        Route::get('/community/info/{id}', [CommunityController::class, 'getCommunityInfo'])->name('community.info');
         Route::post('/community/update', [CommunityController::class, 'communityUpdate'])->name('community.update');
 
         //blog

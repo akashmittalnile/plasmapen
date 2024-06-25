@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\CourseCategory;
+use App\Models\UserReview;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -59,7 +60,8 @@ class CourseController extends Controller
                 $temp['category_name'] = $data->category->title;
                 $temp['video'] = isset($data->video) ? assets('uploads/course/video/'.$data->video) : null;
                 $temp['image'] = isset($data->image) ? assets('uploads/course/image/'.$data->image) : null;
-                $temp['lesson_count'] = $data->lessonCount();
+                $temp['lesson_count'] = count($data->lessons);
+                $temp['rating'] = isset($data->rating) ? number_format((float)$data->rating, 1, '.', '') : 0;
                 $temp['status'] = $data->status;
                 $temp['created_at'] = date('m-d-Y h:iA', strtotime($data->created_at));
                 $temp['updated_at'] = date('m-d-Y h:iA', strtotime($data->updated_at));
@@ -97,9 +99,47 @@ class CourseController extends Controller
                     $les['chapter_steps'] = $lessonStep;
                     $lessons[] = $les;
                 }
-                $temp['lessons'][] = $lessons;
+                $temp['lessons'] = $lessons;
+                $review = array();
+                foreach($data->reviewList as $val){
+                    $rev['id'] = $val->id;
+                    $rev['rating'] = isset($val->rating) ? number_format((float)$val->rating, 1, '.', '') : 0;
+                    $rev['review'] = $val->review;
+                    $rev['review_by_name'] = $val->user->name;
+                    $rev['review_by_profile'] = isset($val->user->profile) ? assets('uploads/profile/'.$val->user->profile) : assets('assets/images/no-image.jpg');
+                    $rev['review_on'] = date('m-d-Y h:iA', strtotime($val->created_at));
+                    $review[] = $rev;
+                }
+                $temp['review_list'] = $review;
                 return successMsg('Course details', $temp);
             } else errorMsg('Course not found');
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    public function submitRating(Request $request) {
+        try{
+            $validator = Validator::make($request->all(), [
+                'course_id' => 'required',
+                'rating' => 'required',
+                'review' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return errorMsg($validator->errors()->first());
+            } else {
+                $isExist = UserReview::where('user_id', auth()->user()->id)->where('object_id', $request->course_id)->where('object_type', 'course')->first();
+                if(isset($isExist->id)) return errorMsg('You already submitted the rating.');
+                $rating = new UserReview;
+                $rating->user_id = auth()->user()->id;
+                $rating->object_id = $request->course_id;
+                $rating->object_type = 'course';
+                $rating->rating = $request->rating;
+                $rating->review = $request->review;
+                $rating->status = 1;
+                $rating->save();
+                return successMsg('Your feedback is successfully submitted.');
+            }
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
