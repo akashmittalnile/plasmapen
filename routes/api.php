@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SupportController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\GoalController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +52,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('create-query', [SupportController::class, 'createQuery']);
     Route::get('query-list', [SupportController::class, 'queryList']);
+
+    Route::post('goal', [GoalController::class, 'createGoal']);
+    Route::get('get-goal', [GoalController::class, 'getGoal']);
+    Route::get('goal-details/{id}', [GoalController::class, 'goalDetails']);
+    Route::put('update-goal/{id}', [GoalController::class, 'updateGoal']);
+    Route::delete('delete-goal/{id}', [GoalController::class, 'deleteGoal']);
 });
 
 Route::get('token-expire', [AuthController::class, 'tokenExpire'])->name('login');
