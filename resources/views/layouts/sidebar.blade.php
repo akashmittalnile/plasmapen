@@ -56,6 +56,12 @@
                         <span class="menu-title">{{ translate('Manage Notifications') }}</span>
                     </a>
                 </li>
+                <li class="nav-item {{ Route::is('admin.goal.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.goal.list') }}">
+                        <span class="menu-icon"><img src="{{ assets('assets/images/Target.svg') }}"></span>
+                        <span class="menu-title">{{ translate('Manage Goals') }}</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="earnings.html">
                         <span class="menu-icon"><img src="{{ assets('assets/images/earnings.svg') }}"></span>
