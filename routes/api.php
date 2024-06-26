@@ -42,6 +42,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('course-details/{id}', [CourseController::class, 'courseDetails']);
     Route::get('course-details/{id}', [CourseController::class, 'courseDetails']);
     Route::post('submit-rating', [CourseController::class, 'submitRating']);
+    Route::post('add-wishlist', [CourseController::class, 'addWishlist']);
+    Route::get('wishlist', [CourseController::class, 'wishlist']);
 
     Route::get('products', [ProductController::class, 'products']);
     Route::get('product-details/{id}', [ProductController::class, 'productDetails']);

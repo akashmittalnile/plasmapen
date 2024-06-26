@@ -22,7 +22,7 @@ class ProductController extends Controller
             $response = array();
             if (isset($data)) {
                 return successMsg('Product list', $data);
-            } else errorMsg('No products found');
+            } else return errorMsg('No products found');
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
@@ -47,10 +47,22 @@ class ProductController extends Controller
                 }
                 $temp['images'] = $images;
                 $temp['status'] = $data->status;
+                $review = array();
+                foreach($data->reviewList as $val){
+                    $rev['id'] = $val->id;
+                    $rev['rating'] = isset($val->rating) ? number_format((float)$val->rating, 1, '.', '') : 0;
+                    $rev['review'] = $val->review;
+                    $rev['review_by_name'] = $val->user->name;
+                    $rev['review_by_profile'] = isset($val->user->profile) ? assets('uploads/profile/'.$val->user->profile) : assets('assets/images/no-image.jpg');
+                    $rev['review_on'] = date('m-d-Y h:iA', strtotime($val->created_at));
+                    $review[] = $rev;
+                }
+                $temp['review_list'] = $review;
+                $temp['wishlist'] = count($data->wishlist) ? true : false;
                 $temp['created_at'] = date('m-d-Y h:iA', strtotime($data->created_at));
                 $temp['updated_at'] = date('m-d-Y h:iA', strtotime($data->updated_at));
                 return successMsg('Product details', $temp);
-            } else errorMsg('Product not found');
+            } else return errorMsg('Product not found');
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }

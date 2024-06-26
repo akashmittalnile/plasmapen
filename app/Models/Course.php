@@ -20,8 +20,12 @@ class Course extends Model
         return $this->belongsTo(CourseCategory::class, 'category_id', 'id');
     }
 
+    public function wishlist(){
+        return $this->hasMany(UserWishlist::class, 'object_id', 'id')->where('object_type', 1)->where('user_id', auth()->user()->id)->where('status', 1);
+    }
+
     public function reviewList(){
-        return $this->hasMany(UserReview::class, 'object_id', 'id')->where('object_type', 'course')->orderByDesc('id');
+        return $this->hasMany(UserReview::class, 'object_id', 'id')->where('object_type', 1)->orderByDesc('id');
     }
 
     public function allCourses($request, $limit = null){
@@ -32,9 +36,10 @@ class Course extends Model
             $data->where("category_id", $request->category_id);
         if ($limit)
             $data->limit($limit);
-        $data = $data->where('status', 1)->with('lessons')->withAvg('reviewList as rating', 'rating')->orderByDesc('rating', 'id')->get()->toArray();
+        $data = $data->where('status', 1)->with('lessons', 'wishlist')->withAvg('reviewList as rating', 'rating')->orderByDesc('rating', 'id')->get()->toArray();
         $lengths = array_map( function($item) {
             $item['lesson_count'] = count($item['lessons']);
+            $item['wishlist'] = count($item['wishlist']) ? true : false;
             $item['rating'] = isset($item['rating']) ? number_format((float)$item['rating'], 1, '.', '') : 0;
             $item['video'] = isset($item['video']) ? assets('uploads/course/video/'.$item['video']) : null;
             $item['image'] = isset($item['image']) ? assets('uploads/course/image/'.$item['image']) : null;
@@ -47,7 +52,7 @@ class Course extends Model
 
     public function details($id){
         $data = $this->newQuery();
-        $data = $data->where('id', $id)->with('lessons', 'category', 'reviewList')->withAvg('reviewList as rating', 'rating')->first();
+        $data = $data->where('id', $id)->with('lessons', 'category', 'reviewList', 'wishlist')->withAvg('reviewList as rating', 'rating')->first();
         return $data;
     }
 }

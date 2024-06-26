@@ -23,7 +23,7 @@ class CommunityController extends Controller
             $response = array();
             if (isset($data)) {
                 return successMsg('Community list', $data);
-            } else errorMsg('No communities found');
+            } else return errorMsg('No communities found');
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
@@ -51,7 +51,7 @@ class CommunityController extends Controller
                 $temp['created_at'] = date('m-d-Y h:iA', strtotime($data->created_at));
                 $temp['updated_at'] = date('m-d-Y h:iA', strtotime($data->updated_at));
                 return successMsg('Community details', $temp);
-            } else errorMsg('Community not found');
+            } else return errorMsg('Community not found');
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }

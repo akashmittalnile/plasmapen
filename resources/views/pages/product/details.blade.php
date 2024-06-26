@@ -2,6 +2,11 @@
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ assets('assets/css/product.css') }}">
+<style>
+    ul:nth-child(1){
+        color: #455a64;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -271,11 +276,22 @@
                                     <input type="number" min="0" step="any" class="form-control" id="update-price" placeholder="Product Price" name="price" value="{{ $product->price ?? '' }}">
                                 </div>
                             </div>
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <textarea type="text" name="description" class="form-control" id="update-description" placeholder="Product Description">{{ $product->description ?? '' }}</textarea>
                                     <input type="hidden" name="id" value="{{ encrypt_decrypt('encrypt', $product->id) }}">
                                     <input type="hidden" id="arrayOfImage" name="array_of_image" value="">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <select name="lesson[]" multiple="multiple" required class="selectLesson form-control">
+                                        @foreach($combined as $val)
+                                        <option @if($val['selected']) selected @endif value="{{ $val['id'] }}">{{ $val['name'] ?? 'NA' }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
 
@@ -319,8 +335,18 @@
 
 @push('js')
 <script type="text/javascript">
-    let arrOfImg = [];
+    $('.selectLesson').select2({
+        placeholder: 'Select Lessons',
+        dropdownParent: $('#Updateproduct .modal-content')
+    });
 
+    $(".select2-container").css({'width':"100%"})
+    $(".select2-container .selection .select2-selection .select2-search__field").addClass('form-control');
+    $(".select2-search__field.form-control").css({"background": "#fff","border-radius": "5px","font-size": "14px","border": "1px solid rgb(255 255 255 / 15%)","color": "var(--white)"});
+    $(".select2-selection.select2-selection--multiple").css({"border-color": "#e7e9eb"})
+    $("ul:nth-child(1)").css("color", "#455a64 !important")
+    
+    let arrOfImg = [];
     $(document).ready(function(){
         var existingImages = {!! json_encode($imgs)  !!};
         existingImages.forEach(function(image) {

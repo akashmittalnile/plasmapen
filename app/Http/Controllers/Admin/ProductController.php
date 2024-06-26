@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CourseLesson;
 use App\Models\Image;
 use App\Models\Product;
+use App\Models\ProductRecommendationLesson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -73,7 +75,8 @@ class ProductController extends Controller
                 );
                 return successMsg('Product list', $response);
             }
-            return view('pages.product.list');
+            $lesson = CourseLesson::orderByDesc('id')->get();
+            return view('pages.product.list')->with(compact('lesson'));
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
@@ -87,7 +90,8 @@ class ProductController extends Controller
                 'title' => 'required|string',
                 'price' => 'required',
                 'description' => 'required|string',
-                'array_of_image' => 'required'
+                'array_of_image' => 'required',
+                'lesson' => 'required|array'
             ]);
 
             if ($validator->fails()) {
@@ -108,6 +112,16 @@ class ProductController extends Controller
                         $image->item_id = $product->id;
                         $image->item_type = 'product';
                         $image->save();
+                    }
+                }
+
+                if(is_array($request->lesson) && count($request->lesson)>0){
+                    foreach($request->lesson as $val){
+                        $recommed = new ProductRecommendationLesson();
+                        $recommed->lesson_id = $val;
+                        $recommed->product_id = $product->id;
+                        $recommed->status = 1;
+                        $recommed->save();
                     }
                 }
 
@@ -150,7 +164,19 @@ class ProductController extends Controller
             $id = encrypt_decrypt('decrypt', $id);
             $product = Product::where('id', $id)->first();
             $imgs = $product->images;
-            return view('pages.product.details')->with(compact('product', 'imgs'));
+            $lesson = CourseLesson::orderByDesc('id')->get();
+            $combined = array();
+            foreach ($lesson as $arr) {
+                $comb = array('id' => $arr['id'], 'name' => $arr['lesson'], 'selected' => false);
+                foreach ($product->lessons as $arr2) {
+                    if ($arr2->lesson_id == $arr['id']) {
+                        $comb['selected'] = true;
+                        break;
+                    }
+                }
+                $combined[] = $comb;
+            }
+            return view('pages.product.details')->with(compact('product', 'imgs', 'combined'));
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
@@ -164,7 +190,8 @@ class ProductController extends Controller
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string',
                 'price' => 'required',
-                'description' => 'required|string'
+                'description' => 'required|string',
+                'lesson' => 'required|array'
             ]);
 
             if ($validator->fails()) {
@@ -176,6 +203,17 @@ class ProductController extends Controller
                 $product->price = $request->price ?? null;
                 $product->description = $request->description ?? null;
                 $product->save();
+                
+                ProductRecommendationLesson::where('product_id', $product->id)->delete();
+                if(is_array($request->lesson) && count($request->lesson)>0){
+                    foreach($request->lesson as $val){
+                        $recommed = new ProductRecommendationLesson();
+                        $recommed->lesson_id = $val;
+                        $recommed->product_id = $product->id;
+                        $recommed->status = 1;
+                        $recommed->save();
+                    }
+                }
 
                 return response()->json(['status' => true, 'message' => 'Product updated successfully', 'route' => route('admin.product.list')]);
             }

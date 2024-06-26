@@ -13,13 +13,25 @@ class Product extends Model
         return $this->hasMany(Image::class, 'item_id', 'id')->where('item_type', 'product')->orderByDesc('id');
     }
 
+    public function lessons(){
+        return $this->hasMany(ProductRecommendationLesson::class, 'product_id', 'id')->orderByDesc('id');
+    }
+
+    public function wishlist(){
+        return $this->hasMany(UserWishlist::class, 'object_id', 'id')->where('object_type', 2)->where('user_id', auth()->user()->id)->where('status', 1);
+    }
+
+    public function reviewList(){
+        return $this->hasMany(UserReview::class, 'object_id', 'id')->where('object_type', 2)->orderByDesc('id');
+    }
+
     public function allProducts($request, $limit = null){
         $data = $this->newQuery();
         if ($request->filled('search'))
             $data->whereRaw("(`title` LIKE '%" . $request->search . "%')");
         if ($limit)
             $data->limit($limit);
-        $data = $data->where('status', 1)->with('images')->orderByDesc('id')->get()->toArray();
+        $data = $data->where('status', 1)->with('images', 'lessons', 'wishlist')->withAvg('reviewList as rating', 'rating')->orderByDesc('id')->get()->toArray();
         $lengths = array_map( function($item) {
             $images = array();
             foreach($item['images'] as $val){
@@ -28,6 +40,8 @@ class Product extends Model
                 $images[] = $img;
             }
             $item['images'] = $images;
+            $item['wishlist'] = count($item['wishlist']) ? true : false;
+            $item['rating'] = isset($item['rating']) ? number_format((float)$item['rating'], 1, '.', '') : 0;
             $item['created_at'] = date('m-d-Y h:iA', strtotime($item['created_at']));
             $item['updated_at'] = date('m-d-Y h:iA', strtotime($item['updated_at']));
             return $item;

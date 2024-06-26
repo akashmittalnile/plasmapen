@@ -23,7 +23,7 @@ class BlogController extends Controller
             $response = array();
             if (isset($data)) {
                 return successMsg('Blog list', $data);
-            } else errorMsg('No blogs found');
+            } else return errorMsg('No blogs found');
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
@@ -51,7 +51,7 @@ class BlogController extends Controller
                 $temp['created_at'] = date('m-d-Y h:iA', strtotime($data->created_at));
                 $temp['updated_at'] = date('m-d-Y h:iA', strtotime($data->updated_at));
                 return successMsg('Blog details', $temp);
-            } else errorMsg('Blog not found');
+            } else return errorMsg('Blog not found');
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }

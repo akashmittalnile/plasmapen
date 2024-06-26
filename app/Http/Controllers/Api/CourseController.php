@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\CourseCategory;
 use App\Models\UserReview;
+use App\Models\UserWishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,7 +28,7 @@ class CourseController extends Controller
             $response = array();
             if (isset($data)) {
                 return successMsg('Course list', $data);
-            } else errorMsg('No courses found');
+            } else return errorMsg('No courses found');
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
@@ -38,7 +39,7 @@ class CourseController extends Controller
             $data = $this->category->allCategory($request);
             if (isset($data)) {
                 return successMsg('Course category list', $data);
-            } else errorMsg('No category found');
+            } else return errorMsg('No category found');
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
@@ -111,8 +112,9 @@ class CourseController extends Controller
                     $review[] = $rev;
                 }
                 $temp['review_list'] = $review;
+                $temp['wishlist'] = count($data->wishlist) ? true : false;
                 return successMsg('Course details', $temp);
-            } else errorMsg('Course not found');
+            } else return errorMsg('Course not found');
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
@@ -124,22 +126,94 @@ class CourseController extends Controller
                 'course_id' => 'required',
                 'rating' => 'required',
                 'review' => 'required',
+                'type' => 'required',
             ]);
             if ($validator->fails()) {
                 return errorMsg($validator->errors()->first());
             } else {
-                $isExist = UserReview::where('user_id', auth()->user()->id)->where('object_id', $request->course_id)->where('object_type', 'course')->first();
+                $isExist = UserReview::where('user_id', auth()->user()->id)->where('object_id', $request->course_id)->where('object_type', $request->type)->first();
                 if(isset($isExist->id)) return errorMsg('You already submitted the rating.');
                 $rating = new UserReview;
                 $rating->user_id = auth()->user()->id;
                 $rating->object_id = $request->course_id;
-                $rating->object_type = 'course';
+                $rating->object_type = $request->type;
                 $rating->rating = $request->rating;
                 $rating->review = $request->review;
                 $rating->status = 1;
                 $rating->save();
                 return successMsg('Your feedback is successfully submitted.');
             }
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    public function addWishlist(Request $request) {
+        try{
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+                'type' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return errorMsg($validator->errors()->first());
+            } else {
+                $isExist = UserWishlist::where('user_id', auth()->user()->id)->where('object_id', $request->id)->where('object_type', $request->type)->first();
+                $type = $request->type == 1 ? 'Course' : 'Product';
+                if(isset($isExist->id)) {
+                    $state = $isExist->status;
+                    $isExist->status = ($state == 1) ? 0 : 1;
+                    $isExist->save();
+                    return successMsg($type.' has been '.(($state == 1) ? 'removed' : 'added').' to wishlist');
+                };
+                $rating = new UserWishlist;
+                $rating->user_id = auth()->user()->id;
+                $rating->object_id = $request->id;
+                $rating->object_type = $request->type;
+                $rating->status = 1;
+                $rating->save();
+                return successMsg($type.' has been added to wishlist');
+            }
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    public function wishlist(Request $request) {
+        try{
+            $data = UserWishlist::where('status', 1);
+            if($request->filled('type')){
+                $data->where('object_type', $request->type);
+            }
+            $data = $data->with('course', 'product')->orderByDesc('id')->get();
+            $response = array();
+            if (count($data)) {
+                $response = array();
+                foreach($data as $val){
+                    $temp['id'] = $val->id;
+                    if($val->object_type == 1){
+                        $temp['object_id'] = $val->course->id ?? null;
+                        $temp['object_title'] = $val->course->title;
+                        $temp['object_description'] = $val->course->description;
+                        $temp['object_image'] = isset($val->course->image) ? assets('uploads/course/image/'.$val->course->image) : null;
+                        $temp['object_video'] = isset($val->course->video) ? assets('uploads/course/video/'.$val->course->video) : null;
+                    } else {
+                        $temp['object_id'] = $val->product->id ?? null;
+                        $temp['object_title'] = $val->product->title;
+                        $temp['object_description'] = $val->product->description;
+                        $imgs = array();
+                        foreach($val->product->images as $val){
+                            $img['id'] = $val->id;
+                            $img['image'] = isset($val->item_name) ? assets('uploads/product/'.$val->item_name) : assets('assets/images/no-image.jpg');
+                            $imgs[] = $img;
+                        }
+                        $temp['object_image'] = $imgs;
+                    }
+                    $temp['created_at'] = date('m-d-Y h:iA', strtotime($val->created_at));
+                    $temp['updated_at'] = date('m-d-Y h:iA', strtotime($val->updated_at));
+                    $response[] = $temp;
+                }
+                return successMsg('Wishlist listing', $response);
+            } else return errorMsg('No wishlist found');
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
