@@ -80,7 +80,7 @@
                         <div class="overview-content">
                             <div class="overview-content-text">
                                 <p>{{ translate('Total Listed Products') }}</p>
-                                <h2>6,502</h2>
+                                <h2>{{ $productCount ? sprintf("%02d", $productCount) : 0 }}</h2>
                             </div>
                             <div class="overview-content-icon">
                                 <img src="{{ assets('assets/images/listedproducts.svg') }}">

@@ -5,18 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Blog extends Model
+class Community extends Model
 {
     use HasFactory;
+    protected $table = 'communities';
+    protected $key = 'id';
 
     public function images(){
-        return $this->hasMany(Image::class, 'item_id', 'id')->where('item_type', 'blog')->orderByDesc('id');
+        return $this->hasMany(Image::class, 'item_id', 'id')->where('item_type', 'community')->orderByDesc('id');
     }
 
-    public function allBlogs($request, $limit = null){
+    public function communityFollower(){
+        return $this->hasMany(FollowCommunity::class, 'community_id', 'id')->orderByDesc('id');
+    }
+
+    public function communityPost(){
+        return $this->hasMany(Post::class, 'community_id', 'id')->orderByDesc('id');
+    }
+
+    public function allCommunities($request, $limit = null){
         $data = $this->newQuery();
         if ($request->filled('search'))
-            $data->whereRaw("(`title` LIKE '%" . $request->search . "%')");
+            $data->whereRaw("(`name` LIKE '%" . $request->search . "%')");
         if ($limit)
             $data->limit($limit);
         $data = $data->where('status', 1)->with('images')->orderByDesc('id')->get()->toArray();
@@ -24,7 +34,7 @@ class Blog extends Model
             $images = array();
             foreach($item['images'] as $val){
                 $img['id'] = $val['id'];
-                $img['image'] = isset($val['item_name']) ? assets('uploads/blog/'.$val['item_name']) : assets('assets/images/no-image.jpg');
+                $img['image'] = isset($val['item_name']) ? assets('uploads/community/'.$val['item_name']) : assets('assets/images/no-image.jpg');
                 $images[] = $img;
             }
             $item['images'] = $images;

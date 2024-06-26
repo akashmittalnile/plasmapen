@@ -47,7 +47,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <h4>{{ translate('Course Fees') }}</h4>
                                         <input type="text" class="form-control" onchange="showData(event, 'fees')" id="fees" name="fees" placeholder="Course fees" value="{{ $data->course_fee ?? '' }}">
@@ -55,14 +55,26 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <h4>{{ translate('Upload Course Image') }}</h4>
                                         <input type="file" onchange="loadImageFile(event)" class="form-control" name="image" accept="image/png, image/jpg, image/jpeg">
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <h4>{{ translate('Category') }}</h4>
+                                        <select name="category_id" id="" class="form-control text-capitalize">
+                                            <option value="">Select Category</option>
+                                            @foreach($category as $val)
+                                            <option @if(isset($data->category_id) && ($data->category_id == $val->id)) selected @endif value="{{ $val->id }}">{{ $val->title ?? 'NA' }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <h4>{{ translate('Prerequisite') }}</h4>
                                         <select name="prerequisite" id="" class="form-control text-capitalize">
@@ -150,6 +162,9 @@
             video: {
                 filesize: 10
             },
+            category_id: {
+                required: true,
+            },
         },
 
         messages: {
@@ -161,6 +176,9 @@
             },
             fees: {
                 required: 'Please enter course fees',
+            },
+            category_id: {
+                required: 'Please enter select category',
             },
         },
         submitHandler: function(form, e) {

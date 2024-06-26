@@ -17,7 +17,8 @@ class AuthController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required',
+                'first_name' => 'required',
+                'last_name' => 'required',
                 'password' => 'required',
                 'country_code' => 'required',
                 'mobile' => 'required',
@@ -33,7 +34,9 @@ class AuthController extends Controller
                         $name = fileUpload($request->file, "/uploads/profile/");
                         $user->profile = $name;
                     }
-                    $user->name = ucwords($request->name);
+                    $user->name = ucwords($request->first_name ." ".$request->last_name);
+                    $user->first_name = ucwords($request->first_name);
+                    $user->last_name = ucwords($request->last_name);
                     $user->email = strtolower($request->email);
                     $user->country_code = $request->country_code ?? null;
                     $user->mobile = $request->mobile ?? null;
@@ -86,6 +89,8 @@ class AuthController extends Controller
                             $response = array('user' => [
                                 'id' => $user->id,
                                 'name' => $user->name,
+                                'first_name' => $user->first_name,
+                                'last_name' => $user->last_name,
                                 'email' => $user->email,
                                 'country_code' => $user->country_code,
                                 'mobile' => $user->mobile,
@@ -93,7 +98,7 @@ class AuthController extends Controller
                                 'role' => $user->role,
                                 'status' => $user->status,
                                 'fcm_token' => $user->fcm_token,
-                                'created_at' => date('d M, Y h:i A', strtotime($user->created_at)),
+                                'created_at' => date('m-d-Y h:iA', strtotime($user->created_at)),
                             ], 'access_token' => $token);
                             return successMsg('Logged In Successfully.', $response);
                         } else  return errorMsg('Invalid Email or Password!');
@@ -195,6 +200,8 @@ class AuthController extends Controller
             $response = [
                 'id' => $user->id,
                 'name' => $user->name,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
                 'email' => $user->email,
                 'country_code' => $user->country_code ?? null,
                 'mobile' => $user->mobile ?? null,
@@ -202,7 +209,7 @@ class AuthController extends Controller
                 'status' => $user->status,
                 'fcm_token' => $user->fcm_token,
                 'profile_image' => isset($user->profile) ? assets('uploads/profile/' . $user->profile) : null,
-                'created_at' => date('d M, Y h:i A', strtotime($user->created_at))
+                'created_at' => date('m-d-Y h:iA', strtotime($user->created_at))
             ];
             return successMsg('Profile data', $response);
         } catch (\Exception $e) {
@@ -216,7 +223,8 @@ class AuthController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required',
+                'first_name' => 'required',
+                'last_name' => 'required',
                 'mobile' => 'required',
                 'country_code' => 'required',
                 'file' => 'image',
@@ -233,7 +241,9 @@ class AuthController extends Controller
                         $name = fileUpload($request->file, "/uploads/profile/");
                         $user->profile = $name;
                     }
-                    $user->name = ucwords($request->name);
+                    $user->name = ucwords($request->first_name ." ".$request->last_name);
+                    $user->first_name = ucwords($request->first_name);
+                    $user->last_name = ucwords($request->last_name);
                     $user->country_code = $request->country_code;
                     $user->mobile = $request->mobile;
                     $user->updated_at = date('Y-m-d H:i:s');

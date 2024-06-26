@@ -2,9 +2,15 @@
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ assets('assets/css/product.css') }}">
+<style>
+    ul:nth-child(1){
+        color: #455a64;
+    }
+</style>
 @endpush
 
 @section('content')
+<meta name="_token" content="{{csrf_token()}}" />
 <div class="body-main-content">
     <div class="plas-filter-section">
         <div class="plas-filter-heading">
@@ -252,35 +258,55 @@
 
 <!-- Update  product -->
 <div class="modal lm-modal fade" id="Updateproduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="Plasma-modal-form">
                     <h2>Update Product</h2>
                     <div class="row">
-                        <form action="{{ route('admin.product.update') }}" id="add-product-form" method="post" enctype='multipart/form-data'>
+                        <form action="{{ route('admin.product.update') }}" id="update-product-form" method="post" enctype='multipart/form-data'>
                             @csrf
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <input type="text" class="form-control" value="{{ $product->title ?? '' }}" placeholder="Product Title" id="update-title" name="title" required>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <input type="number" min="0" step="any" class="form-control" id="update-price" placeholder="Product Price" name="price" value="{{ $product->price ?? '' }}">
                                 </div>
                             </div>
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <textarea type="text" name="description" class="form-control" id="update-description" placeholder="Product Description">{{ $product->description ?? '' }}</textarea>
                                     <input type="hidden" name="id" value="{{ encrypt_decrypt('encrypt', $product->id) }}">
+                                    <input type="hidden" id="arrayOfImage" name="array_of_image" value="">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <select name="lesson[]" multiple="multiple" required class="selectLesson form-control">
+                                        @foreach($combined as $val)
+                                        <option @if($val['selected']) selected @endif value="{{ $val['id'] }}">{{ $val['name'] ?? 'NA' }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="product-item-card">
                                 <div class="card-header form-group" style="border-bottom: none;">
                                     <div class="d-flex flex-column justify-content-between">
-                                        <div class="dropzone" id="multipleImageEdit">
+                                        <div class="dropzone" id="multipleImage">
+                                            @foreach($imgs as $val)
+                                            <div class="dz-preview dz-image-preview">
+                                                <div class="dz-image">
+                                                    <img src="{{ assets('uploads/product/'.$val->item_name) }}" alt="{{ $val->item_name }}" />
+                                                </div>
+                                                <a href="{{ route('admin.uploaded-image-delete', ['id'=> encrypt_decrypt('encrypt', $val->id), 'type'=> 'product']) }}" class="dz-remove dz-remove-image">Remove</a>
+                                            </div>
+                                            @endforeach
                                             <div class="dz-default dz-message">
                                                 <span>Click once inside the box to upload an image
                                                     <br>
@@ -288,7 +314,6 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <input type="hidden" id="arrayOfImage" name="array_of_image" value="">
                                     </div>
                                 </div>
                             </div>
@@ -309,11 +334,190 @@
 @endsection
 
 @push('js')
-<script>
+<script type="text/javascript">
+    $('.selectLesson').select2({
+        placeholder: 'Select Lessons',
+        dropdownParent: $('#Updateproduct .modal-content')
+    });
+
+    $(".select2-container").css({'width':"100%"})
+    $(".select2-container .selection .select2-selection .select2-search__field").addClass('form-control');
+    $(".select2-search__field.form-control").css({"background": "#fff","border-radius": "5px","font-size": "14px","border": "1px solid rgb(255 255 255 / 15%)","color": "var(--white)"});
+    $(".select2-selection.select2-selection--multiple").css({"border-color": "#e7e9eb"})
+    $("ul:nth-child(1)").css("color", "#455a64 !important")
+    
+    let arrOfImg = [];
+    $(document).ready(function(){
+        var existingImages = {!! json_encode($imgs)  !!};
+        existingImages.forEach(function(image) {
+            arrOfImg.push(image.name);
+        });
+        console.log(existingImages);
+        let oplength = arrOfImg.length;
+        if(oplength>0){
+           $('.dz-default.dz-message').hide(); 
+        } else $('.dz-default.dz-message').show();
+
+        $("#update-product-form").validate({
+            rules: {
+                title: {
+                    required: true,
+                    minlength: 2
+                },
+                price: {
+                    required: true,
+                    number: true
+                },
+                description: {
+                    required: true,
+                    minlength: 10
+                },
+            },
+            messages: {
+                title: {
+                    required: "Please enter a product title",
+                    minlength: "Product title must be at least 2 characters long"
+                },
+                price: {
+                    required: "Please enter a product price",
+                    number: "Please enter a valid price"
+                },
+                description: {
+                    required: "Please enter a product description",
+                    minlength: "Product description must be at least 10 characters long"
+                },
+            },
+            submitHandler: function(form, e) {
+                e.preventDefault();
+                let formData = new FormData(form);
+                $.ajax({
+                    type: 'post',
+                    url: form.action,
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $("#wait").removeClass('d-none')
+                        // $("#create-course-submit").addClass('d-none')
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            $(".toastdesc").text(response.message).addClass('text-success');
+                            launch_toast();
+                            setInterval(() => {
+                                window.location = response.route;
+                            }, 2000);
+                            return false;
+                        } else {
+                            $(".toastdesc").text(response.message).addClass('text-danger');
+                            launch_toast();
+                            return false;
+                        }
+                    },
+                    error: function(data, textStatus, errorThrown) {
+                        jsonValue = jQuery.parseJSON(data.responseText);
+                        console.error(jsonValue.message);
+                    },
+                    complete: function() {
+                        // $("#create-course-submit").removeClass('d-none')
+                        $("#wait").addClass('d-none')
+                    },
+                })
+            },
+            errorElement: "span",
+            errorPlacement: function(error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".form-group").append(error);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+            }
+        });
+    });
+
+    Dropzone.options.multipleImage = {
+        maxFilesize: 5,
+        renameFile: function(file) {
+            return file.name;
+        },
+        acceptedFiles: ".jpeg,.jpg,.png",
+        timeout: 5000,
+        addRemoveLinks: true,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        url: baseUrl+"/admin/image-upload?type=product&id={{$product->id}}",
+        removedfile: function(file) {
+            var name = file.upload.filename;
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                },
+                type: 'POST',
+                url: '{{ route("admin.image-delete") }}',
+                data: {
+                    filename: name,
+                    type: 'product',
+                    id: "{{ $product->id }}"
+                },
+                success: function(data) {
+                    if (data.status) {
+                        console.log("File deleted successfully!!");
+                        if (data.key == 2) {
+                            const inde = arrOfImg.indexOf(data.file_name);
+                            if (inde > -1) {
+                                arrOfImg.splice(inde, 1);
+                                $("#arrayOfImage").val(JSON.stringify(arrOfImg));
+                            }
+                        }
+                        let oplength = arrOfImg.length;
+                        if (oplength > 0) {
+                            $('.dz-default.dz-message').hide();
+                        } else $('.dz-default.dz-message').show();
+                    } else {
+                        console.log("File not deleted!!");
+                    }
+                },
+                error: function(e) {
+                    console.log(e);
+                }
+            });
+            var fileRef;
+            return (fileRef = file.previewElement) != null ?
+                fileRef.parentNode.removeChild(file.previewElement) : void 0;
+        },
+        success: function(file, response) {
+            if (response.key == 1) {
+                arrOfImg.push(response.file_name);
+                $("#arrayOfImage").val(JSON.stringify(arrOfImg));
+                console.log(arrOfImg);
+                file.upload.filename = response.file_name;
+                let oplength = arrOfImg.length;
+                if (oplength > 0) {
+                    $('.dz-default.dz-message').hide();
+                } else $('.dz-default.dz-message').show();
+            }
+        },
+        error: function(file, response) {
+            let oplength = arrOfImg.length;
+            if (oplength > 0) {
+                $('.dz-default.dz-message').hide();
+            } else $('.dz-default.dz-message').show();
+            console.log(file.previewElement);
+            var fileRef;
+            return (fileRef = file.previewElement) != null ? fileRef.parentNode.removeChild(file.previewElement) : null;
+        }
+    };
+    console.log(arrOfImg);
+
     $('.product-details-image').owlCarousel({
-        loop: true,
+        loop: false,
         margin: 10,
-        nav: true,
+        nav: false,
         dots: false,
         responsive: {
             1000: {

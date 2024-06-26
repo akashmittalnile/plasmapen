@@ -36,14 +36,14 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="community.html">
+                <li class="nav-item {{ Route::is('admin.community.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.community.list') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/community.svg') }}"></span>
                         <span class="menu-title">{{ translate('Manage Community') }}</span>
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item {{ Route::is('admin.blog.*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('admin.blog.list') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/blogs.svg') }}"></span>
                         <span class="menu-title">{{ translate('Manage Blogs') }}</span>
@@ -54,6 +54,12 @@
                     <a class="nav-link" href="{{ route('admin.notification.list') }}">
                         <span class="menu-icon"><img src="{{ assets('assets/images/notification1.svg') }}"></span>
                         <span class="menu-title">{{ translate('Manage Notifications') }}</span>
+                    </a>
+                </li>
+                <li class="nav-item {{ Route::is('admin.goal.*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.goal.list') }}">
+                        <span class="menu-icon"><img src="{{ assets('assets/images/Target.svg') }}"></span>
+                        <span class="menu-title">{{ translate('Manage Goals') }}</span>
                     </a>
                 </li>
                 <li class="nav-item">

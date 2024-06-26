@@ -1,107 +1,64 @@
 @extends('layouts.app')
 
 @push('css')
-<link rel="stylesheet" type="text/css" href="{{ assets('assets/css/product.css') }}">
-<style>
-    ul:nth-child(1){
-        color: #455a64;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="{{ assets('assets/css/community.css') }}">
 @endpush
 
 @section('content')
-<meta name="_token" content="{{csrf_token()}}" />
 <div class="body-main-content">
     <div class="plas-filter-section">
         <div class="plas-filter-heading">
-            <h2>Manage Products</h2>
+            <h2>Manage Community</h2>
         </div>
-        <div class="plas-search-filter wd80">
+        <div class="plas-search-filter wd60">
             <div class="row g-1">
-                <div class="col-md-3">
+                <div class="col-md-8">
                     <div class="form-group search-form-group">
-                        <input id="searchInput" type="text" class="form-control" name="search" placeholder="Search by Title">
+                        <input type="text" class="form-control" id="searchInput" name="search" placeholder="Search by community name">
                         <span class="search-icon"><img src="{{ assets('assets/images/search-icon.svg') }}"></span>
                     </div>
                 </div>
-                <div class="col-md-3">
+
+                <div class="col-md-4">
                     <div class="form-group">
-                        <ul class="statusradio-list">
-                            <li>
-                                <div class="statusradio">
-                                    <input type="radio" name="status" value="1" id="Published" checked>
-                                    <label for="Published">Published</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="statusradio">
-                                    <input type="radio" name="status" value="0" id="Unpublished">
-                                    <label for="Unpublished">Unpublished</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <a href="javascript:void(0)" class="btn-pi">Manage Coupon</a>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <a data-bs-toggle="modal" data-bs-target="#Createproduct" class="btn-bl">Create New product</a>
+                        <a href="javascript:void(0)" class="Accountapproval-btn" data-bs-toggle="modal" data-bs-target="#AddNewCommunity">Add New Community</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="course-section">
+    <div class="community-section">
         <div class="row" id="appendData">
 
         </div>
         <div class="plas-table-pagination">
             <ul class="plas-pagination" id="appendPagination">
+
             </ul>
         </div>
     </div>
+
+
 </div>
 
-<!-- Create  product -->
-<div class="modal lm-modal fade" id="Createproduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--   Add New Community -->
+<div class="modal lm-modal fade" id="AddNewCommunity" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="Plasma-modal-form">
-                    <h2>New Product</h2>
-                    <div class="row">
-                        <form action="{{ route('admin.product.store') }}" id="add-product-form" method="post" enctype='multipart/form-data'>
-                            @csrf
+                    <h2>Add New Community</h2>
+                    <form action="{{ route('admin.community.store') }}" id="add-community-form" method="post" enctype='multipart/form-data'>@csrf
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Product Title" name="title" required>
+                                    <input type="text" class="form-control" name="name" placeholder="Community Name">
                                 </div>
                             </div>
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input type="number" min="0" step="any" class="form-control" placeholder="Product Price" name="price">
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <textarea type="text" name="description" class="form-control" placeholder="Product Description"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <select name="lesson[]" multiple="multiple" required class="selectLesson form-control">
-                                        @foreach($lesson as $val)
-                                        <option value="{{ $val->id }}">{{ $val->lesson ?? 'NA' }}</option>
-                                        @endforeach
-                                    </select>
+                                    <textarea type="text" class="form-control" name="description" placeholder="Community Description"></textarea>
                                 </div>
                             </div>
 
@@ -123,34 +80,8 @@
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <button class="cancel-btn" data-bs-dismiss="modal" aria-label="Close" type="button">{{ translate('Cancel') }}</button>
-                                    <button type="submit" class="save-btn">Save & Published Product</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Delete -->
-<div class="modal lm-modal fade" id="openDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="Plasma-modal-form">
-                    <h2>{{ translate('Are You Sure?') }}</h2>
-                    <p>{{ translate('You want to delete this product!') }}</p>
-                    <form action="{{ route('admin.product.delete') }}" method="post">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-12 d-flex justify-content-center">
-                                <input type="hidden" name="id" id="productId">
-                                <div class="form-group">
-                                    <button class="cancel-btn" data-bs-dismiss="modal" aria-label="Close" type="button">{{ translate('Cancel') }}</button>
-                                    <button type="submit" class="save-btn">{{ translate('Yes! Delete') }}</button>
+                                    <button class="cancel-btn" data-bs-dismiss="modal" aria-label="Close" type="button">Discard</button>
+                                    <button class="save-btn" type="submit">Save & Published Community</button>
                                 </div>
                             </div>
                         </div>
@@ -164,17 +95,6 @@
 
 @push('js')
 <script type="text/javascript">
-    $('.selectLesson').select2({
-        placeholder: 'Select Lessons',
-        dropdownParent: $('#Createproduct .modal-content')
-    });
-
-    $(".select2-container").css({'width':"100%"})
-    $(".select2-container .selection .select2-selection .select2-search__field").addClass('form-control');
-    $(".select2-search__field.form-control").css({"background": "#fff","border-radius": "5px","font-size": "14px","border": "1px solid rgb(255 255 255 / 15%)","color": "var(--white)"});
-    $(".select2-selection.select2-selection--multiple").css({"border-color": "#e7e9eb"})
-    $("ul:nth-child(1)").css("color", "#455a64 !important")
-
     let arrOfImg = [];
     Dropzone.options.multipleImage = {
         maxFilesize: 5,
@@ -187,7 +107,7 @@
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
-        url: "{{ route('admin.image-upload', ['type' => 'product']) }}",
+        url: "{{ route('admin.image-upload', ['type' => 'community']) }}",
         removedfile: function(file) {
             var name = file.upload.filename;
             $.ajax({
@@ -198,7 +118,7 @@
                 url: '{{ route("admin.image-delete") }}',
                 data: {
                     filename: name,
-                    type: 'product'
+                    type: 'community'
                 },
                 success: function(data) {
                     if (data.status) {
@@ -250,20 +170,14 @@
     };
     console.log(arrOfImg);
 
-    $(document).on("click", ".deletebtn", function() {
-        $("#productId").val($(this).data('id'));
-        $("#openDeleteModal").modal("show");
-    });
-
     $(document).ready(function() {
-        const getList = (page, search = null, status = null) => {
+        const getList = (page, search = null) => {
             $.ajax({
                 type: 'get',
-                url: "{{ route('admin.product.list') }}",
+                url: "{{ route('admin.community.list') }}",
                 data: {
                     page,
                     search,
-                    status
                 },
                 dataType: 'json',
                 success: function(result) {
@@ -271,6 +185,17 @@
                         let userData = result.data.html.data;
                         let html = result.data.html;
                         $("#appendData").html(result.data.html);
+                        $('.community-card-image').owlCarousel({
+                            loop: false,
+                            margin: 10,
+                            nav: false,
+                            dots: false,
+                            responsive: {
+                                1000: {
+                                    items: 1
+                                }
+                            }
+                        });
                         $("#appendPagination").html('');
                         if (result.data.lastPage != 1) {
                             let paginate = `<li class="${result.data.currentPage==1 ? 'disabled' : ''}" id="example_previous">
@@ -311,27 +236,15 @@
             getList($(this).data('page'));
         })
         $(document).on('keyup', "#searchInput", function() {
-            let status = $("input[name='status']:checked").val();
-            let search = $("#searchInput").val();
-            getList($(this).data('page'), search, status);
+            let search = $(this).val();
+            getList($(this).data('page'), search);
         });
-        $(document).on('change', "input[name='status']", function() {
-            let status = $("input[name='status']:checked").val();
-            let search = $("#searchInput").val();
-            getList($(this).data('page'), search, status);
-        });
-    })
 
-    $(document).ready(function() {
-        $("#add-product-form").validate({
+        $("#add-community-form").validate({
             rules: {
-                title: {
+                name: {
                     required: true,
                     minlength: 2
-                },
-                price: {
-                    required: true,
-                    number: true
                 },
                 description: {
                     required: true,
@@ -339,17 +252,13 @@
                 },
             },
             messages: {
-                title: {
-                    required: "Please enter a product title",
-                    minlength: "Product title must be at least 2 characters long"
-                },
-                price: {
-                    required: "Please enter a product price",
-                    number: "Please enter a valid price"
+                name: {
+                    required: "Please enter a community name",
+                    minlength: "Community name must be at least 2 characters long"
                 },
                 description: {
-                    required: "Please enter a product description",
-                    minlength: "Product description must be at least 10 characters long"
+                    required: "Please enter a community description",
+                    minlength: "Community description must be at least 10 characters long"
                 },
             },
             submitHandler: function(form, e) {
@@ -402,6 +311,6 @@
                 $(element).removeClass("is-invalid");
             }
         });
-    });
+    })
 </script>
 @endpush
