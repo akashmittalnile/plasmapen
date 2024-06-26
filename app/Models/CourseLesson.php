@@ -14,4 +14,8 @@ class CourseLesson extends Model
     public function steps(){
         return $this->hasMany(CourseLessonStep::class, 'course_lesson_id', 'id');
     }
+
+    public function recommendProduct(){
+        return $this->hasMany(ProductRecommendationLesson::class, 'lesson_id', 'id');
+    }
 }

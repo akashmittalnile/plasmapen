@@ -98,6 +98,22 @@ class CourseController extends Controller
                         $lessonStep[] = $step;
                     }
                     $les['chapter_steps'] = $lessonStep;
+                    $product = array();
+                    foreach($lesson->recommendProduct as $pro){
+                        $rec['product_id'] = $pro->product->id;
+                        $rec['product_name'] = $pro->product->title;
+                        $rec['product_description'] = $pro->product->description;
+                        $rec['product_price'] = $pro->product->price;
+                        $images = array();
+                        foreach($pro->product->images as $imag){
+                            $img['id'] = $imag->id;
+                            $img['image'] = isset($imag->item_name) ? assets('uploads/product/'.$imag->item_name) : assets('assets/images/no-image.jpg');
+                            $images[] = $img;
+                        }
+                        $rec['product_images'] = $images;
+                        $product[] = $rec;
+                    }
+                    $les['recommended_product'] = $product;
                     $lessons[] = $les;
                 }
                 $temp['lessons'] = $lessons;
