@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ImageUploadController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\SupportController;
+use App\Http\Controllers\Admin\GoalController;
 use App\Http\Controllers\LangController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route; 
@@ -102,6 +103,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/notifications', [SupportController::class, 'notification'])->name('notification.list');
         Route::post('/create-notifications', [SupportController::class, 'createNotification'])->name('notification.store');
 
+         //goal
+         Route::get('/goal', [GoalController::class, 'goal'])->name('goal.list');
+         Route::get('/goals/{id}', [GoalController::class, 'showGoal'])->name('goals.detail');
         // logout
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     });
