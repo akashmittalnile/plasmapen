@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Community;
 use App\Models\FollowCommunity;
 use App\Models\Image;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -139,6 +140,115 @@ class CommunityController extends Controller
             $imgs = $community->images;
             $follow = FollowCommunity::where('community_id', $id)->orderByDesc('id')->limit(3)->get();
             return view('pages.community.details')->with(compact('community', 'imgs', 'follow'));
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    public function communityDelete(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return errorMsg($validator->errors()->first());
+            } else {
+                $id = encrypt_decrypt('decrypt', $request->id);
+                $community = Community::where('id', $id)->first();
+                foreach($community->images as $val){
+                    fileRemove("/uploads/community/$val->item_name");
+                }
+                Image::where('item_id', $id)->where('item_type', 'community')->delete();
+                FollowCommunity::where('community_id', $id)->delete();
+                Community::where('id', $id)->delete();
+
+                return redirect()->route('admin.community.list')->with('success', 'Community deleted successfully');
+            }
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    public function communityUpdate(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string',
+                'description' => 'required|string',
+            ]);
+
+            if ($validator->fails()) {
+                return errorMsg($validator->errors()->first());
+            } else {
+                $id = encrypt_decrypt('decrypt', $request->id);
+                $community = Community::where('id', $id)->first();
+                $community->name = $request->name ?? null;
+                $community->description = $request->description ?? null;
+                $community->save();
+
+                return successMsg('Community updated successfully');
+            }
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    public function changeCommunityStatus(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+                'status' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return errorMsg($validator->errors()->first());
+            } else {
+                $id = encrypt_decrypt('decrypt', $request->id);
+                Community::where('id', $id)->update([
+                    'status'=> $request->status,
+                ]);
+                $msg = ($request->status == 1) ? 'Community active' : 'Community inactive';
+                return successMsg("$msg successfully");
+            }
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    public function communityPostCreate(Request $request)
+    {
+        try{
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|string',
+                'description' => 'required|string',
+                'community_id' => 'required|string',
+                'array_of_image_post' => 'required'
+            ]);
+    
+            if ($validator->fails()) {
+                return errorMsg($validator->errors()->first());
+            } else {
+                $post = new Post;
+                $post->community_id = $request->community_id ?? null;
+                $post->title = $request->title ?? null;
+                $post->description = $request->description ?? null;
+                $post->status = 1;
+                $post->save();
+    
+                $array_of_image = json_decode($request->array_of_image_post);
+                if(is_array($array_of_image) && count($array_of_image)>0){
+                    foreach($array_of_image as $val){
+                        $image = new Image;
+                        $image->item_name = $val;
+                        $image->item_id = $post->id;
+                        $image->item_type = 'post';
+                        $image->save();
+                    }
+                }
+    
+                return successMsg('Post created successfully');
+            }
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }

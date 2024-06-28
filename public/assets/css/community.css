@@ -425,7 +425,7 @@ a.managebtn {
     width: 50px;
     height: calc(50px / 2);
     border-radius: 50px;
-    background: #e5e5f5;
+    background: #bdbdd2;
     transition: background 0.2s;
 }
 

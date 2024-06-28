@@ -83,6 +83,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('/community/delete', [CommunityController::class, 'communityDelete'])->name('community.delete');
         Route::get('/community/info/{id}', [CommunityController::class, 'getCommunityInfo'])->name('community.info');
         Route::post('/community/update', [CommunityController::class, 'communityUpdate'])->name('community.update');
+        Route::post('/change-community-status', [CommunityController::class, 'changeCommunityStatus'])->name('community.change.status');
+        Route::post('/community/post/store', [CommunityController::class, 'communityPostCreate'])->name('community.post.store');
 
         //blog
         Route::get('/blogs', [BlogController::class, 'list'])->name('blog.list');

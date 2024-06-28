@@ -215,7 +215,7 @@ class ProductController extends Controller
                     }
                 }
 
-                return response()->json(['status' => true, 'message' => 'Product updated successfully', 'route' => route('admin.product.list')]);
+                return successMsg('Product updated successfully');
             }
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());

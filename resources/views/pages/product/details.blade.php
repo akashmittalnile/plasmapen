@@ -406,7 +406,7 @@
                             $(".toastdesc").text(response.message).addClass('text-success');
                             launch_toast();
                             setInterval(() => {
-                                window.location = response.route;
+                                window.location.reload();
                             }, 2000);
                             return false;
                         } else {

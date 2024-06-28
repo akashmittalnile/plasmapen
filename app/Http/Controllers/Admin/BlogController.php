@@ -183,7 +183,7 @@ class BlogController extends Controller
                 $blog->description = $request->description ?? null;
                 $blog->save();
 
-                return response()->json(['status' => true, 'message' => 'Blog updated successfully', 'route' => route('admin.blog.list')]);
+                return successMsg('Blog updated successfully');
             }
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
