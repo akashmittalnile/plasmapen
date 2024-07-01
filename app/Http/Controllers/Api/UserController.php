@@ -37,4 +37,16 @@ class UserController extends Controller
             return errorMsg('Exception => ' . $e->getMessage());
         }
     }
+
+    public function search(Request $request){
+        try{
+            $course = $this->course->allCourses($request);
+            $product = $this->product->allProducts($request);
+            $blog = $this->blog->allBlogs($request);
+            $community = $this->community->allCommunities($request);
+            return successMsg('Global search', ['course' => $course, 'product' => $product, 'blog' => $blog, 'community' => $community]);
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
 }

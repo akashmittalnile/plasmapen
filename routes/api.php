@@ -36,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('change-password', [AuthController::class, 'changePassword']);
 
     Route::get('home', [UserController::class, 'home']);
+    Route::get('search', [UserController::class, 'search']);
 
     Route::get('courses', [CourseController::class, 'courses']);
     Route::get('course-category', [CourseController::class, 'courseCategory']);

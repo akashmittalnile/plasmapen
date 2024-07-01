@@ -30,6 +30,11 @@ class Course extends Model
 
     public function allCourses($request, $limit = null){
         $data = $this->newQuery();
+        if ($request->filled('filter'))
+            $data->whereRaw("(`title` LIKE '%" . $request->filter . "%' or `description` LIKE '%" . $request->filter . "%' or `course_fee` LIKE '%" . $request->filter . "%')");
+        if ($request->filled('date')) {
+                $data->whereDate('created_at', $request->date);
+        };
         if ($request->filled('search'))
             $data->whereRaw("(`title` LIKE '%" . $request->search . "%')");
         if($request->filled('category_id'))

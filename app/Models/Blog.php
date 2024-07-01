@@ -15,6 +15,11 @@ class Blog extends Model
 
     public function allBlogs($request, $limit = null){
         $data = $this->newQuery();
+        if ($request->filled('filter'))
+            $data->whereRaw("(`title` LIKE '%" . $request->filter . "%' or `description` LIKE '%" . $request->filter . "%')");
+        if ($request->filled('date')) {
+            $data->whereDate('created_at', $request->date);
+        };
         if ($request->filled('search'))
             $data->whereRaw("(`title` LIKE '%" . $request->search . "%')");
         if ($limit)

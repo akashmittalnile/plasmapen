@@ -29,6 +29,11 @@ class Community extends Model
 
     public function allCommunities($request, $limit = null){
         $data = $this->newQuery();
+        if ($request->filled('filter'))
+            $data->whereRaw("(`name` LIKE '%" . $request->filter . "%' or `description` LIKE '%" . $request->filter . "%')");
+        if ($request->filled('date')) {
+            $data->whereDate('created_at', $request->date);
+        };
         if ($request->filled('search'))
             $data->whereRaw("(`name` LIKE '%" . $request->search . "%')");
         if ($limit)
