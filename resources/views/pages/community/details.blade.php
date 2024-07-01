@@ -125,7 +125,7 @@
                         <div class="row g-1">
                             <div class="col-md-8">
                                 <div class="form-group search-form-group">
-                                    <input type="text" class="form-control" name="" placeholder="Search by title">
+                                    <input type="text" class="form-control" id="searchInput" name="search" placeholder="Search by title">
                                     <span class="search-icon"><img src="{{ assets('assets/images/search-icon.svg') }}"></span>
                                 </div>
                             </div>
@@ -139,45 +139,14 @@
                     </div>
                 </div>
                 <div class="">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="Post-card">
-                                <div class="Post-card-head">
-                                    <h2>Appeex Bundle</h2>
-                                </div>
-                                <div class="Post-card-image">
-                                    <a href="post-details.html"><img src="images/p1.png"></a>
-                                </div>
-                                <div class="Post-card-content">
-                                    <div class="Post-card-date"><img src="images/calendar1.svg"> January 10 2023 </div>
-                                    <p>Pay in 4 payments of $25.00 USD with ⓘ For the treatment of: uneven skin texture, facial skin laxity, sunspots and sun damage, enlarged pores, chloasma, melasma and blotchiness, dull complexion, atrophic and hypertrophic scars etcAppeex Peel is a three phase peel of a new generation with a unique, patented formula consisting of three main components:TCA 20%</p>
-                                    <div class="Post-action">
-                                        <a class="Like-btn"><img src="images/like1.svg"> Like (45k)</a>
-                                        <a class="Comment-btn" href="#"><img src="images/Comment1.svg"> Comment (45k)</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="row" id="appendData">
 
-                        <div class="col-md-6">
-                            <div class="Post-card">
-                                <div class="Post-card-head">
-                                    <h2>Appeex Bundle</h2>
-                                </div>
-                                <div class="Post-card-image">
-                                    <a href="post-details.html"><img src="images/p1.png"></a>
-                                </div>
-                                <div class="Post-card-content">
-                                    <div class="Post-card-date"><img src="images/calendar1.svg"> January 10 2023 </div>
-                                    <p>Pay in 4 payments of $25.00 USD with ⓘ For the treatment of: uneven skin texture, facial skin laxity, sunspots and sun damage, enlarged pores, chloasma, melasma and blotchiness, dull complexion, atrophic and hypertrophic scars etcAppeex Peel is a three phase peel of a new generation with a unique, patented formula consisting of three main components:TCA 20%</p>
-                                    <div class="Post-action">
-                                        <a class="Like-btn"><img src="images/like1.svg"> Like (45k)</a>
-                                        <a class="Comment-btn" href="#"><img src="images/Comment1.svg"> Comment (45k)</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
 
+                    <div class="plas-table-pagination">
+                        <ul class="plas-pagination" id="appendPagination">
+
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -496,7 +465,7 @@
         const getList = (page, search = null) => {
             $.ajax({
                 type: 'get',
-                url: "{{ route('admin.community.list') }}",
+                url: "{{ route('admin.community.info', $id) }}",
                 data: {
                     page,
                     search,
@@ -507,7 +476,7 @@
                         let userData = result.data.html.data;
                         let html = result.data.html;
                         $("#appendData").html(result.data.html);
-                        $('.community-card-image').owlCarousel({
+                        $('.Post-card-image').owlCarousel({
                             loop: false,
                             margin: 10,
                             nav: false,

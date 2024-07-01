@@ -36,7 +36,6 @@ class BlogController extends Controller
         try {
             $data = $this->blog->details($id);
             if (isset($data->id)) {
-                $temp['id'] = $data->id;
                 $temp['title'] = $data->title;
                 $temp['description'] = $data->description;
                 $temp['price'] = $data->price;

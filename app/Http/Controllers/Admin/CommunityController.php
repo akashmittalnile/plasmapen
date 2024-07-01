@@ -8,6 +8,7 @@ use App\Models\FollowCommunity;
 use App\Models\Image;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class CommunityController extends Controller
@@ -132,14 +133,70 @@ class CommunityController extends Controller
         }
     }
 
-    public function getCommunityInfo($id)
+    public function getCommunityInfo($id, Request $request)
     {
         try {
             $id = encrypt_decrypt('decrypt', $id);
             $community = Community::where('id', $id)->first();
+            if($request->ajax()){
+                $post = Post::where('community_id', $id);
+                if($request->filled('search')){
+                    $post->whereRaw("(`title` LIKE '%" . $request->search . "%')");
+                }
+                $post = $post->with('images')->orderByDesc('id')->paginate(config('constant.postPerPage'));
+                $html = '';
+                foreach($post as $val){
+                    $imgs = $val->images;
+                    $image_html = "";
+                    foreach($imgs as $name){
+                        $image_html .= "<div class='item'>
+                        <div class='community-media' style='height: 210px'>
+                                <a data-fancybox='' href='".assets("uploads/post/$name->item_name")."'>
+                                    <img src='".assets("uploads/post/$name->item_name")."'>
+                                </a>
+                            </div>
+                        </div>";
+                    }
+                    if($image_html == "") {
+                        $image_html = "<div class='item'>
+                        <div class='community-media' style='height: 210px'>
+                                <img src='".assets('assets/images/no-image.jpg')."'>
+                            </div>
+                        </div>";
+                    }
+
+                    $html .= "<div class='col-md-6'>
+                        <div class='Post-card'>
+                            <div class='Post-card-head'>
+                                <h2>$val->title</h2>
+                            </div>
+                            <div class='Post-card-image owl-carousel owl-theme'>
+                                $image_html
+                            </div>
+                            <div class='Post-card-content'>
+                                <div class='Post-card-date'><img src='". assets('assets/images/calendar1.svg') ."'> ".date('m-d-Y', strtotime($val->created_at))." </div>
+                                <p>$val->description</p>
+                                <div class='Post-action'>
+                                    <a class='Like-btn'><img src='".assets('assets/images/like1.svg')."'> Like (0)</a>
+                                    <a class='Comment-btn'><img src='".assets('assets/images/Comment1.svg')."'> Comment (0)</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>";
+                }
+                if($post->total() < 1) return errorMsg("No post found");
+                $response = array(
+                    'currentPage' => $post->currentPage(),
+                    'lastPage' => $post->lastPage(),
+                    'total' => $post->total(),
+                    'html' => $html,
+                );
+                return successMsg('Post list', $response);
+            }
             $imgs = $community->images;
             $follow = FollowCommunity::where('community_id', $id)->orderByDesc('id')->limit(3)->get();
-            return view('pages.community.details')->with(compact('community', 'imgs', 'follow'));
+            $id = encrypt_decrypt('encrypt', $id);
+            return view('pages.community.details')->with(compact('community', 'imgs', 'follow', 'id'));
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }

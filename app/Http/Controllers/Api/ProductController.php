@@ -35,7 +35,6 @@ class ProductController extends Controller
         try {
             $data = $this->product->details($id);
             if (isset($data->id)) {
-                $temp['id'] = $data->id;
                 $temp['title'] = $data->title;
                 $temp['description'] = $data->description;
                 $temp['price'] = $data->price;

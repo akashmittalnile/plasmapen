@@ -50,6 +50,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('communities', [CommunityController::class, 'communities']);
     Route::get('community-details/{id}', [CommunityController::class, 'communityDetails']);
+    Route::get('post-details/{id}', [CommunityController::class, 'postDetails']);
+    Route::post('like-unlike-post', [CommunityController::class, 'postLikeUnlike']);
+    Route::post('post-comment', [CommunityController::class, 'postComment']);
+    Route::post('post-comment-edit', [CommunityController::class, 'postEditComment']);
+    Route::delete('post-comment-delete', [CommunityController::class, 'postDeleteComment']);
 
     Route::get('blogs', [BlogController::class, 'blogs']);
     Route::get('blog-details/{id}', [BlogController::class, 'blogDetails']);

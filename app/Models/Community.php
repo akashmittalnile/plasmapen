@@ -11,6 +11,10 @@ class Community extends Model
     protected $table = 'communities';
     protected $key = 'id';
 
+    public function user(){
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
     public function images(){
         return $this->hasMany(Image::class, 'item_id', 'id')->where('item_type', 'community')->orderByDesc('id');
     }
@@ -29,7 +33,7 @@ class Community extends Model
             $data->whereRaw("(`name` LIKE '%" . $request->search . "%')");
         if ($limit)
             $data->limit($limit);
-        $data = $data->where('status', 1)->with('images')->orderByDesc('id')->get()->toArray();
+        $data = $data->where('status', 1)->with('images', 'communityPost')->orderByDesc('id')->get()->toArray();
         $lengths = array_map( function($item) {
             $images = array();
             foreach($item['images'] as $val){
@@ -38,6 +42,7 @@ class Community extends Model
                 $images[] = $img;
             }
             $item['images'] = $images;
+            $item['community_post'] = count($item['community_post']);
             $item['created_at'] = date('m-d-Y h:iA', strtotime($item['created_at']));
             $item['updated_at'] = date('m-d-Y h:iA', strtotime($item['updated_at']));
             return $item;
@@ -47,7 +52,7 @@ class Community extends Model
 
     public function details($id){
         $data = $this->newQuery();
-        $data = $data->where('id', $id)->with('images')->first();
+        $data = $data->where('id', $id)->with('images', 'communityPost')->first();
         return $data;
     }
 }
