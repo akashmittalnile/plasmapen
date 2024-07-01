@@ -25,7 +25,6 @@ class CommunityController extends Controller
     {
         try {
             $data = $this->community->allCommunities($request);
-            $response = array();
             if (isset($data)) {
                 return successMsg('Community list', $data);
             } else return errorMsg('No communities found');
@@ -102,6 +101,50 @@ class CommunityController extends Controller
                 $post['updated_at'] = date('m-d-Y h:iA', strtotime($data->updated_at));
                 return successMsg('Post details', $post);
             } else return errorMsg('Post not found');
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    public function followUnfollow(Request $request) {
+        try{
+            $validator = Validator::make($request->all(), [
+                'community_id' => 'required',
+                'status' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return errorMsg($validator->errors()->first());
+            } else {
+                $community = Community::where('id', $request->community_id)->first();
+                if(isset($community->id)){
+                    if($request->status == 1){
+                        $follow = new FollowCommunity;
+                        $follow->user_id = auth()->user()->id;
+                        $follow->community_id = $request->community_id;
+                        $follow->save();
+                        return successMsg('You are now following '.$community->name);
+                    } else {
+                        $isFollow = FollowCommunity::where('user_id', auth()->user()->id)->where('community_id', $request->community_id)->first();
+                        if(isset($isFollow->id)){
+                            FollowCommunity::where('user_id', auth()->user()->id)->where('community_id', $request->community_id)->delete();
+                            return successMsg('You unfollowed '.$community->name);
+                        }else{
+                            return errorMsg("Community not found.");
+                        }
+                    }
+                } else return errorMsg("Community not found.");
+            }
+        } catch (\Exception $e) {
+            return errorMsg('Exception => ' . $e->getMessage());
+        }
+    }
+
+    public function followedCommunityList(Request $request) {
+        try{
+            $data = $this->community->followedCommunities($request);
+            if (isset($data)) {
+                return successMsg('Community list', $data);
+            } else return errorMsg('No followed communities found');
         } catch (\Exception $e) {
             return errorMsg('Exception => ' . $e->getMessage());
         }
